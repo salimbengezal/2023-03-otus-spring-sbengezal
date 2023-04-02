@@ -5,6 +5,7 @@ import java.util.List;
 public class Question {
 
     private final String title;
+
     private final List<String> options;
 
     public Question(String title, List<String> options) {

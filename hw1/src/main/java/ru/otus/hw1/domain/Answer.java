@@ -3,6 +3,7 @@ package ru.otus.hw1.domain;
 public class Answer {
 
     private final Question question;
+
     private final int position;
 
     public Answer(Question question, int position) {

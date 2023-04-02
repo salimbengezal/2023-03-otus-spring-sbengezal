@@ -28,8 +28,9 @@ public class FeedbackServiceSimple implements FeedbackService {
     }
 
     private void checkQuestionOptions(List<Question> questions) {
-        if (!questions.stream().filter(q -> q.getOptions().size() < 2).toList().isEmpty())
+        if (!questions.stream().filter(q -> q.getOptions().size() < 2).toList().isEmpty()) {
             throw new RuntimeException("Question doesn't have choice");
+        }
     }
 
     public void showAnswers(List<Answer> answers) {
@@ -53,12 +54,14 @@ public class FeedbackServiceSimple implements FeedbackService {
             try {
                 answer = Integer.parseInt(scanner.nextLine());
             } catch (NumberFormatException ignored) {
+                System.out.println("Not parseable answer");
             }
             isValidAnswer = answer >= 1 && answer <= question.getOptions().size();
             if (!isValidAnswer) {
                 System.out.println("Wrong answer. Please repeat");
             }
-        } while (!isValidAnswer);
+        }
+        while (!isValidAnswer);
         return new Answer(question, answer - 1);
     }
 
