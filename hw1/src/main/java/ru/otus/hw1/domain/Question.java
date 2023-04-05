@@ -6,18 +6,18 @@ public class Question {
 
     private final String title;
 
-    private final List<String> options;
+    private final List<QuestionOption> options;
 
-    public Question(String title, List<String> options) {
+    public Question(String title, List<QuestionOption> options) {
         this.title = title;
         this.options = options;
     }
 
-    public List<String> getOptions() {
-        return options;
-    }
-
     public String getTitle() {
         return title;
+    }
+
+    public List<QuestionOption> getOptions() {
+        return options;
     }
 }

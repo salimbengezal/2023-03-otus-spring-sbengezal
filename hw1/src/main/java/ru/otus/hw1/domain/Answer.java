@@ -4,18 +4,18 @@ public class Answer {
 
     private final Question question;
 
-    private final int position;
+    private final QuestionOption answer;
 
-    public Answer(Question question, int position) {
+    public Answer(Question question, QuestionOption answer) {
         this.question = question;
-        this.position = position;
+        this.answer = answer;
     }
 
     public Question getQuestion() {
         return question;
     }
 
-    public int getPosition() {
-        return position;
+    public QuestionOption getAnswer() {
+        return answer;
     }
 }
