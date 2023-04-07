@@ -4,7 +4,7 @@ import ru.otus.hw1.domain.Question;
 import ru.otus.hw1.domain.QuestionOption;
 import ru.otus.hw1.exceptions.NotEnoughElementsException;
 import ru.otus.hw1.exceptions.QuestionFileNotFoundException;
-import ru.otus.hw1.exceptions.QuestionFileReadingException;
+import ru.otus.hw1.exceptions.QuestionReadingException;
 import ru.otus.hw1.repository.QuestionRepository;
 
 import java.io.BufferedReader;
@@ -29,7 +29,7 @@ public class CsvQuestionRepository implements QuestionRepository {
     }
 
     @Override
-    public List<Question> getAll() {
+    public List<Question> getAll() throws QuestionReadingException {
         return readLinesFromFile().stream()
                 .map(line -> line.split(delimiter))
                 .map(this::getQuestion)
@@ -48,7 +48,7 @@ public class CsvQuestionRepository implements QuestionRepository {
         return new Question(array[0], shuffledOptions);
     }
 
-    private List<String> readLinesFromFile() throws QuestionFileNotFoundException, QuestionFileReadingException {
+    private List<String> readLinesFromFile() throws QuestionFileNotFoundException, QuestionReadingException {
         InputStream is = getClass().getClassLoader().getResourceAsStream(fileName);
         if (is == null) {
             throw new QuestionFileNotFoundException("File with questions not found");
@@ -61,7 +61,7 @@ public class CsvQuestionRepository implements QuestionRepository {
                 lines.add(line);
             }
         } catch (IOException e) {
-            throw new QuestionFileReadingException(e.getMessage());
+            throw new QuestionReadingException(e.getMessage(), e);
         }
         return lines;
     }

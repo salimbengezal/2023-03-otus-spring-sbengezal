@@ -3,14 +3,14 @@ package ru.otus.hw1.service.impl;
 import ru.otus.hw1.domain.Answer;
 import ru.otus.hw1.domain.Question;
 import ru.otus.hw1.domain.QuestionOption;
-import ru.otus.hw1.service.IOStreamService;
+import ru.otus.hw1.service.IOService;
 import ru.otus.hw1.service.QuestionerService;
 
 public class SimpleQuestionerService implements QuestionerService {
 
-    private final IOStreamService ioService;
+    private final IOService ioService;
 
-    public SimpleQuestionerService(IOStreamService ioService) {
+    public SimpleQuestionerService(IOService ioService) {
         this.ioService = ioService;
     }
 

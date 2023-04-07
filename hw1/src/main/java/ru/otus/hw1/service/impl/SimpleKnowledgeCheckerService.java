@@ -3,7 +3,7 @@ package ru.otus.hw1.service.impl;
 import ru.otus.hw1.domain.Answer;
 import ru.otus.hw1.domain.Question;
 import ru.otus.hw1.repository.QuestionRepository;
-import ru.otus.hw1.service.IOStreamService;
+import ru.otus.hw1.service.IOService;
 import ru.otus.hw1.service.KnowledgeCheckerService;
 import ru.otus.hw1.service.MessageFormatterService;
 import ru.otus.hw1.service.QuestionerService;
@@ -15,14 +15,14 @@ public class SimpleKnowledgeCheckerService implements KnowledgeCheckerService {
 
     private final QuestionRepository questionRepository;
 
-    private final IOStreamService ioService;
+    private final IOService ioService;
 
     private final QuestionerService questionerService;
 
     private final MessageFormatterService formatterService;
 
     public SimpleKnowledgeCheckerService(QuestionRepository repository,
-                                         IOStreamService ioService,
+                                         IOService ioService,
                                          QuestionerService questionerService,
                                          MessageFormatterService formatterService) {
         this.questionRepository = repository;

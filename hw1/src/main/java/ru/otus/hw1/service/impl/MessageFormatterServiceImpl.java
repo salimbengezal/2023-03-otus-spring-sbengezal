@@ -5,9 +5,11 @@ import ru.otus.hw1.domain.Question;
 import ru.otus.hw1.service.MessageFormatterService;
 
 import java.util.List;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
-public class ConsoleMessageFormatterService implements MessageFormatterService {
+public class MessageFormatterServiceImpl implements MessageFormatterService {
 
     @Override
     public String formatQuestion(Question question) {
@@ -24,10 +26,8 @@ public class ConsoleMessageFormatterService implements MessageFormatterService {
 
     @Override
     public String formatAnswers(List<Answer> answers) {
-        StringBuilder builder = new StringBuilder();
-        builder.append("Your answers:").append("\n");
-        answers.stream().map(this::formatAnswer).forEach(builder::append);
-        return builder.toString();
+        return Stream.concat(Stream.of("Your answers:", "\n"), answers.stream().map(this::formatAnswer))
+                .collect(Collectors.joining());
     }
 
 }

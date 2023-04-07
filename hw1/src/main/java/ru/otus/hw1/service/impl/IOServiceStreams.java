@@ -1,23 +1,23 @@
 package ru.otus.hw1.service.impl;
 
-import ru.otus.hw1.service.IOStreamService;
+import ru.otus.hw1.service.IOService;
 
 import java.io.InputStream;
 import java.io.PrintStream;
 import java.util.Scanner;
 
-public class ConsoleIOStreamService implements IOStreamService {
+public class IOServiceStreams implements IOService {
 
     private final PrintStream out;
 
     private final Scanner scanner;
 
-    public ConsoleIOStreamService(PrintStream out, InputStream in) {
+    public IOServiceStreams(PrintStream out, InputStream in) {
         this.out = out;
         this.scanner = new Scanner(in);
     }
 
-    public ConsoleIOStreamService() {
+    public IOServiceStreams() {
         this.out = System.out;
         this.scanner = new Scanner(System.in);
     }
@@ -28,7 +28,7 @@ public class ConsoleIOStreamService implements IOStreamService {
     }
 
     @Override
-    public Integer readInt() {
+    public int readInt() {
         return Integer.parseInt(scanner.nextLine());
     }
 

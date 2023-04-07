@@ -4,13 +4,13 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans
         http://www.springframework.org/schema/beans/spring-beans.xsd">
 
-    <bean id="ioService" class="ru.otus.hw1.service.impl.ConsoleIOStreamService"/>
+    <bean id="ioService" class="ru.otus.hw1.service.impl.IOServiceStreams"/>
 
     <bean id="questionerService" class="ru.otus.hw1.service.impl.SimpleQuestionerService">
         <constructor-arg index="0" ref="ioService"/>
     </bean>
 
-    <bean id="messageFormatterService" class="ru.otus.hw1.service.impl.ConsoleMessageFormatterService"/>
+    <bean id="messageFormatterService" class="ru.otus.hw1.service.impl.MessageFormatterServiceImpl"/>
 
     <bean id="questionRepository" class="ru.otus.hw1.repository.impl.CsvQuestionRepository">
         <constructor-arg index="0" value="questions.csv"/>

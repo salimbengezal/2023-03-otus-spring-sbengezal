@@ -1,9 +1,9 @@
 package ru.otus.hw1.service;
 
-public interface IOStreamService {
+public interface IOService {
 
     void showMessage(String text);
 
-    Integer readInt();
+    int readInt();
 
 }

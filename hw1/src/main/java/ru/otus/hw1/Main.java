@@ -8,8 +8,8 @@ public class Main {
     public static void main(String[] args) {
 
         ClassPathXmlApplicationContext ctx = new ClassPathXmlApplicationContext("./spring-context.xml");
-        KnowledgeCheckerService feedbackService = ctx.getBean(KnowledgeCheckerService.class);
-        feedbackService.run();
+        KnowledgeCheckerService knowledgeCheckerService = ctx.getBean(KnowledgeCheckerService.class);
+        knowledgeCheckerService.run();
 
     }
 }
