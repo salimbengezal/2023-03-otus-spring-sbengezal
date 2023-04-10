@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns="http://www.springframework.org/schema/beans"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <bean id="ioService" class="ru.otus.hw1.service.impl.IOServiceStreams"/>
+
+    <bean id="questionerService" class="ru.otus.hw1.service.impl.SimpleQuestionerService">
+        <constructor-arg index="0" ref="ioService"/>
+    </bean>
+
+    <bean id="messageFormatterService" class="ru.otus.hw1.service.impl.MessageFormatterServiceImpl"/>
+
+    <bean id="questionRepository" class="ru.otus.hw1.repository.impl.CsvQuestionRepository">
+        <constructor-arg index="0" value="questions.csv"/>
+        <constructor-arg index="1" value=";"/>
+    </bean>
+
+    <bean id="knowledgeCheckerService" class="ru.otus.hw1.service.impl.SimpleKnowledgeCheckerService">
+        <constructor-arg index="0" ref="questionRepository"/>
+        <constructor-arg index="1" ref="ioService"/>
+        <constructor-arg index="2" ref="questionerService"/>
+        <constructor-arg index="3" ref="messageFormatterService"/>
+    </bean>
+
+</beans>
