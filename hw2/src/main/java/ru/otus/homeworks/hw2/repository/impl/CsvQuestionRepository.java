@@ -1,11 +1,14 @@
-package ru.otus.hw1.repository.impl;
+package ru.otus.homeworks.hw2.repository.impl;
 
-import ru.otus.hw1.domain.Question;
-import ru.otus.hw1.domain.QuestionOption;
-import ru.otus.hw1.exceptions.NotEnoughElementsException;
-import ru.otus.hw1.exceptions.QuestionFileNotFoundException;
-import ru.otus.hw1.exceptions.QuestionReadingException;
-import ru.otus.hw1.repository.QuestionRepository;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.stereotype.Repository;
+import ru.otus.homeworks.hw2.domain.Question;
+import ru.otus.homeworks.hw2.domain.QuestionOption;
+import ru.otus.homeworks.hw2.exceptions.NotEnoughElementsException;
+import ru.otus.homeworks.hw2.exceptions.QuestionFileNotFoundException;
+import ru.otus.homeworks.hw2.exceptions.QuestionReadingException;
+import ru.otus.homeworks.hw2.repository.QuestionRepository;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -17,13 +20,16 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.IntStream;
 
+@PropertySource("classpath:application.properties")
+@Repository
 public class CsvQuestionRepository implements QuestionRepository {
 
     private final String fileName;
 
     private final String delimiter;
 
-    public CsvQuestionRepository(String fileName, String delimiter) {
+    public CsvQuestionRepository(@Value("${questions.file.name}") String fileName,
+                                 @Value("${questions.file.delimiter}") String delimiter) {
         this.fileName = fileName;
         this.delimiter = delimiter;
     }

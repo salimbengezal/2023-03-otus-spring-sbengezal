@@ -1,4 +1,4 @@
-package ru.otus.hw1.exceptions;
+package ru.otus.homeworks.hw2.exceptions;
 
 public class QuestionFileNotFoundException extends RuntimeException {
 

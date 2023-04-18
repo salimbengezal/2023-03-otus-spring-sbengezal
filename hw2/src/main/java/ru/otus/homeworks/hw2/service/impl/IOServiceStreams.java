@@ -1,6 +1,6 @@
-package ru.otus.hw1.service.impl;
+package ru.otus.homeworks.hw2.service.impl;
 
-import ru.otus.hw1.service.IOService;
+import ru.otus.homeworks.hw2.service.IOService;
 
 import java.io.InputStream;
 import java.io.PrintStream;
@@ -17,19 +17,24 @@ public class IOServiceStreams implements IOService {
         this.scanner = new Scanner(in);
     }
 
-    public IOServiceStreams() {
-        this.out = System.out;
-        this.scanner = new Scanner(System.in);
+    @Override
+    public void showMessage(String text) {
+        out.print(text);
     }
 
     @Override
-    public void showMessage(String text) {
+    public void showMessageInline(String text) {
         out.println(text);
     }
 
     @Override
     public int readInt() {
         return Integer.parseInt(scanner.nextLine());
+    }
+
+    @Override
+    public String readString() {
+        return scanner.nextLine();
     }
 
 }

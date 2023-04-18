@@ -1,5 +1,5 @@
 Which method runs an application?;main;any, need to specify in pom;any, need to specify in MANIFEST
-When was introduced java 8?;2014;2013;2014;2015;2012
+When was introduced java 8?;2014;2013;2015;2012
 What can be developed in Java?;Everything listed;Web-site;Game;PC Apps;Mobile Apps
 How can we specify ternary operator?;?:;&&;^;!
 What is the name of operator, which does the value of a variable 'plus one'?;increment;decrement;upper;step
