@@ -7,10 +7,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import ru.otus.homeworks.hw3.repository.QuestionRepository;
-import ru.otus.homeworks.hw3.service.IOService;
-import ru.otus.homeworks.hw3.service.KnowledgeCheckerService;
-import ru.otus.homeworks.hw3.service.MessageFormatterService;
-import ru.otus.homeworks.hw3.service.QuestionerService;
+import ru.otus.homeworks.hw3.service.*;
 import ru.otus.homeworks.hw3.service.impl.SimpleKnowledgeCheckerService;
 
 import static org.mockito.Mockito.*;
@@ -29,7 +26,10 @@ public class SimpleKnowledgeCheckerTest {
     private QuestionerService questionerService;
 
     @Mock
-    private MessageFormatterService formatter;
+    private QAFormatter formatter;
+
+    @Mock
+    private ReportFormatter reportFormatter;
 
     private KnowledgeCheckerService checkerService;
 
@@ -41,7 +41,8 @@ public class SimpleKnowledgeCheckerTest {
                 repository,
                 ioService,
                 questionerService,
-                formatter
+                formatter,
+                reportFormatter
         );
     }
 
@@ -63,7 +64,7 @@ public class SimpleKnowledgeCheckerTest {
     @Test
     void shouldCallFormatterReport() {
         checkerService.run();
-        verify(formatter, times(1)).formatReport(any(), any(), anyDouble());
+        verify(reportFormatter, times(1)).formatMessage(any(), any(), anyDouble());
     }
 
 }

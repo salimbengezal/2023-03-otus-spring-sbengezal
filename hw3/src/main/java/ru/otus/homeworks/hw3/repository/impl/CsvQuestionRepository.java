@@ -35,14 +35,14 @@ public class CsvQuestionRepository implements QuestionRepository {
     }
 
     @Override
-    public List<Question> getAll() throws QuestionReadingException {
+    public List<Question> getAll() {
         try {
             return readLinesFromFile().stream()
                     .map(line -> line.split(delimiter))
                     .map(this::getQuestion)
                     .toList();
         } catch (Exception e) {
-            throw new QuestionReadingException(e.getMessage(), e.getCause());
+            throw new QuestionReadingException(e.getMessage(), e);
         }
     }
 
