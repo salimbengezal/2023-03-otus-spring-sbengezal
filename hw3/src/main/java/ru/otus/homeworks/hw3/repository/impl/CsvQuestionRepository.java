@@ -1,8 +1,8 @@
 package ru.otus.homeworks.hw3.repository.impl;
 
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.PropertySource;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
+import ru.otus.homeworks.hw3.config.AppProperties;
 import ru.otus.homeworks.hw3.domain.Question;
 import ru.otus.homeworks.hw3.domain.QuestionOption;
 import ru.otus.homeworks.hw3.exceptions.NotEnoughElementsException;
@@ -18,24 +18,19 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.IntStream;
 
-@PropertySource("classpath:application.properties")
 @Repository
+@RequiredArgsConstructor
 public class CsvQuestionRepository implements QuestionRepository {
 
-    private final String fileName;
-
-    private final String delimiter;
-
-    public CsvQuestionRepository(@Value("${questions.file.name}") String fileName,
-                                 @Value("${questions.file.delimiter}") String delimiter) {
-        this.fileName = fileName;
-        this.delimiter = delimiter;
-    }
+    private final AppProperties properties;
 
     @Override
     public List<Question> getAll() {
+        Map<String,String> fileProperties = properties.getQuestionsFile().get(properties.getLocale());
+        String delimiter = fileProperties.get("delimiter");
         try {
             return readLinesFromFile().stream()
                     .map(line -> line.split(delimiter))
@@ -59,6 +54,8 @@ public class CsvQuestionRepository implements QuestionRepository {
     }
 
     private List<String> readLinesFromFile() throws QuestionFileNotFoundException, QuestionReadingException {
+        Map<String,String> fileProperties = properties.getQuestionsFile().get(properties.getLocale());
+        String fileName = fileProperties.get("name");
         InputStream is = getClass().getClassLoader().getResourceAsStream(fileName);
         if (is == null) {
             throw new QuestionFileNotFoundException("File with questions not found");

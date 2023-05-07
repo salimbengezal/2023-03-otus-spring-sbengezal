@@ -1,0 +1,7 @@
+application:
+  passing-score: 0.6
+  locale: en
+  questions-file:
+    en:
+      name: wrong-questions.csv
+      delimiter: ;

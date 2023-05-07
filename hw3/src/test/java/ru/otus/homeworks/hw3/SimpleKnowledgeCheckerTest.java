@@ -7,7 +7,10 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import ru.otus.homeworks.hw3.repository.QuestionRepository;
-import ru.otus.homeworks.hw3.service.*;
+import ru.otus.homeworks.hw3.service.KnowledgeCheckerService;
+import ru.otus.homeworks.hw3.service.ProfileService;
+import ru.otus.homeworks.hw3.service.QuestionerService;
+import ru.otus.homeworks.hw3.service.ReporterService;
 import ru.otus.homeworks.hw3.service.impl.SimpleKnowledgeCheckerService;
 
 import static org.mockito.Mockito.*;
@@ -20,37 +23,30 @@ public class SimpleKnowledgeCheckerTest {
     private QuestionRepository repository;
 
     @Mock
-    private IOService ioService;
-
-    @Mock
     private QuestionerService questionerService;
 
     @Mock
-    private QAFormatter formatter;
+    private ReporterService reporterService;
 
     @Mock
-    private ReportFormatter reportFormatter;
+    private ProfileService profileService;
 
     private KnowledgeCheckerService checkerService;
 
     @BeforeEach
     public void setUp() {
-        double passingScore = 0.6;
         checkerService = new SimpleKnowledgeCheckerService(
-                passingScore,
                 repository,
-                ioService,
                 questionerService,
-                formatter,
-                reportFormatter
-        );
+                reporterService,
+                profileService);
     }
 
-    @DisplayName("вызывает хотя бы раз чтение строки")
+    @DisplayName("вызывает хотя бы раз получение информации о пользователе")
     @Test
-    void shouldCallIOServiceReadString() {
-       checkerService.run();
-        verify(ioService, times(2)).readString();
+    void shouldCallGetProfile() {
+        checkerService.run();
+        verify(profileService, times(1)).getProfile();
     }
 
     @DisplayName("вызывает хотя бы раз чтение репозитория")
@@ -64,7 +60,7 @@ public class SimpleKnowledgeCheckerTest {
     @Test
     void shouldCallFormatterReport() {
         checkerService.run();
-        verify(reportFormatter, times(1)).formatMessage(any(), any(), anyDouble());
+        verify(reporterService, times(1)).showReport(any(), any());
     }
 
 }
