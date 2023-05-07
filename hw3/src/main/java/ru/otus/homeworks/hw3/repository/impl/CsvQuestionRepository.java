@@ -2,7 +2,7 @@ package ru.otus.homeworks.hw3.repository.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
-import ru.otus.homeworks.hw3.config.AppProperties;
+import ru.otus.homeworks.hw3.repository.QuestionFileProperties;
 import ru.otus.homeworks.hw3.domain.Question;
 import ru.otus.homeworks.hw3.domain.QuestionOption;
 import ru.otus.homeworks.hw3.exceptions.NotEnoughElementsException;
@@ -18,19 +18,17 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.IntStream;
 
 @Repository
 @RequiredArgsConstructor
 public class CsvQuestionRepository implements QuestionRepository {
 
-    private final AppProperties properties;
+    private final QuestionFileProperties properties;
 
     @Override
     public List<Question> getAll() {
-        Map<String,String> fileProperties = properties.getQuestionsFile().get(properties.getLocale());
-        String delimiter = fileProperties.get("delimiter");
+        String delimiter = properties.getDelimiter();
         try {
             return readLinesFromFile().stream()
                     .map(line -> line.split(delimiter))
@@ -54,8 +52,7 @@ public class CsvQuestionRepository implements QuestionRepository {
     }
 
     private List<String> readLinesFromFile() throws QuestionFileNotFoundException, QuestionReadingException {
-        Map<String,String> fileProperties = properties.getQuestionsFile().get(properties.getLocale());
-        String fileName = fileProperties.get("name");
+        String fileName = properties.getFileName();
         InputStream is = getClass().getClassLoader().getResourceAsStream(fileName);
         if (is == null) {
             throw new QuestionFileNotFoundException("File with questions not found");
