@@ -9,10 +9,9 @@ import ru.otus.homeworks.hw3.service.KnowledgeCheckerService;
 @Component
 @RequiredArgsConstructor
 @ConditionalOnProperty(
-        prefix = "command.line.runner",
+        prefix = "application.console",
         value = "enabled",
-        havingValue = "true",
-        matchIfMissing = true
+        havingValue = "true"
 )
 public class QuizRunner implements CommandLineRunner {
 

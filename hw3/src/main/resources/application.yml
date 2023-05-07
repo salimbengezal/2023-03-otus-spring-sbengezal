@@ -4,6 +4,8 @@ spring:
     encoding: "UTF-8"
 
 application:
+  console:
+    enabled: true
   passing-score: 0.6
   locale: ru
   questions-file:
