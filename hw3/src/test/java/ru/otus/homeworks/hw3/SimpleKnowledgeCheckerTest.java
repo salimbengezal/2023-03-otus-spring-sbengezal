@@ -8,7 +8,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import ru.otus.homeworks.hw3.repository.QuestionRepository;
 import ru.otus.homeworks.hw3.service.KnowledgeCheckerService;
-import ru.otus.homeworks.hw3.service.ProfileService;
+import ru.otus.homeworks.hw3.service.UserProfileService;
 import ru.otus.homeworks.hw3.service.QuestionerService;
 import ru.otus.homeworks.hw3.service.ReporterService;
 import ru.otus.homeworks.hw3.service.impl.SimpleKnowledgeCheckerService;
@@ -29,7 +29,7 @@ public class SimpleKnowledgeCheckerTest {
     private ReporterService reporterService;
 
     @Mock
-    private ProfileService profileService;
+    private UserProfileService profileService;
 
     private KnowledgeCheckerService checkerService;
 

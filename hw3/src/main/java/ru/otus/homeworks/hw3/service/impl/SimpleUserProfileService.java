@@ -5,11 +5,11 @@ import org.springframework.stereotype.Service;
 import ru.otus.homeworks.hw3.config.Messages;
 import ru.otus.homeworks.hw3.domain.UserProfile;
 import ru.otus.homeworks.hw3.service.IOService;
-import ru.otus.homeworks.hw3.service.ProfileService;
+import ru.otus.homeworks.hw3.service.UserProfileService;
 
 @Service
 @RequiredArgsConstructor
-public class SimpleProfileService implements ProfileService {
+public class SimpleUserProfileService implements UserProfileService {
 
     private final Messages messages;
 

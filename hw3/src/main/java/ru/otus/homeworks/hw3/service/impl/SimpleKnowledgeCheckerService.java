@@ -7,7 +7,7 @@ import ru.otus.homeworks.hw3.domain.Question;
 import ru.otus.homeworks.hw3.domain.UserProfile;
 import ru.otus.homeworks.hw3.repository.QuestionRepository;
 import ru.otus.homeworks.hw3.service.KnowledgeCheckerService;
-import ru.otus.homeworks.hw3.service.ProfileService;
+import ru.otus.homeworks.hw3.service.UserProfileService;
 import ru.otus.homeworks.hw3.service.QuestionerService;
 import ru.otus.homeworks.hw3.service.ReporterService;
 
@@ -23,7 +23,7 @@ public class SimpleKnowledgeCheckerService implements KnowledgeCheckerService {
 
     private final ReporterService reporterService;
 
-    private final ProfileService profileService;
+    private final UserProfileService profileService;
 
 
     @Override
