@@ -15,7 +15,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class SimpleKnowledgeCheckerService implements KnowledgeCheckerService {
+public class KnowledgeCheckerServiceImpl implements KnowledgeCheckerService {
 
     private final QuestionRepository questionRepository;
 

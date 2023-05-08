@@ -11,7 +11,7 @@ import ru.otus.homeworks.hw3.service.KnowledgeCheckerService;
 import ru.otus.homeworks.hw3.service.UserProfileService;
 import ru.otus.homeworks.hw3.service.QuestionerService;
 import ru.otus.homeworks.hw3.service.ReporterService;
-import ru.otus.homeworks.hw3.service.impl.SimpleKnowledgeCheckerService;
+import ru.otus.homeworks.hw3.service.impl.KnowledgeCheckerServiceImpl;
 
 import static org.mockito.Mockito.*;
 
@@ -35,7 +35,7 @@ public class SimpleKnowledgeCheckerTest {
 
     @BeforeEach
     public void setUp() {
-        checkerService = new SimpleKnowledgeCheckerService(
+        checkerService = new KnowledgeCheckerServiceImpl(
                 repository,
                 questionerService,
                 reporterService,

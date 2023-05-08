@@ -1,4 +1,4 @@
-package ru.otus.homeworks.hw3.repository;
+package ru.otus.homeworks.hw3.config;
 
 public interface QuestionFileProperties {
 

@@ -18,13 +18,12 @@ public class IOServiceStreams implements IOService {
     }
 
     @Override
-    public void showMessage(String text) {
-        out.print(text);
-    }
-
-    @Override
-    public void showMessageInline(String text) {
-        out.println(text);
+    public void showMessage(boolean inline, String text) {
+        if (inline) {
+            out.println(text);
+        } else {
+            out.print(text);
+        }
     }
 
     @Override

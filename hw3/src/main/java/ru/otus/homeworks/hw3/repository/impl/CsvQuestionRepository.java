@@ -2,7 +2,7 @@ package ru.otus.homeworks.hw3.repository.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
-import ru.otus.homeworks.hw3.repository.QuestionFileProperties;
+import ru.otus.homeworks.hw3.config.QuestionFileProperties;
 import ru.otus.homeworks.hw3.domain.Question;
 import ru.otus.homeworks.hw3.domain.QuestionOption;
 import ru.otus.homeworks.hw3.exceptions.NotEnoughElementsException;
