@@ -5,8 +5,7 @@ import org.springframework.stereotype.Service;
 import ru.otus.homeworks.hw3.domain.Answer;
 import ru.otus.homeworks.hw3.domain.Question;
 import ru.otus.homeworks.hw3.domain.QuestionOption;
-import ru.otus.homeworks.hw3.service.IOService;
-import ru.otus.homeworks.hw3.service.LocalizationService;
+import ru.otus.homeworks.hw3.service.IOLocalizationService;
 import ru.otus.homeworks.hw3.service.QuestionerService;
 
 import java.util.List;
@@ -16,31 +15,26 @@ import java.util.stream.IntStream;
 @RequiredArgsConstructor
 public class SimpleQuestionerService implements QuestionerService {
 
-    private final IOService ioService;
-
-    private final LocalizationService localizationService;
-
     public static final String ASK_WRONG_REPEAT = "ask.wrong-repeat";
 
     public static final String ASK_NOT_PARSEABLE = "ask.not-parseable";
 
     public static final String QUESTION_MESSAGE = "questions.message";
 
+    private final IOLocalizationService ioLocalizationService;
 
     private Answer getAnswerByQuestion(Question question) {
         int answer = -1;
         boolean isValidAnswer;
         do {
             try {
-                answer = ioService.readInt();
+                answer = ioLocalizationService.readInt();
             } catch (NumberFormatException ignored) {
-                String localizedText = localizationService.getMessage(ASK_NOT_PARSEABLE);
-                ioService.showMessage(true, localizedText);
+                ioLocalizationService.showMessageByKey(true, ASK_NOT_PARSEABLE);
             }
             isValidAnswer = answer >= 1 && answer <= question.options().size();
             if (!isValidAnswer) {
-                String localizedText = localizationService.getMessage(ASK_WRONG_REPEAT);
-                ioService.showMessage(true, localizedText);
+                ioLocalizationService.showMessageByKey(true, ASK_WRONG_REPEAT);
             }
         } while (!isValidAnswer);
         QuestionOption answerOption = question.options().get(answer - 1);
@@ -48,12 +42,10 @@ public class SimpleQuestionerService implements QuestionerService {
     }
 
     public List<Answer> getAnswersByQuestions(List<Question> questions) {
-        String localizedText = localizationService.getMessage(QUESTION_MESSAGE);
-        String message = "%s:".formatted(localizedText);
-        ioService.showMessage(true, message);
+        ioLocalizationService.showMessageByKey(true, "%s:", QUESTION_MESSAGE);
         return questions.stream().map(question -> {
             String questionText = formatQuestion(question);
-            ioService.showMessage(true, questionText);
+            ioLocalizationService.showText(questionText);
             return getAnswerByQuestion(question);
         }).toList();
     }

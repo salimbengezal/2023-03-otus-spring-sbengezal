@@ -15,8 +15,6 @@ import java.util.stream.Stream;
 @RequiredArgsConstructor
 public class SimpleReportFormatter implements ReportFormatter {
 
-    private final LocalizationService localizationService;
-
     public static final String RESULT_USER = "result.user";
 
     public static final String RESULT_SCORE = "result.score";
@@ -31,6 +29,7 @@ public class SimpleReportFormatter implements ReportFormatter {
 
     public static final String QUESTIONS_INCORRECT = "questions.incorrect";
 
+    private final LocalizationService localizationService;
 
     @Override
     public String formatMessage(UserProfile profile, List<Answer> answers, double passingScore) {
