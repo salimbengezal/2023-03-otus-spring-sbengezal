@@ -35,7 +35,10 @@ public class SimpleReportFormatter implements ReportFormatter {
     @Override
     public String formatMessage(UserProfile profile, List<Answer> answers, double passingScore) {
         double score = (double) answers.stream().filter(e -> e.selectedOption().isCorrect()).count() / answers.size();
-
+        Stream<String> answerStream = answers.stream().map(answer -> {
+            String key = answer.selectedOption().isCorrect() ? QUESTION_CORRECT : QUESTIONS_INCORRECT;
+            return "%s - %s%n".formatted(answer.question().title(), localizationService.getMessage(key));
+        });
         String roundedScore = String.valueOf(Math.round(score * 100));
         String statusKey = score >= passingScore ? RESULT_PASSED : RESULT_NOT_PASSED;
         String userLabel = localizationService.getMessage(RESULT_USER);
@@ -46,15 +49,8 @@ public class SimpleReportFormatter implements ReportFormatter {
                         Stream.of("***********************", "\n",
                                 userLabel, ": ", profile.name(), " ", profile.surname(), "\n",
                                 scoreLabel, ": ", roundedScore, "%", " (", statusLabel, ")", "\n",
-                                answersLabel, ":", "\n"),
-                        answers.stream().map(this::formatAnswer)
-                )
+                                answersLabel, ":", "\n"), answerStream)
                 .collect(Collectors.joining());
-    }
-
-    private String formatAnswer(Answer answer) {
-        String key = answer.selectedOption().isCorrect() ? QUESTION_CORRECT : QUESTIONS_INCORRECT;
-        return "%s - %s%n".formatted(answer.question().title(), localizationService.getMessage(key));
     }
 
 }

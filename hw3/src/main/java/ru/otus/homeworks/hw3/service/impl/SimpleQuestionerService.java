@@ -35,14 +35,12 @@ public class SimpleQuestionerService implements QuestionerService {
                 answer = ioService.readInt();
             } catch (NumberFormatException ignored) {
                 String localizedText = localizationService.getMessage(ASK_NOT_PARSEABLE);
-                String message = "%s".formatted(localizedText);
-                ioService.showMessage(true, message);
+                ioService.showMessage(true, localizedText);
             }
             isValidAnswer = answer >= 1 && answer <= question.options().size();
             if (!isValidAnswer) {
                 String localizedText = localizationService.getMessage(ASK_WRONG_REPEAT);
-                String message = "%s".formatted(localizedText);
-                ioService.showMessage(true, message);
+                ioService.showMessage(true, localizedText);
             }
         } while (!isValidAnswer);
         QuestionOption answerOption = question.options().get(answer - 1);
