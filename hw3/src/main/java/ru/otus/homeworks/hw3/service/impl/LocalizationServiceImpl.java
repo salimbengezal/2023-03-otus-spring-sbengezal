@@ -1,24 +1,18 @@
 package ru.otus.homeworks.hw3.service.impl;
 
-import org.springframework.beans.factory.annotation.Value;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Component;
+import ru.otus.homeworks.hw3.config.LocaleProperties;
 import ru.otus.homeworks.hw3.service.LocalizationService;
 
-import java.util.Locale;
-
 @Component
+@RequiredArgsConstructor
 public class LocalizationServiceImpl implements LocalizationService {
 
     private final MessageSource messageSource;
 
-    private final Locale locale;
-
-    public LocalizationServiceImpl(MessageSource messageSource,
-                                   @Value("${application.locale}") Locale locale) {
-        this.messageSource = messageSource;
-        this.locale = locale;
-    }
+    private final LocaleProperties localeProperties;
 
     @Override
     public String getMessage(String key) {
@@ -27,6 +21,6 @@ public class LocalizationServiceImpl implements LocalizationService {
 
     @Override
     public String getMessage(String key, String... args) {
-        return messageSource.getMessage(key, args, locale);
+        return messageSource.getMessage(key, args, localeProperties.getLocale());
     }
 }

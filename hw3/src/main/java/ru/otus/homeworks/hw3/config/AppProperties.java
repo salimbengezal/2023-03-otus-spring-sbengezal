@@ -10,7 +10,7 @@ import java.util.Map;
 @ConfigurationProperties("application")
 @Getter
 @Setter
-public class AppProperties implements QuestionFileProperties, QuizProperties {
+public class AppProperties implements QuestionFileProperties, QuizProperties, LocaleProperties {
 
     private Locale locale;
 

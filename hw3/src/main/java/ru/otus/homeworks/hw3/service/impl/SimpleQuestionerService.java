@@ -20,6 +20,13 @@ public class SimpleQuestionerService implements QuestionerService {
 
     private final LocalizationService localizationService;
 
+    public static final String ASK_WRONG_REPEAT = "ask.wrong-repeat";
+
+    public static final String ASK_NOT_PARSEABLE = "ask.not-parseable";
+
+    public static final String QUESTION_MESSAGE = "questions.message";
+
+
     private Answer getAnswerByQuestion(Question question) {
         int answer = -1;
         boolean isValidAnswer;
@@ -27,13 +34,13 @@ public class SimpleQuestionerService implements QuestionerService {
             try {
                 answer = ioService.readInt();
             } catch (NumberFormatException ignored) {
-                String localizedText = localizationService.getMessage(Messages.ASK_NOT_PARSEABLE);
+                String localizedText = localizationService.getMessage(ASK_NOT_PARSEABLE);
                 String message = "%s".formatted(localizedText);
                 ioService.showMessage(true, message);
             }
             isValidAnswer = answer >= 1 && answer <= question.options().size();
             if (!isValidAnswer) {
-                String localizedText = localizationService.getMessage(Messages.ASK_WRONG_REPEAT);
+                String localizedText = localizationService.getMessage(ASK_WRONG_REPEAT);
                 String message = "%s".formatted(localizedText);
                 ioService.showMessage(true, message);
             }
@@ -43,7 +50,7 @@ public class SimpleQuestionerService implements QuestionerService {
     }
 
     public List<Answer> getAnswersByQuestions(List<Question> questions) {
-        String localizedText = localizationService.getMessage(Messages.QUESTION_MESSAGE);
+        String localizedText = localizationService.getMessage(QUESTION_MESSAGE);
         String message = "%s:".formatted(localizedText);
         ioService.showMessage(true, message);
         return questions.stream().map(question -> {
