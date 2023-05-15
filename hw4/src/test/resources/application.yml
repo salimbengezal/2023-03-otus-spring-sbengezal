@@ -4,3 +4,11 @@ spring:
       enabled: false
   main:
     allow-circular-references: true
+
+application:
+  passing-score: 0.6
+  locale: ru
+  localized-question-files:
+    ru:
+      name: wrong-questions.csv
+      delimiter: ;

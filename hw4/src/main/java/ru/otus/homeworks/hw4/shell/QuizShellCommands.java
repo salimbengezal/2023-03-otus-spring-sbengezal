@@ -15,7 +15,7 @@ import java.util.List;
 
 @ShellComponent
 @RequiredArgsConstructor
-public class QuizShellCommands implements QuizCommands {
+public class QuizShellCommands {
 
     private final UserProfileService profileService;
 
@@ -27,7 +27,6 @@ public class QuizShellCommands implements QuizCommands {
 
     private List<Answer> answers;
 
-    @Override
     @ShellMethod(value = "Start testing", key = {"start", "run"})
     @ShellMethodAvailability(value = "isLoggedIn")
     public void start() {
@@ -35,13 +34,11 @@ public class QuizShellCommands implements QuizCommands {
         showLastResults();
     }
 
-    @Override
     @ShellMethod(value = "Sign in or change User", key = {"login", "auth"})
     public void login() {
         profile = profileService.getProfile();
     }
 
-    @Override
     @ShellMethodAvailability(value = "isAlreadyTested")
     @ShellMethod(value = "Show last result", key = {"results", "show"})
     public void showLastResults() {

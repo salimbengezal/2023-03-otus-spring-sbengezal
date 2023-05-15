@@ -1,16 +1,11 @@
 package ru.otus.homeworks.hw4.service;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import ru.otus.homeworks.hw4.repository.QuestionRepository;
-import ru.otus.homeworks.hw4.service.KnowledgeCheckerService;
-import ru.otus.homeworks.hw4.service.QuestionerService;
-import ru.otus.homeworks.hw4.service.ReporterService;
-import ru.otus.homeworks.hw4.service.UserProfileService;
-import ru.otus.homeworks.hw4.service.impl.KnowledgeCheckerServiceImpl;
 
 import static org.mockito.Mockito.*;
 
@@ -18,24 +13,20 @@ import static org.mockito.Mockito.*;
 @SpringBootTest
 public class KnowledgeCheckerTest {
 
-    @Mock
+    @MockBean
+    private IOLocalizationService ioLocalizationService;
+
+    @MockBean
     private QuestionRepository repository;
 
-    @Mock
-    private QuestionerService questionerService;
-
-    @Mock
+    @MockBean
     private ReporterService reporterService;
 
-    @Mock
+    @MockBean
     private UserProfileService profileService;
 
+    @Autowired
     private KnowledgeCheckerService checkerService;
-
-    @BeforeEach
-    public void setUp() {
-        checkerService = new KnowledgeCheckerServiceImpl(repository, questionerService);
-    }
 
     @DisplayName("вызывать только метод тестирования")
     @Test
