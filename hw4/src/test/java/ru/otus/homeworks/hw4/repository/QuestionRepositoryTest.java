@@ -1,4 +1,4 @@
-package ru.otus.homeworks.hw4;
+package ru.otus.homeworks.hw4.repository;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;

@@ -1,4 +1,4 @@
-package ru.otus.homeworks.hw4;
+package ru.otus.homeworks.hw4.service;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -16,7 +16,7 @@ import static org.mockito.Mockito.*;
 
 @DisplayName("Сервис тестирования должен ")
 @SpringBootTest
-public class SimpleKnowledgeCheckerTest {
+public class KnowledgeCheckerTest {
 
     @Mock
     private QuestionRepository repository;
