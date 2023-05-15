@@ -1,4 +1,4 @@
-package ru.otus.homeworks.hw3;
+package ru.otus.homeworks.hw3.repository;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -9,7 +9,6 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import ru.otus.homeworks.hw3.config.QuestionFileProperties;
 import ru.otus.homeworks.hw3.exceptions.QuestionReadingException;
-import ru.otus.homeworks.hw3.repository.QuestionRepository;
 import ru.otus.homeworks.hw3.repository.impl.CsvQuestionRepository;
 
 import static org.mockito.Mockito.when;

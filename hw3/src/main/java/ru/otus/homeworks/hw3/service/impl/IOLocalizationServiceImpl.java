@@ -15,15 +15,8 @@ public class IOLocalizationServiceImpl implements IOLocalizationService {
     private final LocalizationService localizationService;
 
     @Override
-    public void showMessageByKey(boolean inline, String pattern, String key) {
-        String value = localizationService.getMessage(key);
-        String formatted = pattern != null ? pattern.formatted(value) : value;
-        showText(inline, formatted);
-    }
-
-    @Override
     public void showMessageByKey(boolean inline, String key) {
-        showMessageByKey(inline, null, key);
+        showText(inline, localizationService.getMessage(key));
     }
 
     @Override

@@ -18,9 +18,9 @@ public class SimpleUserProfileService implements UserProfileService {
 
     @Override
     public UserProfile getProfile() {
-        ioLocalizationService.showMessageByKey(false, "%s:", ASK_NAME);
+        ioLocalizationService.showMessageByKey(false, ASK_NAME);
         String name = ioLocalizationService.readString();
-        ioLocalizationService.showMessageByKey(false, "%s:", ASK_SURNAME);
+        ioLocalizationService.showMessageByKey(false, ASK_SURNAME);
         String surname = ioLocalizationService.readString();
         return new UserProfile(name, surname);
     }

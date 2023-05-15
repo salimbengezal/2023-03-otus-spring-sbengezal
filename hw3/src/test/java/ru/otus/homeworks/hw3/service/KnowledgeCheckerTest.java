@@ -1,4 +1,4 @@
-package ru.otus.homeworks.hw3;
+package ru.otus.homeworks.hw3.service;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -7,17 +7,13 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import ru.otus.homeworks.hw3.repository.QuestionRepository;
-import ru.otus.homeworks.hw3.service.KnowledgeCheckerService;
-import ru.otus.homeworks.hw3.service.UserProfileService;
-import ru.otus.homeworks.hw3.service.QuestionerService;
-import ru.otus.homeworks.hw3.service.ReporterService;
 import ru.otus.homeworks.hw3.service.impl.KnowledgeCheckerServiceImpl;
 
 import static org.mockito.Mockito.*;
 
 @DisplayName("Сервис тестирования должен ")
 @ExtendWith(MockitoExtension.class)
-public class SimpleKnowledgeCheckerTest {
+public class KnowledgeCheckerTest {
 
     @Mock
     private QuestionRepository repository;

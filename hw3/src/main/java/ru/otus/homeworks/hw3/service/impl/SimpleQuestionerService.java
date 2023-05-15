@@ -42,7 +42,7 @@ public class SimpleQuestionerService implements QuestionerService {
     }
 
     public List<Answer> getAnswersByQuestions(List<Question> questions) {
-        ioLocalizationService.showMessageByKey(true, "%s:", QUESTION_MESSAGE);
+        ioLocalizationService.showMessageByKey(true, QUESTION_MESSAGE);
         return questions.stream().map(question -> {
             String questionText = formatQuestion(question);
             ioLocalizationService.showText(questionText);
