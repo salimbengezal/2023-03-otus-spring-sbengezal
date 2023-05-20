@@ -1,0 +1,15 @@
+spring:
+  messages:
+    basename: "i18n/appmessages"
+    encoding: "UTF-8"
+
+application:
+  passing-score: 0.6
+  locale: ru
+  localized-question-files:
+    ru:
+      name: questions-ru.csv
+      delimiter: ;
+    en:
+      name: questions.csv
+      delimiter: ;
