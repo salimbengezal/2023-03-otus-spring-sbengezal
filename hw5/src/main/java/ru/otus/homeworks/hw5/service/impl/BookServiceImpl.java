@@ -18,7 +18,9 @@ import java.util.List;
 public class BookServiceImpl implements BookService {
 
     private final BookDao bookDao;
+
     private final AuthorService authorService;
+
     private final GenreService genreService;
 
     @Override
@@ -54,8 +56,11 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public Book add(String name, Short year, Long authorId, Long genreId) throws EntityNotFoundException, AtLeastOneParameterIsNullException {
-        if (authorId == null || genreId == null || year == null) throw new AtLeastOneParameterIsNullException();
+    public Book add(String name, Short year, Long authorId, Long genreId)
+            throws EntityNotFoundException, AtLeastOneParameterIsNullException {
+        if (authorId == null || genreId == null || year == null) {
+            throw new AtLeastOneParameterIsNullException();
+        }
         val author = authorService.getById(authorId);
         val genre = genreService.getById(genreId);
         val book = Book.builder()

@@ -16,6 +16,7 @@ public interface BookService {
 
     Book update(long id, String name, Short releaseYear, Long authorId, Long genreId) throws EntityNotFoundException;
 
-    Book add(String name, Short releaseYear, Long authorId, Long genreId) throws EntityNotFoundException, AtLeastOneParameterIsNullException;
+    Book add(String name, Short releaseYear, Long authorId, Long genreId)
+            throws EntityNotFoundException, AtLeastOneParameterIsNullException;
 
 }

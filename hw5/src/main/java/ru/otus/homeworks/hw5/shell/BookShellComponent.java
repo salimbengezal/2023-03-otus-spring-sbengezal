@@ -7,8 +7,8 @@ import org.springframework.shell.standard.ShellMethod;
 import org.springframework.shell.standard.ShellOption;
 import ru.otus.homeworks.hw5.component.impl.BookFormatter;
 import ru.otus.homeworks.hw5.entity.Book;
-import ru.otus.homeworks.hw5.exceptions.EntityNotFoundException;
 import ru.otus.homeworks.hw5.exceptions.AtLeastOneParameterIsNullException;
+import ru.otus.homeworks.hw5.exceptions.EntityNotFoundException;
 import ru.otus.homeworks.hw5.service.BookService;
 
 import static org.springframework.shell.standard.ShellOption.NULL;
@@ -18,6 +18,7 @@ import static org.springframework.shell.standard.ShellOption.NULL;
 public class BookShellComponent {
 
     private final BookService bookService;
+
     private final BookFormatter formatter;
 
     @ShellMethod(key = {"b", "books"}, value = "Show all books or book by ID", group = "Actions with BOOKS")
@@ -63,10 +64,14 @@ public class BookShellComponent {
 
     @ShellMethod(key = {"ub", "update-book"}, value = "Update book by ID", group = "Actions with BOOKS")
     public String updateBookById(@ShellOption(help = "Book ID") long id,
-                                 @ShellOption(value = {"n", "name"}, help = "Book name", defaultValue = NULL) String name,
-                                 @ShellOption(value = {"y", "year"}, help = "Year of publication of the book", defaultValue = NULL) Short year,
-                                 @ShellOption(value = {"aid", "author-id"}, help = "Author ID", defaultValue = NULL) Long authorId,
-                                 @ShellOption(value = {"gid", "genre-id"}, help = "Genre ID", defaultValue = NULL) Long genreId) {
+                                 @ShellOption(value = {"n", "name"}, help = "Book name", defaultValue = NULL)
+                                 String name,
+                                 @ShellOption(value = {"y", "year"}, help = "Year of publication", defaultValue = NULL)
+                                 Short year,
+                                 @ShellOption(value = {"aid", "author-id"}, help = "Author ID", defaultValue = NULL)
+                                 Long authorId,
+                                 @ShellOption(value = {"gid", "genre-id"}, help = "Genre ID", defaultValue = NULL)
+                                 Long genreId) {
         if (name == null && year == null && authorId == null && genreId == null) {
             return "Ошибка: Не указан хотя бы 1 поле для изменения [id=%s]".formatted(id);
         }

@@ -12,6 +12,7 @@ import ru.otus.homeworks.hw5.service.AuthorService;
 public class AuthorShellCommands {
 
     private final AuthorService authorService;
+
     private final AuthorFormatter formatter;
 
     @ShellMethod(key = {"a", "authors"}, value = "Show all authors", group = "Actions with AUTHORS")

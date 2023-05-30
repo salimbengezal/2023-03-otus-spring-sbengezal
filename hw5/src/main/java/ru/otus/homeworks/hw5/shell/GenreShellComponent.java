@@ -12,6 +12,7 @@ import ru.otus.homeworks.hw5.service.GenreService;
 public class GenreShellComponent {
 
     private final GenreService genreService;
+
     private final GenreFormatter formatter;
 
     @ShellMethod(key = {"g", "genres"}, value = "Show all genres", group = "Actions with GENRES")
