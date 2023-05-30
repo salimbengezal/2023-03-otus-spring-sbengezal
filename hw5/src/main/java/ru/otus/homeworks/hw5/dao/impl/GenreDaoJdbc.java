@@ -11,6 +11,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @Repository
 @RequiredArgsConstructor
@@ -34,9 +35,9 @@ public class GenreDaoJdbc implements GenreDao {
     }
 
     @Override
-    public Genre getById(long id) {
-        return jdbc.queryForObject("SELECT id, name FROM genre WHERE id = :id",
+    public Optional<Genre> getById(long id) {
+        return jdbc.query("SELECT id, name FROM genre WHERE id = :id",
                 Map.of("id", id),
-                new GenreMapper());
+                new GenreMapper()).stream().findFirst();
     }
 }

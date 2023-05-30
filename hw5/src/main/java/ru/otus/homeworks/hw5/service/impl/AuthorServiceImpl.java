@@ -1,7 +1,6 @@
 package ru.otus.homeworks.hw5.service.impl;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 import ru.otus.homeworks.hw5.dao.AuthorDao;
 import ru.otus.homeworks.hw5.entity.Author;
@@ -23,10 +22,7 @@ public class AuthorServiceImpl implements AuthorService {
 
     @Override
     public Author getById(long id) throws EntityNotFoundException {
-        try {
-            return authorDao.getById(id);
-        } catch (EmptyResultDataAccessException e) {
-            throw new EntityNotFoundException("Автор c [id=%d] не найден".formatted(id), e);
-        }
+        return authorDao.getById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Автор c [id=%d] не найден".formatted(id)));
     }
 }

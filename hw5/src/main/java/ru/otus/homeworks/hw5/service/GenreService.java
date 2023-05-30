@@ -10,4 +10,5 @@ public interface GenreService {
     List<Genre> getAll();
 
     Genre getById(long id) throws EntityNotFoundException;
+
 }

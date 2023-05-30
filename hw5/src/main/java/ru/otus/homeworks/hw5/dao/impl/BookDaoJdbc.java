@@ -36,8 +36,8 @@ public class BookDaoJdbc implements BookDao {
     }
 
     @Override
-    public Book getById(long id) {
-        return jdbc.queryForObject(
+    public Optional<Book> getById(long id) {
+        return jdbc.query(
                 "SELECT b.id, b.name as name, release_year, g.id as genre_id, g.name as genre_name, a.id as author_id, a.name as author_name " +
                         "FROM book b " +
                         "JOIN author a ON b.author_id = a.id " +
@@ -45,7 +45,7 @@ public class BookDaoJdbc implements BookDao {
                         "WHERE b.id  =:id",
                 Map.of("id", id),
                 new BookMapper()
-        );
+        ).stream().findFirst();
     }
 
     @Override

@@ -10,4 +10,5 @@ public interface AuthorService {
     List<Author> getAll();
 
     Author getById(long id) throws EntityNotFoundException;
+
 }

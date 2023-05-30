@@ -11,6 +11,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @Repository
 @RequiredArgsConstructor
@@ -34,9 +35,9 @@ public class AuthorDaoJdbc implements AuthorDao {
     }
 
     @Override
-    public Author getById(long id) {
-        return jdbc.queryForObject("SELECT id, name FROM author WHERE id = :id",
+    public Optional<Author> getById(long id) {
+        return jdbc.query("SELECT id, name FROM author WHERE id = :id",
                 Map.of("id", id),
-                new AuthorMapper());
+                new AuthorMapper()).stream().findFirst();
     }
 }

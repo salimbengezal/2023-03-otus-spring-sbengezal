@@ -2,12 +2,11 @@ package ru.otus.homeworks.hw5.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import lombok.val;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 import ru.otus.homeworks.hw5.dao.BookDao;
 import ru.otus.homeworks.hw5.entity.Book;
-import ru.otus.homeworks.hw5.exceptions.EntityNotFoundException;
 import ru.otus.homeworks.hw5.exceptions.AtLeastOneParameterIsNullException;
+import ru.otus.homeworks.hw5.exceptions.EntityNotFoundException;
 import ru.otus.homeworks.hw5.service.AuthorService;
 import ru.otus.homeworks.hw5.service.BookService;
 import ru.otus.homeworks.hw5.service.GenreService;
@@ -34,11 +33,8 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public Book getById(long id) throws EntityNotFoundException {
-        try {
-            return bookDao.getById(id);
-        } catch (EmptyResultDataAccessException e) {
-            throw new EntityNotFoundException("Книга c [id=%d] не найдена".formatted(id), e);
-        }
+        return bookDao.getById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Книга c [id=%d] не найдена".formatted(id)));
     }
 
     @Override
