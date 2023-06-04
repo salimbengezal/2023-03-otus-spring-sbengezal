@@ -23,17 +23,16 @@ public class BookShellComponent {
 
     @ShellMethod(key = {"b", "books"}, value = "Show all books or book by ID", group = "Actions with BOOKS")
     public String getBooks(@ShellOption(value = "id", help = "Book ID", defaultValue = NULL) Long id) {
-        if (id != null) {
-            Book book;
-            try {
-                book = bookService.getById(id);
-            } catch (EntityNotFoundException e) {
-                return "Ошибка: %s".formatted(e.getMessage());
-            }
-            return formatter.formatAsRow(book);
+        if (id == null) {
+            val books = bookService.getAll();
+            return formatter.formatAsBlock(books, "Книги");
         }
-        val books = bookService.getAll();
-        return formatter.formatAsBlock(books, "Книги");
+        try {
+            val book = bookService.getById(id);
+            return formatter.formatAsRow(book);
+        } catch (EntityNotFoundException e) {
+            return "Ошибка: %s".formatted(e.getMessage());
+        }
     }
 
     @ShellMethod(key = {"ab", "add-book"}, value = "Add new book", group = "Actions with BOOKS")

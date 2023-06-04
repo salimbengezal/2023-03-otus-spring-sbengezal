@@ -1,24 +1,25 @@
-package ru.otus.homeworks.hw6.dao.impl;
+package ru.otus.homeworks.hw6.repository.impl;
 
 import lombok.val;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
 import ru.otus.homeworks.hw6.entity.Author;
 import ru.otus.homeworks.hw6.entity.Book;
 import ru.otus.homeworks.hw6.entity.Genre;
+import ru.otus.homeworks.hw6.repositories.impl.BookJpaRepository;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-@JdbcTest
-@Import(value = {BookDaoJdbc.class})
+@DataJpaTest
+@Import(value = {BookJpaRepository.class})
 @DisplayName("Репозиторий с книгами должен ")
-public class BookDaoJdbcTest {
+public class BookJpaRepositoryTest {
 
     @Autowired
-    private BookDaoJdbc bookDaoJdbc;
+    private BookJpaRepository repository;
 
     @Test
     @DisplayName("вернуть объект")
@@ -32,24 +33,24 @@ public class BookDaoJdbcTest {
                 .author(expectedAuthor)
                 .genre(expectedGenre)
                 .build();
-        val book = bookDaoJdbc.getById(1).orElseThrow();
+        val book = repository.getById(1).orElseThrow();
         assertEquals(expectedBook, book);
     }
 
     @Test
     @DisplayName("вернуть верное количество")
     void shouldReturnExpectedCount() {
-        assertEquals(1, bookDaoJdbc.getAll().size());
+        assertEquals(1, repository.getAll().size());
     }
 
     @Test
     @DisplayName("вернуть пустой результат")
     void shouldReturnEmptyEntity() {
-        assert (bookDaoJdbc.getById(-1).isEmpty());
+        assert (repository.getById(-1).isEmpty());
     }
 
     @Test
-    @DisplayName("добавляет новую сущность")
+    @DisplayName("добавлять новую сущность")
     void shouldAddNewBook() {
         val author = new Author(1, "автор1");
         val genre = new Genre(1, "жанр1");
@@ -60,34 +61,34 @@ public class BookDaoJdbcTest {
                 .author(author)
                 .genre(genre)
                 .build();
-        val count = bookDaoJdbc.getAll().size();
-        bookDaoJdbc.add(newBook);
-        assertEquals(count + 1, bookDaoJdbc.getAll().size());
-        val addedBook = bookDaoJdbc.getById(2).orElseThrow();
+        val count = repository.getAll().size();
+        repository.save(newBook);
+        assertEquals(count + 1, repository.getAll().size());
+        val addedBook = repository.getById(2).orElseThrow();
         assertEquals(newBook, addedBook);
     }
 
     @Test
-    @DisplayName("обновляет сущность")
+    @DisplayName("обновлять сущность")
     void shouldUpdateBook() {
-        val count = bookDaoJdbc.getAll().size();
-        val book = bookDaoJdbc.getById(1).orElseThrow();
+        val count = repository.getAll().size();
+        val book = repository.getById(1).orElseThrow();
         val updatedBook = book.toBuilder()
                 .name("обновленное навание")
                 .releaseYear((short) 2009)
                 .build();
-        bookDaoJdbc.update(updatedBook);
-        assertEquals(count, bookDaoJdbc.getAll().size());
-        val savedBook = bookDaoJdbc.getById(1).orElseThrow();
+        repository.save(updatedBook);
+        assertEquals(count, repository.getAll().size());
+        val savedBook = repository.getById(1).orElseThrow();
         assertEquals(updatedBook, savedBook);
     }
 
     @Test
-    @DisplayName("удаляет сущность")
+    @DisplayName("удалять сущность")
     void shouldDeleteBook() {
-        val count = bookDaoJdbc.getAll().size();
-        bookDaoJdbc.deleteById(1);
-        assertEquals(count - 1, bookDaoJdbc.getAll().size());
+        val count = repository.getAll().size();
+        repository.deleteById(1);
+        assertEquals(count - 1, repository.getAll().size());
     }
 
 }

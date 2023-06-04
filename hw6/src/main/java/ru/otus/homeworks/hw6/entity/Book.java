@@ -1,20 +1,34 @@
 package ru.otus.homeworks.hw6.entity;
 
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
+@Entity(name = "book")
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 @Builder(toBuilder = true)
+@NamedEntityGraph(name = "book-author-genre-entity-graph",
+        attributeNodes = {@NamedAttributeNode("author"), @NamedAttributeNode("genre") })
 public class Book {
 
-    private final long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long id;
 
-    private final String name;
+    @Column(nullable = false)
+    private String name;
 
-    private final short releaseYear;
+    @Column(nullable = false)
+    private short releaseYear;
 
-    private final Author author;
+    @ManyToOne
+    private Author author;
 
-    private final Genre genre;
+    @ManyToOne
+    private Genre genre;
 
 }

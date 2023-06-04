@@ -6,7 +6,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
 @DisplayName("Приложение должно ")
-public class Hw5ApplicationTest {
+public class Hw6ApplicationTest {
 
     @Test
     @DisplayName("загружать контекст")

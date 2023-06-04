@@ -1,11 +1,11 @@
-package ru.otus.homeworks.hw6.dao;
+package ru.otus.homeworks.hw6.repositories;
 
 import ru.otus.homeworks.hw6.entity.Book;
 
 import java.util.List;
 import java.util.Optional;
 
-public interface BookDao {
+public interface BookRepository {
 
     List<Book> getAll();
 
@@ -13,8 +13,6 @@ public interface BookDao {
 
     void deleteById(long id);
 
-    Book add(Book book);
-
-    void update(Book newBook);
+    Book save(Book newBook);
 
 }

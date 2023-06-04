@@ -7,9 +7,9 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import ru.otus.homeworks.hw6.dao.impl.AuthorDaoJdbc;
-import ru.otus.homeworks.hw6.dao.impl.BookDaoJdbc;
-import ru.otus.homeworks.hw6.dao.impl.GenreDaoJdbc;
+import ru.otus.homeworks.hw6.repositories.impl.AuthorJpaRepository;
+import ru.otus.homeworks.hw6.repositories.impl.BookJpaRepository;
+import ru.otus.homeworks.hw6.repositories.impl.GenreJpaRepository;
 import ru.otus.homeworks.hw6.entity.Author;
 import ru.otus.homeworks.hw6.entity.Book;
 import ru.otus.homeworks.hw6.entity.Genre;
@@ -29,13 +29,13 @@ import static org.mockito.Mockito.*;
 public class BookServiceImplTest {
 
     @MockBean
-    private BookDaoJdbc bookDaoJdbc;
+    private BookJpaRepository bookDaoJdbc;
 
     @MockBean
-    private GenreDaoJdbc genreDaoJdbc;
+    private GenreJpaRepository genreDaoJdbc;
 
     @MockBean
-    private AuthorDaoJdbc authorDaoJdbc;
+    private AuthorJpaRepository authorDaoJdbc;
 
     @Autowired
     private BookService bookService;
@@ -87,7 +87,7 @@ public class BookServiceImplTest {
         val newBook = Book.builder().genre(genre).author(author).releaseYear((short) 2020).name("name").build();
         when(authorDaoJdbc.getById(1)).thenReturn(Optional.of(author));
         when(genreDaoJdbc.getById(1)).thenReturn(Optional.of(genre));
-        when(bookDaoJdbc.add(newBook)).thenReturn(newBook);
+        when(bookDaoJdbc.save(newBook)).thenReturn(newBook);
         val book = bookService.add(
                 newBook.getName(),
                 newBook.getReleaseYear(),
@@ -111,7 +111,7 @@ public class BookServiceImplTest {
                 book.getReleaseYear(),
                 null,
                 null);
-        verify(bookDaoJdbc).update(book);
+        verify(bookDaoJdbc).save(book);
     }
 
     @Test

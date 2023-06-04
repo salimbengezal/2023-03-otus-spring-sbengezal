@@ -3,10 +3,10 @@ package ru.otus.homeworks.hw6.service.impl;
 import lombok.RequiredArgsConstructor;
 import lombok.val;
 import org.springframework.stereotype.Service;
-import ru.otus.homeworks.hw6.dao.BookDao;
 import ru.otus.homeworks.hw6.entity.Book;
 import ru.otus.homeworks.hw6.exceptions.AtLeastOneParameterIsNullException;
 import ru.otus.homeworks.hw6.exceptions.EntityNotFoundException;
+import ru.otus.homeworks.hw6.repositories.BookRepository;
 import ru.otus.homeworks.hw6.service.AuthorService;
 import ru.otus.homeworks.hw6.service.BookService;
 import ru.otus.homeworks.hw6.service.GenreService;
@@ -17,7 +17,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class BookServiceImpl implements BookService {
 
-    private final BookDao bookDao;
+    private final BookRepository bookRepository;
 
     private final AuthorService authorService;
 
@@ -25,34 +25,38 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public List<Book> getAll() {
-        return bookDao.getAll();
+        return bookRepository.getAll();
     }
 
     @Override
     public void deleteById(long id) {
-        bookDao.deleteById(id);
+        bookRepository.deleteById(id);
     }
 
     @Override
     public Book getById(long id) throws EntityNotFoundException {
-        return bookDao.getById(id)
+        return bookRepository.getById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Книга c [id=%d] не найдена".formatted(id)));
     }
 
     @Override
     public Book update(long id, String name, Short year, Long authorId, Long genreId) throws EntityNotFoundException {
         Book book = getById(id);
-        val author = authorId == null ? book.getAuthor() : authorService.getById(authorId);
-        val genre = genreId == null ? book.getGenre() : genreService.getById(genreId);
-        val newBook = Book.builder()
-                .id(book.getId())
-                .name(name == null ? book.getName() : name)
-                .releaseYear(year == null ? book.getReleaseYear() : year)
-                .author(author)
-                .genre(genre)
-                .build();
-        bookDao.update(newBook);
-        return newBook;
+        if (authorId != null) {
+            val newAuthor = authorService.getById(authorId);
+            book.setAuthor(newAuthor);
+        }
+        if (genreId != null) {
+            val newGenre = genreService.getById(genreId);
+            book.setGenre(newGenre);
+        }
+        if (name != null) {
+            book.setName(name);
+        }
+        if (year != null) {
+            book.setReleaseYear(year);
+        }
+        return bookRepository.save(book);
     }
 
     @Override
@@ -69,7 +73,7 @@ public class BookServiceImpl implements BookService {
                 .author(author)
                 .genre(genre)
                 .build();
-        return bookDao.add(book);
+        return bookRepository.save(book);
     }
 
 }

@@ -1,12 +1,20 @@
 package ru.otus.homeworks.hw6.entity;
 
-import lombok.Data;
+import jakarta.persistence.*;
+import lombok.*;
 
+@Entity(name = "author")
 @Data
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class Author {
 
-    private final long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long id;
 
-    private final String name;
+    @Column(nullable = false, unique = true)
+    private String name;
 
 }

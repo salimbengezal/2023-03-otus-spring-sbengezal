@@ -1,11 +1,11 @@
-package ru.otus.homeworks.hw6.dao;
+package ru.otus.homeworks.hw6.repositories;
 
 import ru.otus.homeworks.hw6.entity.Author;
 
 import java.util.List;
 import java.util.Optional;
 
-public interface AuthorDao {
+public interface AuthorRepository {
 
     List<Author> getAll();
 
