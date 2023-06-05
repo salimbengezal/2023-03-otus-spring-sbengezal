@@ -13,7 +13,7 @@ import static org.springframework.shell.standard.ShellOption.NULL;
 
 @ShellComponent
 @RequiredArgsConstructor
-public class AuthorShellCommands {
+public class AuthorShellComponent {
 
     private final AuthorService authorService;
 

@@ -116,9 +116,10 @@ public class BookServiceImplTest {
 
     @Test
     @DisplayName("удалять книгу")
-    void shouldDeleteBook() {
-        bookService.deleteById(0);
-        verify(bookDaoJdbc).deleteById(0);
+    void shouldDeleteBook() throws EntityNotFoundException {
+        val book =bookService.getById(1);
+        bookService.deleteById(1);
+        verify(bookDaoJdbc).delete(book);
     }
 
 }

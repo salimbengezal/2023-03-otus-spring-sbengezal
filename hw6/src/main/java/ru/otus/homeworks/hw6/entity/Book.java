@@ -1,10 +1,9 @@
 package ru.otus.homeworks.hw6.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+
+import java.util.List;
 
 @Entity(name = "book")
 @Data
@@ -12,7 +11,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder(toBuilder = true)
 @NamedEntityGraph(name = "book-author-genre-entity-graph",
-        attributeNodes = {@NamedAttributeNode("author"), @NamedAttributeNode("genre") })
+        attributeNodes = {@NamedAttributeNode("author"), @NamedAttributeNode("genre")})
 public class Book {
 
     @Id
@@ -30,5 +29,11 @@ public class Book {
 
     @ManyToOne
     private Genre genre;
+
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "book_id")
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
+    private List<Comment> comments;
 
 }

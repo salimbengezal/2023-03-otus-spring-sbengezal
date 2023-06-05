@@ -11,7 +11,7 @@ public interface BookRepository {
 
     Optional<Book> getById(long id);
 
-    void deleteById(long id);
+    void delete(Book book);
 
     Book save(Book newBook);
 

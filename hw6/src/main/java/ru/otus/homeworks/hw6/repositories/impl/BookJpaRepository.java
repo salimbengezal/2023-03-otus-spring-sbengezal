@@ -5,7 +5,6 @@ import jakarta.persistence.PersistenceContext;
 import lombok.RequiredArgsConstructor;
 import lombok.val;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 import ru.otus.homeworks.hw6.entity.Book;
 import ru.otus.homeworks.hw6.repositories.BookRepository;
 
@@ -33,15 +32,11 @@ public class BookJpaRepository implements BookRepository {
     }
 
     @Override
-    @Transactional
-    public void deleteById(long id) {
-        val query = em.createQuery("delete from book b where b.id=:id");
-        query.setParameter("id", id);
-        query.executeUpdate();
+    public void delete(Book book) {
+        em.remove(book);
     }
 
     @Override
-    @Transactional
     public Book save(Book book) {
         if (book.getId() == 0) {
             em.persist(book);

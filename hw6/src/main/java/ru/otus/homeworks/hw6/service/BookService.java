@@ -10,7 +10,7 @@ public interface BookService {
 
     List<Book> getAll();
 
-    void deleteById(long id);
+    void deleteById(long id) throws EntityNotFoundException;
 
     Book getById(long id) throws EntityNotFoundException;
 

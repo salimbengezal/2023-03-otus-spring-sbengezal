@@ -3,6 +3,7 @@ package ru.otus.homeworks.hw6.service.impl;
 import lombok.RequiredArgsConstructor;
 import lombok.val;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.otus.homeworks.hw6.entity.Book;
 import ru.otus.homeworks.hw6.exceptions.AtLeastOneParameterIsNullException;
 import ru.otus.homeworks.hw6.exceptions.EntityNotFoundException;
@@ -29,8 +30,11 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public void deleteById(long id) {
-        bookRepository.deleteById(id);
+    @Transactional
+    public void deleteById(long id) throws EntityNotFoundException {
+        val book = bookRepository.getById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Книга c [id=%d] не найдена".formatted(id)));
+        bookRepository.delete(book);
     }
 
     @Override
@@ -40,6 +44,7 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
+    @Transactional
     public Book update(long id, String name, Short year, Long authorId, Long genreId) throws EntityNotFoundException {
         Book book = getById(id);
         if (authorId != null) {
@@ -60,6 +65,7 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
+    @Transactional
     public Book add(String name, Short year, Long authorId, Long genreId)
             throws EntityNotFoundException, AtLeastOneParameterIsNullException {
         if (authorId == null || genreId == null || year == null) {

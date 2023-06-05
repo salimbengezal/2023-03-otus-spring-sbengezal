@@ -55,16 +55,14 @@ public class BookJpaRepositoryTest {
         val author = new Author(1, "автор1");
         val genre = new Genre(1, "жанр1");
         val newBook = Book.builder()
-                .id(2)
                 .name("новая книга")
                 .releaseYear((short) 2020)
                 .author(author)
                 .genre(genre)
                 .build();
         val count = repository.getAll().size();
-        repository.save(newBook);
+        val addedBook = repository.save(newBook);
         assertEquals(count + 1, repository.getAll().size());
-        val addedBook = repository.getById(2).orElseThrow();
         assertEquals(newBook, addedBook);
     }
 
@@ -87,7 +85,8 @@ public class BookJpaRepositoryTest {
     @DisplayName("удалять сущность")
     void shouldDeleteBook() {
         val count = repository.getAll().size();
-        repository.deleteById(1);
+        val book = repository.getById(1).orElseThrow();
+        repository.delete(book);
         assertEquals(count - 1, repository.getAll().size());
     }
 
