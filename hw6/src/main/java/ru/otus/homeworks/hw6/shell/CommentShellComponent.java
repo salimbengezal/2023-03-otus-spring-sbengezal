@@ -6,6 +6,7 @@ import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
 import org.springframework.shell.standard.ShellOption;
 import ru.otus.homeworks.hw6.component.impl.CommentFormatter;
+import ru.otus.homeworks.hw6.entity.Book;
 import ru.otus.homeworks.hw6.entity.Comment;
 import ru.otus.homeworks.hw6.exceptions.EntityNotFoundException;
 import ru.otus.homeworks.hw6.service.BookService;
@@ -23,13 +24,14 @@ public class CommentShellComponent {
 
     @ShellMethod(key = {"c", "comments"}, value = "Show all comments for book", group = "Actions with COMMENTS")
     public String get(@ShellOption(value = "bid", help = "Book ID") long id) {
+        Book book;
         try {
-            val book = bookService.getById(id);
-            val comments = commentService.getAllByBookId(id);
-            return formatter.formatAsBlock(comments, "Комментарии к книге: " + book.getName());
+            book = bookService.getById(id);
         } catch (EntityNotFoundException e) {
             return "Ошибка: %s".formatted(e.getMessage());
         }
+        val comments = commentService.getAllByBookId(id);
+        return formatter.formatAsBlock(comments, "Комментарии к книге: " + book.getName());
     }
 
     @ShellMethod(key = {"ac", "add-comment"}, value = "Add new comment to book", group = "Actions with COMMENTS")

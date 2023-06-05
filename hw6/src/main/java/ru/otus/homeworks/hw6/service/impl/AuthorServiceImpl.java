@@ -2,9 +2,9 @@ package ru.otus.homeworks.hw6.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import ru.otus.homeworks.hw6.repositories.AuthorRepository;
 import ru.otus.homeworks.hw6.entity.Author;
 import ru.otus.homeworks.hw6.exceptions.EntityNotFoundException;
+import ru.otus.homeworks.hw6.repositories.AuthorRepository;
 import ru.otus.homeworks.hw6.service.AuthorService;
 
 import java.util.List;

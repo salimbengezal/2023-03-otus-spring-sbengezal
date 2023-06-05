@@ -2,9 +2,9 @@ package ru.otus.homeworks.hw6.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import ru.otus.homeworks.hw6.repositories.GenreRepository;
 import ru.otus.homeworks.hw6.entity.Genre;
 import ru.otus.homeworks.hw6.exceptions.EntityNotFoundException;
+import ru.otus.homeworks.hw6.repositories.GenreRepository;
 import ru.otus.homeworks.hw6.service.GenreService;
 
 import java.util.List;

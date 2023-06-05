@@ -7,14 +7,14 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import ru.otus.homeworks.hw6.repositories.impl.AuthorJpaRepository;
-import ru.otus.homeworks.hw6.repositories.impl.BookJpaRepository;
-import ru.otus.homeworks.hw6.repositories.impl.GenreJpaRepository;
 import ru.otus.homeworks.hw6.entity.Author;
 import ru.otus.homeworks.hw6.entity.Book;
 import ru.otus.homeworks.hw6.entity.Genre;
 import ru.otus.homeworks.hw6.exceptions.AtLeastOneParameterIsNullException;
 import ru.otus.homeworks.hw6.exceptions.EntityNotFoundException;
+import ru.otus.homeworks.hw6.repositories.impl.AuthorJpaRepository;
+import ru.otus.homeworks.hw6.repositories.impl.BookJpaRepository;
+import ru.otus.homeworks.hw6.repositories.impl.GenreJpaRepository;
 import ru.otus.homeworks.hw6.service.BookService;
 
 import java.util.List;
@@ -22,7 +22,9 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @SpringBootTest
 @DisplayName("Сервис с книгами должен ")
@@ -105,7 +107,7 @@ public class BookServiceImplTest {
         when(authorDaoJdbc.getById(1)).thenReturn(Optional.of(author));
         when(genreDaoJdbc.getById(1)).thenReturn(Optional.of(genre));
         when(bookDaoJdbc.getById(0)).thenReturn(Optional.of(book));
-       bookService.update(
+        bookService.update(
                 book.getId(),
                 book.getName(),
                 book.getReleaseYear(),
@@ -117,7 +119,7 @@ public class BookServiceImplTest {
     @Test
     @DisplayName("удалять книгу")
     void shouldDeleteBook() throws EntityNotFoundException {
-        val book =bookService.getById(1);
+        val book = bookService.getById(1);
         bookService.deleteById(1);
         verify(bookDaoJdbc).delete(book);
     }

@@ -51,13 +51,14 @@ public class BookShellComponent {
 
     @ShellMethod(key = {"db", "delete-book"}, value = "Delete book by ID", group = "Actions with BOOKS")
     public String deleteBookById(@ShellOption(help = "Book ID") long id) {
+        Book book;
         try {
-            Book book = bookService.getById(id);
+            book = bookService.getById(id);
             bookService.deleteById(id);
-            return formatter.formatAsMessage(book, "удалена");
         } catch (EntityNotFoundException e) {
             return "Ошибка: %s".formatted(e.getMessage());
         }
+        return formatter.formatAsMessage(book, "удалена");
     }
 
     @ShellMethod(key = {"ub", "update-book"}, value = "Update book by ID", group = "Actions with BOOKS")
