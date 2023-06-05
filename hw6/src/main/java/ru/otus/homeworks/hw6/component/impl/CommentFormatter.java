@@ -15,6 +15,7 @@ import java.util.List;
 public class CommentFormatter implements ObjectFormatter<Comment> {
 
     private final MessageDecorator decorator;
+
     private final DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
     @Override

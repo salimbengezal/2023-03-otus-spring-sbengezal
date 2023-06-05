@@ -16,7 +16,9 @@ import ru.otus.homeworks.hw6.service.CommentService;
 public class CommentShellComponent {
 
     private final CommentService commentService;
+
     private final BookService bookService;
+
     private final CommentFormatter formatter;
 
     @ShellMethod(key = {"c", "comments"}, value = "Show all comments for book", group = "Actions with COMMENTS")
