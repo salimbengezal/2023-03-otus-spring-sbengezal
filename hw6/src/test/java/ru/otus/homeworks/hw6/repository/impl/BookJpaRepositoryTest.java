@@ -5,6 +5,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.context.annotation.Import;
 import ru.otus.homeworks.hw6.entity.Author;
 import ru.otus.homeworks.hw6.entity.Book;
@@ -12,11 +13,16 @@ import ru.otus.homeworks.hw6.entity.Genre;
 import ru.otus.homeworks.hw6.repositories.impl.BookJpaRepository;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 @DataJpaTest
 @Import(value = {BookJpaRepository.class})
 @DisplayName("Репозиторий с книгами должен ")
 public class BookJpaRepositoryTest {
+
+    @Autowired
+    private TestEntityManager tem;
 
     @Autowired
     private BookJpaRepository repository;
@@ -54,40 +60,37 @@ public class BookJpaRepositoryTest {
     void shouldAddNewBook() {
         val author = new Author(1, "автор1");
         val genre = new Genre(1, "жанр1");
-        val newBook = Book.builder()
+        val book = Book.builder()
                 .name("новая книга")
                 .releaseYear((short) 2020)
                 .author(author)
                 .genre(genre)
                 .build();
-        val count = repository.getAll().size();
-        val addedBook = repository.save(newBook);
-        assertEquals(count + 1, repository.getAll().size());
-        assertEquals(newBook, addedBook);
+        repository.save(book);
+        val savedBook = tem.find(Book.class, book.getId());
+        assertEquals(book, savedBook);
     }
 
     @Test
     @DisplayName("обновлять сущность")
     void shouldUpdateBook() {
-        val count = repository.getAll().size();
-        val book = repository.getById(1).orElseThrow();
+        val book = tem.find(Book.class, 1);
+        assertNotNull(book);
         val updatedBook = book.toBuilder()
                 .name("обновленное навание")
                 .releaseYear((short) 2009)
                 .build();
         repository.save(updatedBook);
-        assertEquals(count, repository.getAll().size());
-        val savedBook = repository.getById(1).orElseThrow();
-        assertEquals(updatedBook, savedBook);
+        assertEquals(updatedBook, book);
     }
 
     @Test
     @DisplayName("удалять сущность")
     void shouldDeleteBook() {
-        val count = repository.getAll().size();
-        val book = repository.getById(1).orElseThrow();
+        val book = tem.find(Book.class, 1);
         repository.delete(book);
-        assertEquals(count - 1, repository.getAll().size());
+        val deletedBook = tem.find(Book.class, 1);
+        assertNull(deletedBook);
     }
 
 }

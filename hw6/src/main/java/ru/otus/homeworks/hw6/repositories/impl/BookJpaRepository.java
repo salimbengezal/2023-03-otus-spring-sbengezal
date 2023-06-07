@@ -9,6 +9,7 @@ import ru.otus.homeworks.hw6.entity.Book;
 import ru.otus.homeworks.hw6.repositories.BookRepository;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Repository
@@ -22,13 +23,15 @@ public class BookJpaRepository implements BookRepository {
     public List<Book> getAll() {
         val entityGraph = em.getEntityGraph("book-author-genre-entity-graph");
         val query = em.createQuery("select b from book b", Book.class);
-        query.setHint("javax.persistence.fetchgraph", entityGraph);
+        query.setHint("jakarta.persistence.fetchgraph", entityGraph);
         return query.getResultList();
     }
 
     @Override
     public Optional<Book> getById(long id) {
-        return Optional.ofNullable(em.find(Book.class, id));
+        val entityGraph = em.getEntityGraph("book-author-genre-entity-graph");
+        val book = em.find(Book.class, id, Map.of("jakarta.persistence.fetchgraph", entityGraph));
+        return Optional.ofNullable(book);
     }
 
     @Override

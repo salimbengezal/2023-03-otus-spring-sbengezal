@@ -22,9 +22,7 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @SpringBootTest
 @DisplayName("Сервис с книгами должен ")
@@ -122,6 +120,15 @@ public class BookServiceImplTest {
         val book = bookService.getById(1);
         bookService.deleteById(1);
         verify(bookDaoJdbc).delete(book);
+    }
+
+    @Test
+    @DisplayName("вызывать исключение из-за недостаточного количества аргументов")
+    void shouldThrowAtLeastOneParameterIsNullException() {
+        assertThrows(
+                AtLeastOneParameterIsNullException.class,
+                () -> bookService.add("some_name", null, null, null)
+        );
     }
 
 }

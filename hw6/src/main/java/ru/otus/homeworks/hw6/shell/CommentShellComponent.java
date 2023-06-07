@@ -24,14 +24,13 @@ public class CommentShellComponent {
 
     @ShellMethod(key = {"c", "comments"}, value = "Show all comments for book", group = "Actions with COMMENTS")
     public String get(@ShellOption(value = "bid", help = "Book ID") long id) {
-        Book book;
         try {
-            book = bookService.getById(id);
+            Book book = bookService.getById(id);
+            val comments = commentService.getAllByBookId(id);
+            return formatter.formatAsBlock(comments, "Комментарии к книге: " + book.getName());
         } catch (EntityNotFoundException e) {
             return "Ошибка: %s".formatted(e.getMessage());
         }
-        val comments = commentService.getAllByBookId(id);
-        return formatter.formatAsBlock(comments, "Комментарии к книге: " + book.getName());
     }
 
     @ShellMethod(key = {"ac", "add-comment"}, value = "Add new comment to book", group = "Actions with COMMENTS")

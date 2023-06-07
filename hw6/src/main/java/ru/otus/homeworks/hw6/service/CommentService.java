@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface CommentService {
 
-    List<Comment> getAllByBookId(long id);
+    List<Comment> getAllByBookId(long id) throws EntityNotFoundException;
 
     void deleteById(long id) throws EntityNotFoundException;
 
