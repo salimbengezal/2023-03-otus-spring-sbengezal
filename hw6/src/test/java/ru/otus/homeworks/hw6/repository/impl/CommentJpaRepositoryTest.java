@@ -28,6 +28,13 @@ public class CommentJpaRepositoryTest {
 
     @Test
     @DisplayName("вернуть объект")
+    void shouldGetAllCommentsForBookEntity() {
+        val comment = repository.getAllByBookId(1);
+        assert (comment.size() == 2);
+    }
+
+    @Test
+    @DisplayName("вернуть объект")
     void shouldGetEntity() {
         val comment = repository.getById(1).orElseThrow();
         assertEquals(1, comment.getId());
@@ -65,7 +72,7 @@ public class CommentJpaRepositoryTest {
         val comment = tem.find(Comment.class, 2);
         repository.delete(comment);
         val deletedComment = tem.find(Comment.class, 2);
-        assertNull (deletedComment);
+        assertNull(deletedComment);
     }
 
 }

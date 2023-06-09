@@ -23,10 +23,8 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<Comment> getAllByBookId(long id) throws EntityNotFoundException {
-        val book = bookRepository.getById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Комментарий [id=%s] не найден".formatted(id)));
-        return new ArrayList<>(book.getComments());
+    public List<Comment> getAllByBookId(long id) {
+        return commentRepository.getAllByBookId(id);
     }
 
     @Override
