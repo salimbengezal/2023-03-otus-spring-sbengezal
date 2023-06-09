@@ -26,7 +26,7 @@ public class CommentShellComponent {
     public String get(@ShellOption(value = "bid", help = "Book ID") long id) {
         try {
             Book book = bookService.getById(id);
-            val comments = commentService.getAllByBookId(id);
+            val comments = commentService.getCommentsByBookId(id);
             return formatter.formatAsBlock(comments, "Комментарии к книге: " + book.getName());
         } catch (EntityNotFoundException e) {
             return "Ошибка: %s".formatted(e.getMessage());

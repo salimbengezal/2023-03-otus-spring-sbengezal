@@ -10,7 +10,6 @@ import ru.otus.homeworks.hw7.repositories.BookRepository;
 import ru.otus.homeworks.hw7.repositories.CommentRepository;
 import ru.otus.homeworks.hw7.service.CommentService;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -23,10 +22,8 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<Comment> getAllByBookId(long id) throws EntityNotFoundException {
-        val book = bookRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Комментарий [id=%s] не найден".formatted(id)));
-        return new ArrayList<>(book.getComments());
+    public List<Comment> getCommentsByBookId(long id) {
+       return commentRepository.findAllByBookId(id);
     }
 
     @Override
