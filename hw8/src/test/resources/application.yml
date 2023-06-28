@@ -2,16 +2,16 @@ spring:
   shell:
     interactive:
       enabled: false
+  sql:
+    init:
+      mode: always
+      data-locations: data.sql
+  jpa:
+    generate-ddl: false
+    hibernate:
+      ddl-auto: validate
+    show-sql: true
 
 logging:
   level:
-    ROOT: WARN
-
-de:
-  flapdoodle:
-    mongodb:
-      embedded:
-        version: 6.0.6
-
-mongock:
-  enabled: false
+    ROOT: ERROR

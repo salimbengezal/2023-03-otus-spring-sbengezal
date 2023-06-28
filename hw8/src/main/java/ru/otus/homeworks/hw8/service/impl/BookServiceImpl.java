@@ -31,21 +31,21 @@ public class BookServiceImpl implements BookService {
 
     @Override
     @Transactional
-    public Book deleteById(String id) throws EntityNotFoundException {
-        val book = getById(id);
+    public void deleteById(long id) throws EntityNotFoundException {
+        val book = bookRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Книга c [id=%d] не найдена".formatted(id)));
         bookRepository.delete(book);
-        return book;
     }
 
     @Override
-    public Book getById(String id) throws EntityNotFoundException {
-        return bookRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Книга не найдена"));
+    public Book getById(long id) throws EntityNotFoundException {
+        return bookRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Книга c [id=%d] не найдена".formatted(id)));
     }
 
     @Override
     @Transactional
-    public Book update(String id, String name, Short year, String authorId, String genreId)
-            throws EntityNotFoundException {
+    public Book update(long id, String name, Short year, Long authorId, Long genreId) throws EntityNotFoundException {
         Book book = getById(id);
         if (authorId != null) {
             val newAuthor = authorService.getById(authorId);
@@ -66,8 +66,8 @@ public class BookServiceImpl implements BookService {
 
     @Override
     @Transactional
-    public Book add(String name, Short year, String authorId, String genreId)
-            throws AtLeastOneParameterIsNullException, EntityNotFoundException {
+    public Book add(String name, Short year, Long authorId, Long genreId)
+            throws EntityNotFoundException, AtLeastOneParameterIsNullException {
         if (authorId == null || genreId == null || year == null) {
             throw new AtLeastOneParameterIsNullException();
         }
@@ -80,11 +80,6 @@ public class BookServiceImpl implements BookService {
                 .genre(genre)
                 .build();
         return bookRepository.save(book);
-    }
-
-    @Override
-    public List<Book> getAllByNameContains(String name) {
-        return bookRepository.findByNameContainingIgnoreCase(name);
     }
 
 }

@@ -1,12 +1,12 @@
 package ru.otus.homeworks.hw8.repositories;
 
-import org.springframework.data.mongodb.repository.MongoRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
 import ru.otus.homeworks.hw8.entity.Comment;
 
 import java.util.List;
 
-public interface CommentRepository extends MongoRepository<Comment, String> {
+public interface CommentRepository extends JpaRepository<Comment, Long> {
 
-    List<Comment> findAllByBookId(String bookId);
+    List<Comment> findAllByBookId(long bookId);
 
 }

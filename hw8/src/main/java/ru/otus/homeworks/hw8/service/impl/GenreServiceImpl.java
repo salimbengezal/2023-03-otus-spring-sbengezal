@@ -21,13 +21,8 @@ public class GenreServiceImpl implements GenreService {
     }
 
     @Override
-    public Genre getById(String id) throws EntityNotFoundException {
-        return repository.findById(id).orElseThrow(() -> new EntityNotFoundException("Жанр не найден"));
+    public Genre getById(long id) throws EntityNotFoundException {
+        return repository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Жанр c [id=%d] не найден".formatted(id)));
     }
-
-    @Override
-    public List<Genre> getAllByNameContains(String text) {
-        return repository.findByNameContainingIgnoreCase(text);
-    }
-
 }

@@ -6,6 +6,7 @@ import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
 import org.springframework.shell.standard.ShellOption;
 import ru.otus.homeworks.hw8.component.impl.AuthorFormatter;
+import ru.otus.homeworks.hw8.exceptions.EntityNotFoundException;
 import ru.otus.homeworks.hw8.service.AuthorService;
 
 import static org.springframework.shell.standard.ShellOption.NULL;
@@ -18,13 +19,18 @@ public class AuthorShellComponent {
 
     private final AuthorFormatter formatter;
 
-    @ShellMethod(key = {"a", "authors"}, value = "Список авторов (с поиском)", group = "Действия с авторами")
-    public String get(@ShellOption(help = "Совпадающее название", defaultValue = NULL) String name) {
-        if (name == null) {
+    @ShellMethod(key = {"a", "authors"}, value = "Show all authors or author by ID", group = "Actions with AUTHORS")
+    public String getAuthors(@ShellOption(value = "id", help = "Author ID", defaultValue = NULL) Long id) {
+        if (id == null) {
             val authors = authorService.getAll();
             return formatter.formatAsBlock(authors, "Авторы");
         }
-        val authors = authorService.getAllByNameContains(name);
-        return formatter.formatAsBlock(authors, "Авторы [поиск]");
+        try {
+            val book = authorService.getById(id);
+            return formatter.formatAsRow(book);
+        } catch (EntityNotFoundException e) {
+            return "Ошибка: %s".formatted(e.getMessage());
+        }
     }
+
 }

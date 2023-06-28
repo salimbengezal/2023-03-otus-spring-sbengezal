@@ -9,7 +9,6 @@ import ru.otus.homeworks.hw8.entity.Comment;
 
 import java.time.format.DateTimeFormatter;
 import java.util.List;
-import java.util.stream.Stream;
 
 @Component
 @RequiredArgsConstructor
@@ -23,20 +22,19 @@ public class CommentFormatter implements ObjectFormatter<Comment> {
     public String formatAsRow(Comment comment) {
         return String.format("[%s] (%s) %s",
                 comment.getId(),
-                dtf.format(comment.getUpdateOn()),
+                dtf.format(comment.getUpdateOn().toLocalDateTime()),
                 comment.getMessage());
     }
 
     @Override
     public String formatAsMessage(Comment comment, String action) {
-        return "Комментарий [id=%s] %s".formatted(comment.getId(), action);
+        return "Комментарий [id=%d] %s".formatted(comment.getId(), action);
 
     }
 
     @Override
     public String formatAsBlock(List<Comment> comments, String title) {
-        val content = comments.isEmpty() ? Stream.of("- пусто -") : comments.stream().map(this::formatAsRow);
+        val content = comments.stream().map(this::formatAsRow);
         return decorator.decorate(title, content);
     }
-
 }
