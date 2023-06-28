@@ -1,19 +1,15 @@
 package ru.otus.homeworks.hw8;
 
-import org.h2.tools.Console;
+import lombok.val;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
-
-import java.sql.SQLException;
 
 @SpringBootApplication
-@EnableJpaRepositories
 public class Hw8Application {
 
-    public static void main(String[] args) throws SQLException {
-        SpringApplication.run(ru.otus.homeworks.hw8.Hw8Application.class, args);
-        Console.main(args);
+    public static void main(String[] args) {
+        val context = SpringApplication.run(ru.otus.homeworks.hw8.Hw8Application.class, args);
+        context.getBean("mongo");
     }
 
 }

@@ -9,6 +9,8 @@ public interface GenreService {
 
     List<Genre> getAll();
 
-    Genre getById(long id) throws EntityNotFoundException;
+    Genre getById(String id) throws EntityNotFoundException;
+
+    List<Genre> getAllByNameContains(String text);
 
 }

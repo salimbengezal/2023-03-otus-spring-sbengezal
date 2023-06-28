@@ -8,6 +8,7 @@ import ru.otus.homeworks.hw8.component.ObjectFormatter;
 import ru.otus.homeworks.hw8.entity.Book;
 
 import java.util.List;
+import java.util.stream.Stream;
 
 @Component
 @RequiredArgsConstructor
@@ -26,14 +27,14 @@ public class BookFormatter implements ObjectFormatter<Book> {
     }
 
     @Override
-    public String formatAsBlock(List<Book> books, String title) {
-        val content = books.stream().map(this::formatAsRow);
-        return decorator.decorate(title, content);
+    public String formatAsMessage(Book book, String action) {
+        return "Книга \"%s\" %s [id=%s]".formatted(book.getName(), action, book.getId());
     }
 
     @Override
-    public String formatAsMessage(Book book, String action) {
-        return "Книга \"%s\" %s [id=%d]".formatted(book.getName(), action, book.getId());
+    public String formatAsBlock(List<Book> books, String title) {
+        val content = books.isEmpty() ? Stream.of("- пусто -") : books.stream().map(this::formatAsRow);
+        return decorator.decorate(title, content);
     }
 
 }
