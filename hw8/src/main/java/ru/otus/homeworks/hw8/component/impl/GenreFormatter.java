@@ -8,6 +8,7 @@ import ru.otus.homeworks.hw8.component.ObjectFormatter;
 import ru.otus.homeworks.hw8.entity.Genre;
 
 import java.util.List;
+import java.util.stream.Stream;
 
 @Component
 @RequiredArgsConstructor
@@ -21,14 +22,13 @@ public class GenreFormatter implements ObjectFormatter<Genre> {
     }
 
     @Override
-    public String formatAsBlock(List<Genre> genres, String title) {
-        val content = genres.stream().map(this::formatAsRow);
-        return decorator.decorate(title, content);
+    public String formatAsMessage(Genre genre, String action) {
+        return "Жанр \"%s\" %s [id=%s]".formatted(genre.getName(), action, genre.getId());
     }
 
     @Override
-    public String formatAsMessage(Genre genre, String action) {
-        return "Жанр \"%s\" %s [id=%d]".formatted(genre.getName(), action, genre.getId());
+    public String formatAsBlock(List<Genre> genres, String title) {
+        val content = genres.isEmpty() ? Stream.of("- пусто -") : genres.stream().map(this::formatAsRow);
+        return decorator.decorate(title, content);
     }
-
 }

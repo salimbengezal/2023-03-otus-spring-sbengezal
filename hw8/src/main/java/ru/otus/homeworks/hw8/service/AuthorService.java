@@ -9,6 +9,7 @@ public interface AuthorService {
 
     List<Author> getAll();
 
-    Author getById(long id) throws EntityNotFoundException;
+    Author getById(String id) throws EntityNotFoundException;
 
+    List<Author> getAllByNameContains(String text);
 }

@@ -1,8 +1,12 @@
 package ru.otus.homeworks.hw8.repositories;
 
-import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.mongodb.repository.MongoRepository;
 import ru.otus.homeworks.hw8.entity.Author;
 
-public interface AuthorRepository extends JpaRepository<Author, Long> {
+import java.util.List;
+
+public interface AuthorRepository extends MongoRepository<Author, String> {
+
+    List<Author> findByNameContainingIgnoreCase(String name);
 
 }

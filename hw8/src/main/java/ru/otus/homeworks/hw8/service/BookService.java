@@ -10,13 +10,17 @@ public interface BookService {
 
     List<Book> getAll();
 
-    void deleteById(long id) throws EntityNotFoundException;
+    List<Book> getAllByNameContains(String text);
 
-    Book getById(long id) throws EntityNotFoundException;
+    Book deleteById(String id) throws EntityNotFoundException;
 
-    Book update(long id, String name, Short releaseYear, Long authorId, Long genreId) throws EntityNotFoundException;
+    Book getById(String id) throws EntityNotFoundException;
 
-    Book add(String name, Short releaseYear, Long authorId, Long genreId)
+    Book update(String id, String name, Short releaseYear, String authorId, String genreId)
+            throws EntityNotFoundException;
+
+    Book add(String name, Short releaseYear, String authorId, String genreId)
             throws EntityNotFoundException, AtLeastOneParameterIsNullException;
+
 
 }

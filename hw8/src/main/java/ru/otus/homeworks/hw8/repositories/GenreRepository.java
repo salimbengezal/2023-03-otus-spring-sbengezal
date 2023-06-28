@@ -1,8 +1,12 @@
 package ru.otus.homeworks.hw8.repositories;
 
-import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.mongodb.repository.MongoRepository;
 import ru.otus.homeworks.hw8.entity.Genre;
 
-public interface GenreRepository extends JpaRepository<Genre, Long> {
+import java.util.List;
+
+public interface GenreRepository extends MongoRepository<Genre, String> {
+
+    List<Genre> findByNameContainingIgnoreCase(String name);
 
 }

@@ -8,6 +8,7 @@ import ru.otus.homeworks.hw8.component.ObjectFormatter;
 import ru.otus.homeworks.hw8.entity.Author;
 
 import java.util.List;
+import java.util.stream.Stream;
 
 @Component
 @RequiredArgsConstructor
@@ -22,12 +23,13 @@ public class AuthorFormatter implements ObjectFormatter<Author> {
 
     @Override
     public String formatAsMessage(Author author, String action) {
-        return "Автор \"%s\" %s [id=%d]".formatted(author.getName(), action, author.getId());
+        return "Автор \"%s\" %s [id=%s]".formatted(author.getName(), action, author.getId());
     }
 
     @Override
     public String formatAsBlock(List<Author> authors, String title) {
-        val content = authors.stream().map(this::formatAsRow);
+        val content = authors.isEmpty() ? Stream.of("- пусто -") : authors.stream().map(this::formatAsRow);
         return decorator.decorate(title, content);
     }
+
 }

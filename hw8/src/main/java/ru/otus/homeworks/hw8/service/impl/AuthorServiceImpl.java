@@ -21,8 +21,13 @@ public class AuthorServiceImpl implements AuthorService {
     }
 
     @Override
-    public Author getById(long id) throws EntityNotFoundException {
-        return repository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Автор c [id=%d] не найден".formatted(id)));
+    public Author getById(String id) throws EntityNotFoundException {
+        return repository.findById(id).orElseThrow(() -> new EntityNotFoundException("Автор не найден"));
     }
+
+    @Override
+    public List<Author> getAllByNameContains(String text) {
+        return repository.findByNameContainingIgnoreCase(text);
+    }
+
 }
