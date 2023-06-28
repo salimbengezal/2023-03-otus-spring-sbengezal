@@ -7,44 +7,44 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest;
 import org.springframework.data.mongodb.core.MongoTemplate;
-import ru.otus.homeworks.hw8.entity.Genre;
-import ru.otus.homeworks.hw8.repositories.GenreRepository;
+import ru.otus.homeworks.hw8.entity.Author;
+import ru.otus.homeworks.hw8.repositories.AuthorRepository;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @DataMongoTest
-@DisplayName("Репозиторий с жанрами должен ")
-public class GenreJpaRepositoryTest {
+@DisplayName("Репозиторий с авторами должен ")
+public class AuthorMongoRepositoryTest {
 
     @Autowired
-    private GenreRepository genreRepository;
+    private AuthorRepository repository;
 
     @BeforeAll
     static void fillData(@Autowired MongoTemplate mongoTemplate){
-        val genre1 = Genre.builder().id("1L").name("жанр1").build();
-        val genre2 = Genre.builder().id("2L").name("жанр2").build();
-        mongoTemplate.save(genre1);
-        mongoTemplate.save(genre2);
+        val author1 = Author.builder().id("1L").name("автор1").build();
+        val author2 = Author.builder().id("2L").name("автор2").build();
+        mongoTemplate.save(author1);
+        mongoTemplate.save(author2);
     }
 
     @Test
     @DisplayName("вернуть объект")
     void shouldGetEntity() {
-        val expected = new Genre("1L", "жанр1");
-        val author = genreRepository.findById("1L").orElseThrow();
+        val expected = new Author("1L", "автор1");
+        val author = repository.findById("1L").orElseThrow();
         assertEquals(expected, author);
     }
 
     @Test
     @DisplayName("вернуть верное количество")
     void shouldReturnExpectedCount() {
-        assertEquals(2, genreRepository.findAll().size());
+        assertEquals(2, repository.findAll().size());
     }
 
     @Test
     @DisplayName("вернуть пустой результат")
     void shouldReturnEmptyEntity() {
-        assert (genreRepository.findById("-1L").isEmpty());
+        assert (repository.findById("-1L").isEmpty());
     }
 
 }

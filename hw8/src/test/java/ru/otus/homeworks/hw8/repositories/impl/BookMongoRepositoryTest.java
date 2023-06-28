@@ -20,7 +20,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 @DataMongoTest
 @DisplayName("Репозиторий с книгами должен ")
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
-public class BookJpaRepositoryTest {
+public class BookMongoRepositoryTest {
 
     @Autowired
     private MongoTemplate mongoTemplate;

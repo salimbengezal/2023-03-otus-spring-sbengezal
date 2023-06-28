@@ -19,7 +19,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @DataMongoTest
 @DisplayName("Репозиторий с комментариями должен ")
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
-public class CommentJpaRepositoryTest {
+public class CommentMongoRepositoryTest {
 
     @Autowired
     private MongoTemplate mongoTemplate;
