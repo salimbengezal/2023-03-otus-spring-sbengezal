@@ -1,0 +1,8 @@
+mongock:
+  runner-type: InitializingBean
+  migration-scan-package:
+    - ru.otus.homeworks.hw8.mongock.changelog
+
+logging:
+  level:
+    ROOT: ERROR
