@@ -73,12 +73,7 @@ public class BookServiceImpl implements BookService {
         }
         val author = authorService.getById(authorId);
         val genre = genreService.getById(genreId);
-        val book = Book.builder()
-                .name(name)
-                .releaseYear(year)
-                .author(author)
-                .genre(genre)
-                .build();
+        val book = new Book(name, year, author, genre);
         return bookRepository.save(book);
     }
 

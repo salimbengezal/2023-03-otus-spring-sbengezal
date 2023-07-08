@@ -16,7 +16,7 @@ import ru.otus.homeworks.hw8.service.CommentService;
 @RequiredArgsConstructor
 public class CommentShellComponent {
 
-    private final static String GROUP = "Действия с комментариями";
+    private static final String GROUP = "Действия с комментариями";
 
     private final CommentService commentService;
 

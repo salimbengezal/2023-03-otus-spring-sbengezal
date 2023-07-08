@@ -20,9 +20,9 @@ public class AuthorMongoRepositoryTest {
     private AuthorRepository repository;
 
     @BeforeAll
-    static void fillData(@Autowired MongoTemplate mongoTemplate){
-        val author1 = Author.builder().id("1L").name("автор1").build();
-        val author2 = Author.builder().id("2L").name("автор2").build();
+    static void fillData(@Autowired MongoTemplate mongoTemplate) {
+        val author1 = new Author("1L", "автор1");
+        val author2 = new Author("2L", "автор2");
         mongoTemplate.save(author1);
         mongoTemplate.save(author2);
     }

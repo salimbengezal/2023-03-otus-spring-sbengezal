@@ -49,8 +49,8 @@ public class BookServiceImplTest {
         val genre1 = new Genre("1L", "g1");
         val genre2 = new Genre("2L", "g2");
         val books = List.of(
-                Book.builder().id("1L").name("b1").releaseYear((short) 2000).author(author1).genre(genre1).build(),
-                Book.builder().id("2L").name("b2").releaseYear((short) 2001).author(author2).genre(genre1).build()
+                new Book("1L", "b1", (short) 2000, author1, genre1),
+                new Book("2L", "b2", (short) 2001, author2, genre1)
         );
         when(genreRepository.findAll()).thenReturn(List.of(genre1, genre2));
         when(authorRepository.findAll()).thenReturn(List.of(author1, author2));
@@ -70,7 +70,7 @@ public class BookServiceImplTest {
     void shouldGetBook() throws EntityNotFoundException {
         val author1 = new Author("1L", "a1");
         val genre1 = new Genre("1L", "g1");
-        val expectedBook = Book.builder().id("1L").name("b1").releaseYear((short) 2000).author(author1).genre(genre1).build();
+        val expectedBook = new Book("1L", "b1", (short) 2000, author1, genre1);
         assertEquals(bookService.getById("1L"), expectedBook);
         verify(bookRepository, times(1)).findById("1L");
     }
@@ -92,7 +92,7 @@ public class BookServiceImplTest {
     void shouldAddBook() throws EntityNotFoundException, AtLeastOneParameterIsNullException {
         val author = new Author("1L", "a");
         val genre = new Genre("1L", "g");
-        val newBook = Book.builder().genre(genre).author(author).releaseYear((short) 2020).name("name").build();
+        val newBook = new Book("name", (short) 2020, author, genre);
         when(authorRepository.findById("1L")).thenReturn(Optional.of(author));
         when(genreRepository.findById("1L")).thenReturn(Optional.of(genre));
         when(bookRepository.save(newBook)).thenReturn(newBook);

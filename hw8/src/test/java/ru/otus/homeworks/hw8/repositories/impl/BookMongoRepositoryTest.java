@@ -19,7 +19,6 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 
 @DataMongoTest
 @DisplayName("Репозиторий с книгами должен ")
-@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 public class BookMongoRepositoryTest {
 
     @Autowired
@@ -29,10 +28,10 @@ public class BookMongoRepositoryTest {
     private BookRepository repository;
 
     @BeforeEach
-    void fillData(@Autowired MongoTemplate mongoTemplate){
-        val author1 = Author.builder().id("1L").name("автор1").build();
-        val genre1 = Genre.builder().id("1L").name("жанр1").build();
-        val book1 = Book.builder().id("1L").name("книга1").releaseYear((short)2000).author(author1).genre(genre1).build();
+    void fillData(@Autowired MongoTemplate mongoTemplate) {
+        val author1 = new Author("1L", "автор1");
+        val genre1 = new Genre("1L", "жанр1");
+        val book1 = new Book("1L", "книга1", (short) 2000, author1, genre1);
         mongoTemplate.save(author1);
         mongoTemplate.save(genre1);
         mongoTemplate.save(book1);
@@ -43,18 +42,13 @@ public class BookMongoRepositoryTest {
     void shouldGetEntity() {
         val expectedAuthor = new Author("1L", "автор1");
         val expectedGenre = new Genre("1L", "жанр1");
-        val expectedBook = Book.builder()
-                .id("1L")
-                .name("книга1")
-                .releaseYear((short) 2000)
-                .author(expectedAuthor)
-                .genre(expectedGenre)
-                .build();
+        val expectedBook = new Book("1L", "книга1", (short) 2000, expectedAuthor, expectedGenre);
         val book = repository.findById("1L").orElseThrow();
         assertEquals(expectedBook, book);
     }
 
     @Test
+    @DirtiesContext(methodMode = DirtiesContext.MethodMode.BEFORE_METHOD)
     @DisplayName("вернуть верное количество")
     void shouldReturnExpectedCount() {
         repository.findAll().forEach(System.out::println);
@@ -72,12 +66,7 @@ public class BookMongoRepositoryTest {
     void shouldAddNewBook() {
         val author = new Author("1L", "автор1");
         val genre = new Genre("1L", "жанр1");
-        val book = Book.builder()
-                .name("новая книга")
-                .releaseYear((short) 2020)
-                .author(author)
-                .genre(genre)
-                .build();
+        val book = new Book("новая книга", (short) 2020, author, genre);
         repository.save(book);
         val savedBook = mongoTemplate.findById(book.getId(), Book.class);
         assertEquals(book, savedBook);
@@ -88,13 +77,11 @@ public class BookMongoRepositoryTest {
     void shouldUpdateBook() {
         val book = mongoTemplate.findById("1L", Book.class);
         assertNotNull(book);
-        val updatedBook = book.toBuilder()
-                .name("обновленное навание")
-                .releaseYear((short) 2009)
-                .build();
-        repository.save(updatedBook);
+        book.setName("обновленное навание");
+        book.setReleaseYear((short) 2009);
+        repository.save(book);
         val saved = mongoTemplate.findById("1L", Book.class);
-        assertEquals(updatedBook, saved);
+        assertEquals(book, saved);
     }
 
     @Test

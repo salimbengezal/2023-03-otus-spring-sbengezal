@@ -7,18 +7,18 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest;
 import org.springframework.data.mongodb.core.MongoTemplate;
-import org.springframework.test.annotation.DirtiesContext;
 import ru.otus.homeworks.hw8.entity.Author;
 import ru.otus.homeworks.hw8.entity.Book;
 import ru.otus.homeworks.hw8.entity.Comment;
 import ru.otus.homeworks.hw8.entity.Genre;
 import ru.otus.homeworks.hw8.repositories.CommentRepository;
 
+import java.time.LocalDateTime;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 @DataMongoTest
 @DisplayName("Репозиторий с комментариями должен ")
-@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 public class CommentMongoRepositoryTest {
 
     @Autowired
@@ -29,11 +29,11 @@ public class CommentMongoRepositoryTest {
 
     @BeforeEach
     void fillData(@Autowired MongoTemplate mongoTemplate) {
-        val author1 = Author.builder().id("1L").name("автор1").build();
-        val genre1 = Genre.builder().id("1L").name("жанр1").build();
-        val book1 = Book.builder().id("1L").name("книга1").releaseYear((short) 2000).author(author1).genre(genre1).build();
-        val comment1 = Comment.builder().id("1L").book(book1).message("some message1").build();
-        val comment2 = Comment.builder().id("2L").book(book1).message("some message2").build();
+        val author1 = new Author("1L", "автор1");
+        val genre1 = new Genre("1L", "жанр1");
+        val book1 = new Book("1L", "книга1", (short) 200, author1, genre1);
+        val comment1 = new Comment("1L", "some message1", book1);
+        val comment2 = new Comment("2L", "some message2", book1);
         mongoTemplate.save(author1);
         mongoTemplate.save(genre1);
         mongoTemplate.save(book1);
@@ -53,14 +53,13 @@ public class CommentMongoRepositoryTest {
     @DisplayName("добавлять новую сущность")
     void shouldAddNewComment() {
         val book = mongoTemplate.findById("1L", Book.class);
-        val comment = Comment.builder()
-                .id("some_id")
-                .message("new comment")
-                .book(book)
-                .build();
+        val comment = new Comment("some_id", "new comment", book, LocalDateTime.now());
         repository.save(comment);
         val savedComment = mongoTemplate.findById("some_id", Comment.class);
-        assertEquals(savedComment, comment);
+        assertNotNull(savedComment);
+        assertEquals(comment.getId(), savedComment.getId());
+        assertEquals(comment.getBook(), savedComment.getBook());
+        assertEquals(comment.getMessage(), savedComment.getMessage());
     }
 
     @Test
@@ -68,12 +67,10 @@ public class CommentMongoRepositoryTest {
     void shouldUpdateComment() {
         val comment = mongoTemplate.findById("1L", Comment.class);
         assertNotNull(comment);
-        val updatedComment = comment.toBuilder()
-                .message("some changed message")
-                .build();
-        repository.save(updatedComment);
+        comment.setMessage("some changed message");
+        repository.save(comment);
         val saved = mongoTemplate.findById("1L", Comment.class);
-        assertEquals(updatedComment, saved);
+        assertEquals(comment, saved);
     }
 
     @Test

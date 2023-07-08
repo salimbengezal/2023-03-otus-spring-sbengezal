@@ -1,8 +1,8 @@
 package ru.otus.homeworks.hw8.entity;
 
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
@@ -15,7 +15,6 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder(toBuilder = true)
 public class Book {
 
     @Id
@@ -32,6 +31,21 @@ public class Book {
     private Genre genre;
 
     @DBRef(lazy = true)
+    @EqualsAndHashCode.Exclude
     private List<Comment> comments;
 
+    public Book(String name, short releaseYear, Author author, Genre genre) {
+        this.name = name;
+        this.releaseYear = releaseYear;
+        this.author = author;
+        this.genre = genre;
+    }
+
+    public Book(String id, String name, short releaseYear, Author author, Genre genre) {
+        this.id = id;
+        this.name = name;
+        this.releaseYear = releaseYear;
+        this.author = author;
+        this.genre = genre;
+    }
 }

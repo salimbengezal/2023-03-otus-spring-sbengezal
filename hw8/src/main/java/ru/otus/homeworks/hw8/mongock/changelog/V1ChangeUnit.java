@@ -14,7 +14,6 @@ import ru.otus.homeworks.hw8.repositories.BookRepository;
 import ru.otus.homeworks.hw8.repositories.CommentRepository;
 import ru.otus.homeworks.hw8.repositories.GenreRepository;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -59,7 +58,7 @@ public class V1ChangeUnit {
                         "научная фантастика",
                         "философская сказка",
                         "автобиографический роман")
-                .map(genre -> Genre.builder().name(genre).build())
+                .map(Genre::new)
                 .toList();
     }
 
@@ -73,7 +72,7 @@ public class V1ChangeUnit {
                         "Антуан де Сент-Экзюпери",
                         "Олдос Хаксли",
                         "Грегори Дэвид Робертс")
-                .map(author -> Author.builder().name(author).build())
+                .map(Author::new)
                 .toList();
     }
 
@@ -90,92 +89,37 @@ public class V1ChangeUnit {
     }
 
     private List<Book> getBooks(List<Genre> genres, List<Author> authors) {
-        return Stream.of(
-                Book.builder()
-                        .name("Гарри Поттер и философский камень")
-                        .releaseYear((short) 1997)
-                        .author(getAuthor(authors, "Джоан Роулинг"))
-                        .genre(getGenre(genres, "фэнтези"))
-                        .build(),
-                Book.builder()
-                        .name("Триумфальная арка")
-                        .releaseYear((short) 1945)
-                        .author(getAuthor(authors, "Эрих Мария Ремарк"))
-                        .genre(getGenre(genres, "роман"))
-                        .build(),
-                Book.builder()
-                        .name("Мастер и Маргарита")
-                        .releaseYear((short) 1967)
-                        .author(getAuthor(authors, "Михаил Булгаков")).
-                        genre(getGenre(genres, "фантастика"))
-                        .build(),
-                Book.builder()
-                        .name("1984")
-                        .releaseYear((short) 1949)
-                        .author(getAuthor(authors, "Джордж Оруэлл"))
-                        .genre(getGenre(genres, "научная фантастика"))
-                        .build(),
-                Book.builder()
-                        .name("Война и мир")
-                        .releaseYear((short) 1869)
-                        .author(getAuthor(authors, "Лев Толстой"))
-                        .genre(getGenre(genres, "исторический роман"))
-                        .build(),
-                Book.builder()
-                        .name("Анна Каренина")
-                        .releaseYear((short) 1877)
-                        .author(getAuthor(authors, "Лев Толстой"))
-                        .genre(getGenre(genres, "роман"))
-                        .build(),
-                Book.builder()
-                        .name("Убить пересмешника")
-                        .releaseYear((short) 1960)
-                        .author(getAuthor(authors, "Харпер Ли"))
-                        .genre(getGenre(genres, "роман"))
-                        .build(),
-                Book.builder()
-                        .name("Маленький принц")
-                        .releaseYear((short) 1943)
-                        .author(getAuthor(authors, "Антуан де Сент-Экзюпери"))
-                        .genre(getGenre(genres, "философская сказка"))
-                        .build(),
-                Book.builder()
-                        .name("О дивный новый мир")
-                        .releaseYear((short) 1932)
-                        .author(getAuthor(authors, "Олдос Хаксли"))
-                        .genre(getGenre(genres, "научная фантастика"))
-                        .build(),
-                Book.builder()
-                        .name("Шантарам")
-                        .releaseYear((short) 2003)
-                        .author(getAuthor(authors, "Грегори Дэвид Робертс"))
-                        .genre(getGenre(genres, "автобиографический роман"))
-                        .build()
-        ).toList();
+        return List.of(new Book("Гарри Поттер и философский камень", (short) 1997, getAuthor(authors,
+                        "Джоан Роулинг"), getGenre(genres, "фэнтези")),
+                new Book("Триумфальная арка", (short) 1945, getAuthor(authors, "Эрих Мария Ремарк"),
+                        getGenre(genres, "роман")),
+                new Book("Мастер и Маргарита", (short) 1967, getAuthor(authors, "Михаил Булгаков"),
+                        getGenre(genres, "фантастика")),
+                new Book("1984", (short) 1949, getAuthor(authors, "Джордж Оруэлл"),
+                        getGenre(genres, "научная фантастика")),
+                new Book("Война и мир", (short) 1869, getAuthor(authors, "Лев Толстой"),
+                        getGenre(genres, "исторический роман")),
+                new Book("Анна Каренина", (short) 1877, getAuthor(authors, "Лев Толстой"),
+                        getGenre(genres, "роман")),
+                new Book("Убить пересмешника", (short) 1960, getAuthor(authors, "Харпер Ли"),
+                        getGenre(genres, "роман")),
+                new Book("Маленький принц", (short) 1943,
+                        getAuthor(authors, "Антуан де Сент-Экзюпери"),
+                        getGenre(genres, "философская сказка")),
+                new Book("О дивный новый мир", (short) 1932, getAuthor(authors, "Олдос Хаксли"),
+                        getGenre(genres, "научная фантастика")),
+                new Book("Шантарам", (short) 2003, getAuthor(authors, "Грегори Дэвид Робертс"),
+                        getGenre(genres, "автобиографический роман"))
+        );
     }
 
     private List<Comment> getComments(List<Book> books) {
-        return Stream.of(
-                Comment.builder()
-                        .book(getBook(books, "Гарри Поттер и философский камень"))
-                        .message("Мне больше фильм понравился, чем книга")
-                        .updateOn(LocalDateTime.now())
-                        .build(),
-                Comment.builder()
-                        .book(getBook(books, "Гарри Поттер и философский камень"))
-                        .message("Отличная книга")
-                        .updateOn(LocalDateTime.now())
-                        .build(),
-                Comment.builder()
-                        .book(getBook(books, "Триумфальная арка"))
-                        .message("Добавил в себе список для чтения")
-                        .updateOn(LocalDateTime.now())
-                        .build(),
-                Comment.builder()
-                        .book(getBook(books, "Война и мир"))
-                        .message("Слишком много читать, не зацепило")
-                        .updateOn(LocalDateTime.now())
-                        .build()
-        ).toList();
+        return List.of(
+                new Comment("Мне больше фильм понравился, чем книга",
+                        getBook(books, "Гарри Поттер и философский камень")),
+                new Comment("Отличная книга", getBook(books, "Гарри Поттер и философский камень")),
+                new Comment("Добавил в себе список для чтения", getBook(books, "Триумфальная арка")),
+                new Comment("Слишком много читать, не зацепило", getBook(books, "Война и мир"))
+        );
     }
 }

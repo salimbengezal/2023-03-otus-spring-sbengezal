@@ -52,11 +52,7 @@ public class CommentServiceImpl implements CommentService {
     @Transactional
     public Comment add(String id, String message) throws EntityNotFoundException {
         val book = bookService.getById(id);
-        val comment = Comment.builder()
-                .book(book)
-                .message(message)
-                .updateOn(LocalDateTime.now())
-                .build();
+        val comment = new Comment(message, book);
         return commentRepository.save(comment);
     }
 }

@@ -20,9 +20,9 @@ public class GenreMongoRepositoryTest {
     private GenreRepository genreRepository;
 
     @BeforeAll
-    static void fillData(@Autowired MongoTemplate mongoTemplate){
-        val genre1 = Genre.builder().id("1L").name("жанр1").build();
-        val genre2 = Genre.builder().id("2L").name("жанр2").build();
+    static void fillData(@Autowired MongoTemplate mongoTemplate) {
+        val genre1 = new Genre("1L", "жанр1");
+        val genre2 = new Genre("2L", "жанр2");
         mongoTemplate.save(genre1);
         mongoTemplate.save(genre2);
     }

@@ -1,7 +1,6 @@
 package ru.otus.homeworks.hw8.entity;
 
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
@@ -11,10 +10,9 @@ import org.springframework.data.mongodb.core.mapping.DocumentReference;
 import java.time.LocalDateTime;
 
 @Document(collection = "comment")
-@Builder(toBuilder = true)
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Data
 public class Comment {
 
     @Id
@@ -26,5 +24,18 @@ public class Comment {
     private Book book;
 
     private LocalDateTime updateOn;
+
+    public Comment(String message, Book book) {
+        this.message = message;
+        this.book = book;
+        this.updateOn = LocalDateTime.now();
+    }
+
+    public Comment(String id, String message, Book book) {
+        this.id = id;
+        this.message = message;
+        this.book = book;
+        this.updateOn = LocalDateTime.now();
+    }
 
 }
