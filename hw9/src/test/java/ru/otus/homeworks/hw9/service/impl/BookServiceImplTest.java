@@ -5,13 +5,13 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
+import ru.otus.homeworks.hw9.dto.*;
 import ru.otus.homeworks.hw9.entity.Author;
 import ru.otus.homeworks.hw9.entity.Book;
 import ru.otus.homeworks.hw9.entity.Genre;
-import ru.otus.homeworks.hw9.exceptions.AtLeastOneParameterIsNullException;
 import ru.otus.homeworks.hw9.exceptions.EntityNotFoundException;
 import ru.otus.homeworks.hw9.repositories.AuthorRepository;
 import ru.otus.homeworks.hw9.repositories.BookRepository;
@@ -25,7 +25,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
-@DataMongoTest
+@SpringBootTest
 @DisplayName("Сервис с книгами должен ")
 @Import({BookServiceImpl.class, AuthorServiceImpl.class, GenreServiceImpl.class, CommentServiceImpl.class})
 public class BookServiceImplTest {
@@ -68,16 +68,16 @@ public class BookServiceImplTest {
     @Test
     @DisplayName("получать книгу")
     void shouldGetBook() throws EntityNotFoundException {
-        val author1 = new Author("1L", "a1");
-        val genre1 = new Genre("1L", "g1");
-        val expectedBook = new Book("1L", "b1", (short) 2000, author1, genre1);
-        assertEquals(bookService.getById("1L"), expectedBook);
+        val authorDto = new AuthorDto("1L", "a1");
+        val genreDto = new GenreDto("1L", "g1");
+        val expectedBookDto = new BookDtoResponse("1L", "b1", (short) 2000, authorDto, genreDto);
+        assertEquals(bookService.getById("1L"), expectedBookDto);
         verify(bookRepository, times(1)).findById("1L");
     }
 
     @Test
     @DisplayName("вызывать исключение, если книги не существует")
-    void shouldThrow() {
+    void shouldThrowEntityNotFoundException() {
         assertThrows(EntityNotFoundException.class, () -> bookService.getById("3"));
     }
 
@@ -89,54 +89,35 @@ public class BookServiceImplTest {
 
     @Test
     @DisplayName("добавлять книгу")
-    void shouldAddBook() throws EntityNotFoundException, AtLeastOneParameterIsNullException {
-        val author = new Author("1L", "a");
-        val genre = new Genre("1L", "g");
-        val newBook = new Book("name", (short) 2020, author, genre);
-        when(authorRepository.findById("1L")).thenReturn(Optional.of(author));
-        when(genreRepository.findById("1L")).thenReturn(Optional.of(genre));
-        when(bookRepository.save(newBook)).thenReturn(newBook);
-        val book = bookService.add(
-                newBook.getName(),
-                newBook.getReleaseYear(),
-                newBook.getAuthor().getId(),
-                newBook.getGenre().getId());
-        assertEquals(book, newBook);
+    void shouldAddBook() throws EntityNotFoundException {
+        val author = new Author("1L", "a1");
+        val genre = new Genre("1L", "g1");
+        val newBook = new Book(null, "name", Double.valueOf(Math.random()).shortValue(), author, genre);
+        val savedBook = new Book("123L", newBook.getName(), newBook.getReleaseYear(), author, genre);
+        when(bookRepository.save(newBook)).thenReturn(savedBook);
+        val bookDto = new NewBookDtoRequest(newBook.getName(), newBook.getReleaseYear(), author.getId(), genre.getId());
+        bookService.add(bookDto);
+        verify(bookRepository, times(1)).save(newBook);
     }
 
     @Test
     @DisplayName("обновлять книгу")
     void shouldUpdateBook() throws EntityNotFoundException {
-        val author = new Author("1L", "a");
-        val genre = new Genre("1L", "g");
-        val book = bookRepository.findById("1L").orElseThrow();
-        when(authorRepository.findById("1L")).thenReturn(Optional.of(author));
-        when(genreRepository.findById("1L")).thenReturn(Optional.of(genre));
-        when(bookRepository.findById("0L")).thenReturn(Optional.of(book));
-        bookService.update(
-                book.getId(),
-                book.getName(),
-                book.getReleaseYear(),
-                null,
-                null);
+        val author = new Author("1L", "a1");
+        val genre = new Genre("1L", "g1");
+        val book = new Book("1L", "newName", Double.valueOf(Math.random()).shortValue(), author, genre);
+        when(bookRepository.save(book)).thenReturn(book);
+        val bookDto = new UpdateBookDtoRequest(book.getId(), book.getName(), book.getReleaseYear(), author.getId(), genre.getId());
+        bookService.update(bookDto);
         verify(bookRepository).save(book);
     }
 
     @Test
     @DisplayName("удалять книгу")
     void shouldDeleteBook() throws EntityNotFoundException {
-        val book = bookService.getById("1L");
-        bookService.deleteById("1L");
-        verify(bookRepository).delete(book);
-    }
-
-    @Test
-    @DisplayName("вызывать исключение из-за недостаточного количества аргументов")
-    void shouldThrowAtLeastOneParameterIsNullException() {
-        assertThrows(
-                AtLeastOneParameterIsNullException.class,
-                () -> bookService.add("some_name", null, null, null)
-        );
+        val bookDto = bookService.getById("1L");
+        bookService.deleteById(bookDto.id());
+        verify(bookRepository).deleteById(bookDto.id());
     }
 
 }

@@ -58,7 +58,7 @@ public class V1ChangeUnit {
                         "научная фантастика",
                         "философская сказка",
                         "автобиографический роман")
-                .map(Genre::new)
+                .map(name -> new Genre(null, name))
                 .toList();
     }
 
@@ -72,7 +72,7 @@ public class V1ChangeUnit {
                         "Антуан де Сент-Экзюпери",
                         "Олдос Хаксли",
                         "Грегори Дэвид Робертс")
-                .map(Author::new)
+                .map(name -> new Author(null, name))
                 .toList();
     }
 

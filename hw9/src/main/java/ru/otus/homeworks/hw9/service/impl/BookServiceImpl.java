@@ -4,13 +4,15 @@ import lombok.RequiredArgsConstructor;
 import lombok.val;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ru.otus.homeworks.hw9.dto.*;
+import ru.otus.homeworks.hw9.entity.Author;
 import ru.otus.homeworks.hw9.entity.Book;
-import ru.otus.homeworks.hw9.exceptions.AtLeastOneParameterIsNullException;
+import ru.otus.homeworks.hw9.entity.Genre;
 import ru.otus.homeworks.hw9.exceptions.EntityNotFoundException;
+import ru.otus.homeworks.hw9.repositories.AuthorRepository;
 import ru.otus.homeworks.hw9.repositories.BookRepository;
-import ru.otus.homeworks.hw9.service.AuthorService;
+import ru.otus.homeworks.hw9.repositories.GenreRepository;
 import ru.otus.homeworks.hw9.service.BookService;
-import ru.otus.homeworks.hw9.service.GenreService;
 
 import java.util.List;
 
@@ -20,66 +22,75 @@ public class BookServiceImpl implements BookService {
 
     private final BookRepository bookRepository;
 
-    private final AuthorService authorService;
+    private final AuthorRepository authorRepository;
 
-    private final GenreService genreService;
+    private final GenreRepository genreRepository;
 
     @Override
-    public List<Book> getAll() {
-        return bookRepository.findAll();
+    public List<BookDtoResponse> getAll() {
+        return bookRepository.findAll().stream()
+                .map(b -> {
+                    val author = new AuthorDto(b.getAuthor().getId(), b.getAuthor().getName());
+                    val genre = new GenreDto(b.getGenre().getId(), b.getGenre().getName());
+                    return new BookDtoResponse(b.getId(), b.getName(), b.getReleaseYear(), author, genre);
+                })
+                .toList();
     }
 
     @Override
     @Transactional
-    public Book deleteById(String id) throws EntityNotFoundException {
-        val book = getById(id);
-        bookRepository.delete(book);
-        return book;
+    public void deleteById(String id) throws EntityNotFoundException {
+        bookRepository.deleteById(id);
     }
 
     @Override
-    public Book getById(String id) throws EntityNotFoundException {
+    public BookDtoResponse getById(String id) throws EntityNotFoundException {
+        val book = getBook(id);
+        val authorDto = new AuthorDto(book.getAuthor().getId(), book.getAuthor().getName());
+        val genreDto = new GenreDto(book.getGenre().getId(), book.getGenre().getName());
+        return new BookDtoResponse(book.getId(), book.getName(), book.getReleaseYear(), authorDto, genreDto);
+    }
+
+    private Author getAuthor(String id) throws EntityNotFoundException {
+        return authorRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Автор не найден"));
+    }
+
+    private Genre getGenre(String id) throws EntityNotFoundException {
+        return genreRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Жанр не найден"));
+    }
+
+    private Book getBook(String id) throws EntityNotFoundException {
         return bookRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Книга не найдена"));
     }
 
     @Override
     @Transactional
-    public Book update(String id, String name, Short year, String authorId, String genreId)
-            throws EntityNotFoundException {
-        Book book = getById(id);
-        if (authorId != null) {
-            val newAuthor = authorService.getById(authorId);
+    public void update(UpdateBookDtoRequest bookDto) throws EntityNotFoundException {
+        Book book = getBook(bookDto.id());
+        if (bookDto.authorId() != null) {
+            val newAuthor = getAuthor(bookDto.authorId());
             book.setAuthor(newAuthor);
         }
-        if (genreId != null) {
-            val newGenre = genreService.getById(genreId);
+        if (bookDto.genreId() != null) {
+            val newGenre = getGenre(bookDto.genreId());
             book.setGenre(newGenre);
         }
-        if (name != null) {
-            book.setName(name);
+        if (bookDto.name() != null) {
+            book.setName(bookDto.name());
         }
-        if (year != null) {
-            book.setReleaseYear(year);
+        if (bookDto.releaseYear() != null) {
+            book.setReleaseYear(bookDto.releaseYear());
         }
-        return bookRepository.save(book);
+        bookRepository.save(book);
     }
 
     @Override
     @Transactional
-    public Book add(String name, Short year, String authorId, String genreId)
-            throws AtLeastOneParameterIsNullException, EntityNotFoundException {
-        if (authorId == null || genreId == null || year == null) {
-            throw new AtLeastOneParameterIsNullException();
-        }
-        val author = authorService.getById(authorId);
-        val genre = genreService.getById(genreId);
-        val book = new Book(name, year, author, genre);
-        return bookRepository.save(book);
-    }
-
-    @Override
-    public List<Book> getAllByNameContains(String name) {
-        return bookRepository.findByNameContainingIgnoreCase(name);
+    public void add(NewBookDtoRequest bookDto) throws EntityNotFoundException {
+        val author = getAuthor(bookDto.authorId());
+        val genre = getGenre(bookDto.genreId());
+        val book = new Book(bookDto.name(), bookDto.releaseYear(), author, genre);
+        bookRepository.save(book);
     }
 
 }

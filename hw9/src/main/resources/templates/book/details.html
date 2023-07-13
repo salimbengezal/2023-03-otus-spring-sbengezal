@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Book details</title>
+</head>
+<body>
+<h3>Book details</h3>
+
+<div th:object="${book}">
+    <p>ID: <span th:text="*{id}"/></p>
+    <p>Name: <span th:text="*{name}"/></p>
+    <p>Year: <span th:text="*{releaseYear}"/></p>
+    <p>Genre: <span th:text="*{genre.name}"/></p>
+    <p>Author: <span th:text="*{author.name}"/></p>
+</div>
+
+<h3><b>Comments</b></h3>
+<div th:if="${comments.isEmpty()}">
+    <p>No comments</p>
+</div>
+<div th:if="${!comments.isEmpty()}">
+    <table class="books">
+        <thead>
+        <tr>
+            <th>Time</th>
+            <th>Message</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="comment: ${comments}">
+            <td th:text="${comment.updatedOn}">Book Author Name</td>
+            <td th:text="${comment.message}">Message text</td>
+            <td>
+                <a th:href="@{/book/{id}/delete-comment(id=${book.id}, comment-id=${comment.id})}">Remove</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+<form id="add-comment" action="new.html" th:action="@{/book/{id}(id=${book.id})}" th:method="post">
+    <h3>Add comment</h3>
+    <label for="form-message"></label>
+    <textarea id="form-message" name="message" rows="10" cols="45"></textarea>
+    <div class="row">
+        <button type="submit">Save</button>
+    </div>
+</form>
+</body>
+</html>

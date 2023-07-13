@@ -4,13 +4,14 @@ import lombok.RequiredArgsConstructor;
 import lombok.val;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ru.otus.homeworks.hw9.dto.CommentDtoResponse;
+import ru.otus.homeworks.hw9.dto.NewCommentDtoRequest;
 import ru.otus.homeworks.hw9.entity.Comment;
 import ru.otus.homeworks.hw9.exceptions.EntityNotFoundException;
+import ru.otus.homeworks.hw9.repositories.BookRepository;
 import ru.otus.homeworks.hw9.repositories.CommentRepository;
-import ru.otus.homeworks.hw9.service.BookService;
 import ru.otus.homeworks.hw9.service.CommentService;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -19,40 +20,28 @@ public class CommentServiceImpl implements CommentService {
 
     private final CommentRepository commentRepository;
 
-    private final BookService bookService;
+    private final BookRepository bookRepository;
 
     @Override
     @Transactional(readOnly = true)
-    public List<Comment> getCommentsByBookId(String id) {
-        return commentRepository.findAllByBookId(id);
+    public List<CommentDtoResponse> getCommentsByBookId(String id) {
+        return commentRepository.findAllByBookId(id).stream()
+                .map(c -> new CommentDtoResponse(c.getId(), c.getMessage(), c.getUpdateOn()))
+                .toList();
     }
 
     @Override
     @Transactional
     public void deleteById(String id) throws EntityNotFoundException {
-        val comment = getById(id);
-        commentRepository.delete(comment);
-    }
-
-    @Override
-    public Comment getById(String id) throws EntityNotFoundException {
-        return commentRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Комментарий не найден"));
+        commentRepository.deleteById(id);
     }
 
     @Override
     @Transactional
-    public Comment update(String id, String newMessage) throws EntityNotFoundException {
-        val comment = getById(id);
-        comment.setMessage(newMessage);
-        comment.setUpdateOn(LocalDateTime.now());
-        return commentRepository.save(comment);
-    }
-
-    @Override
-    @Transactional
-    public Comment add(String id, String message) throws EntityNotFoundException {
-        val book = bookService.getById(id);
-        val comment = new Comment(message, book);
-        return commentRepository.save(comment);
+    public void add(NewCommentDtoRequest commentDto) throws EntityNotFoundException {
+        val book = bookRepository.findById(commentDto.bookId())
+                .orElseThrow(() -> new EntityNotFoundException("Книга не найдена"));
+        val comment = new Comment(commentDto.message(), book);
+        commentRepository.save(comment);
     }
 }
