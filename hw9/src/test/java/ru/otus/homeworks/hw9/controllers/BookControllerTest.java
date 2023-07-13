@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import ru.otus.homeworks.hw9.dto.NewBookDtoRequest;
 import ru.otus.homeworks.hw9.dto.UpdateBookDtoRequest;
@@ -39,10 +38,14 @@ public class BookControllerTest {
     void shouldCreateBook() throws Exception {
         val newBook = new NewBookDtoRequest("new-book", (short) 123, "some-author-id",
                 "some-genre-author-id");
-        val requestBody = mapper.writeValueAsString(newBook);
+        val requestBody = mapper.writeValueAsBytes(newBook);
         mvc.perform(post("/book")
+                        .param("name", newBook.name())
+                        .param("releaseYear", newBook.releaseYear().toString())
+                        .param("authorId", newBook.authorId())
+                        .param("genreId", newBook.genreId())
                         .content(requestBody)
-                        .contentType(MediaType.APPLICATION_JSON))
+                )
                 .andExpect(status().is3xxRedirection())
                 .andExpect(header().string(HttpHeaders.LOCATION, "/book"));
         verify(bookService, times(1)).add(newBook);
@@ -65,8 +68,12 @@ public class BookControllerTest {
                 "some-author-id", "some-genre-author-id");
         val requestBody = mapper.writeValueAsString(updatedBook);
         mvc.perform(post("/book/update")
-                        .content(requestBody)
-                        .contentType(MediaType.APPLICATION_JSON))
+                        .param("id", updatedBook.id())
+                        .param("name", updatedBook.name())
+                        .param("releaseYear", updatedBook.releaseYear().toString())
+                        .param("authorId", updatedBook.authorId())
+                        .param("genreId", updatedBook.genreId())
+                        .content(requestBody))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(header().string(HttpHeaders.LOCATION, "/book"));
         verify(bookService, times(1)).update(updatedBook);

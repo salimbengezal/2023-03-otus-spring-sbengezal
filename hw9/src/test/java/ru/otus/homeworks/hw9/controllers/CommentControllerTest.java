@@ -35,7 +35,9 @@ public class CommentControllerTest {
         val bookId = "1";
         val comment = new NewCommentDtoRequest("useful-message", bookId);
         commentService.add(comment);
-        mvc.perform(post("/book/" + bookId))
+        mvc.perform(post("/book/%s/add-comment".formatted(bookId))
+                        .content(comment.message())
+                        .param("bookId", comment.bookId()))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(header().string(HttpHeaders.LOCATION, "/book/" + bookId));
         verify(commentService, times(1)).add(comment);

@@ -17,7 +17,7 @@ public class CommentController {
 
     private final CommentService commentService;
 
-    @PostMapping("/book/{id}")
+    @PostMapping("/book/{id}/add-comment")
     public String createComment(@PathVariable("id") String bookId, String message) throws EntityNotFoundException {
         val newComment = new NewCommentDtoRequest(message, bookId);
         commentService.add(newComment);

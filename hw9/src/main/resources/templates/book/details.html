@@ -33,14 +33,14 @@
             <td th:text="${comment.updatedOn}">Book Author Name</td>
             <td th:text="${comment.message}">Message text</td>
             <td>
-                <a th:href="@{/book/{id}/delete-comment(id=${book.id}, comment-id=${comment.id})}">Remove</a>
+                <a th:href="@{/book/{bid}/delete-comment(bid=${book.id}, id=${comment.id})}">Remove</a>
             </td>
         </tr>
         </tbody>
     </table>
 </div>
 
-<form id="add-comment" action="new.html" th:action="@{/book/{id}(id=${book.id})}" th:method="post">
+<form id="add-comment" action="new.html" th:action="@{/book/{id}/add-comment(id=${book.id})}" th:method="post">
     <h3>Add comment</h3>
     <label for="form-message"></label>
     <textarea id="form-message" name="message" rows="10" cols="45"></textarea>

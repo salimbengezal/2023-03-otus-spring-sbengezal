@@ -5,8 +5,10 @@
     <title>Edit book</title>
 </head>
 <body>
-<form id="edit-form" action="edit.html" th:action="@{/book/update(id=${book.id})}" th:method="post" th:object="${book}">
+<form id="edit-form" action="edit.html" th:action="@{/book/update}" th:method="post" th:object="${book}">
     <h3>Edit book information</h3>
+
+    <input name="id" th:field="*{id}" type="hidden"/>
 
     <div class="row">
         <p>ID: <span th:text="*{id}"/></p>
@@ -14,18 +16,19 @@
 
     <div class="row">
         <label for="name-input">Name:</label>
-        <input id="name-input" name="name" type="text" th:value="*{name}" value="Cool name"/>
+        <input id="name-input" name="name" type="text" th:value="*{name}" th:field="*{name}" value="Cool name"/>
     </div>
 
     <div class="row">
         <label for="year-input">Year:</label>
-        <input id="year-input" name="releaseYear" type="text" th:value="*{releaseYear()}" value="Last year"/>
+        <input id="year-input" name="releaseYear" type="text" th:value="*{releaseYear()}" th:field="*{releaseYear}"
+               value="Last year"/>
     </div>
 
     <div class="row">
         <label for="genre-select">Genre:</label>
         <select id="genre-select" name="genreId">
-            <option th:each="genre : ${genres}" th:value="${genre.id}" th:text="${genre.name}"
+            <option th:each="genre : ${genres}" th:value="${genre.id}" th:text="${genre.name}" th:field="*{genre.name}"
                     th:selected="${genre.id == book.genre().id()}"/>
         </select>
     </div>
@@ -34,6 +37,7 @@
         <label for="author-select">Author:</label>
         <select id="author-select" name="authorId">
             <option th:each="author : ${authors}" th:value="${author.id}" th:text="${author.name}"
+                    th:field="*{author.name}"
                     th:selected="${author.id == book.author().id()}"/>
         </select>
     </div>
