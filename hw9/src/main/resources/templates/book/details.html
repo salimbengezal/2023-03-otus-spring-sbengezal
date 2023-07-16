@@ -40,10 +40,11 @@
     </table>
 </div>
 
-<form id="add-comment" action="new.html" th:action="@{/book/{id}/add-comment(id=${book.id})}" th:method="post">
+<form id="add-comment" action="new.html" th:action="@{/book/{id}/add-comment(id=${book.id})}" th:object="${comment}" th:method="post">
     <h3>Add comment</h3>
     <label for="form-message"></label>
-    <textarea id="form-message" name="message" rows="10" cols="45"></textarea>
+    <textarea id="form-message" th:value="*{message}" th:field="*{message}" name="message" rows="10" cols="45"></textarea>
+    <div class="errors" th:if="${#fields.hasErrors('message')}" th:errors="*{message}">Wrong message</div>
     <div class="row">
         <button type="submit">Save</button>
     </div>

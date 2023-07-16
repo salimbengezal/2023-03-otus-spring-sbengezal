@@ -68,8 +68,8 @@ public class BookServiceImplTest {
     @Test
     @DisplayName("получать книгу")
     void shouldGetBook() throws EntityNotFoundException {
-        val authorDto = new AuthorDto("1L", "a1");
-        val genreDto = new GenreDto("1L", "g1");
+        val authorDto = new AuthorDtoResponse("1L", "a1");
+        val genreDto = new GenreDtoResponse("1L", "g1");
         val expectedBookDto = new BookDtoResponse("1L", "b1", (short) 2000, authorDto, genreDto);
         assertEquals(bookService.getById("1L"), expectedBookDto);
         verify(bookRepository, times(1)).findById("1L");

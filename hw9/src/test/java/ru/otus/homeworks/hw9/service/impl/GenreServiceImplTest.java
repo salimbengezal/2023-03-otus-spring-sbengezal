@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
-import ru.otus.homeworks.hw9.dto.GenreDto;
+import ru.otus.homeworks.hw9.dto.GenreDtoResponse;
 import ru.otus.homeworks.hw9.entity.Genre;
 import ru.otus.homeworks.hw9.repositories.GenreRepository;
 import ru.otus.homeworks.hw9.service.GenreService;
@@ -41,7 +41,7 @@ public class GenreServiceImplTest {
     @DisplayName("получать всех авторов")
     void shouldGetAllAuthors() {
         val genresDto = IntStream.range(1, 10)
-                .mapToObj(number -> new GenreDto(String.valueOf(number), "a" + number))
+                .mapToObj(number -> new GenreDtoResponse(String.valueOf(number), "a" + number))
                 .toList();
         assertEquals(genreService.getAll(), genresDto);
         verify(genreRepository, times(1)).findAll();

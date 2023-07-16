@@ -40,10 +40,10 @@ public class BookControllerTest {
                 "some-genre-author-id");
         val requestBody = mapper.writeValueAsBytes(newBook);
         mvc.perform(post("/book")
-                        .param("name", newBook.name())
-                        .param("releaseYear", newBook.releaseYear().toString())
-                        .param("authorId", newBook.authorId())
-                        .param("genreId", newBook.genreId())
+                        .param("name", newBook.getName())
+                        .param("releaseYear", newBook.getReleaseYear().toString())
+                        .param("authorId", newBook.getAuthorId())
+                        .param("genreId", newBook.getGenreId())
                         .content(requestBody)
                 )
                 .andExpect(status().is3xxRedirection())

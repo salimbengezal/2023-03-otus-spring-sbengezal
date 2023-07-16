@@ -4,7 +4,11 @@ import lombok.RequiredArgsConstructor;
 import lombok.val;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.otus.homeworks.hw9.dto.*;
+import ru.otus.homeworks.hw9.dto.AuthorDtoResponse;
+import ru.otus.homeworks.hw9.dto.BookDtoResponse;
+import ru.otus.homeworks.hw9.dto.GenreDtoResponse;
+import ru.otus.homeworks.hw9.dto.NewBookDtoRequest;
+import ru.otus.homeworks.hw9.dto.UpdateBookDtoRequest;
 import ru.otus.homeworks.hw9.entity.Author;
 import ru.otus.homeworks.hw9.entity.Book;
 import ru.otus.homeworks.hw9.entity.Genre;
@@ -30,8 +34,8 @@ public class BookServiceImpl implements BookService {
     public List<BookDtoResponse> getAll() {
         return bookRepository.findAll().stream()
                 .map(b -> {
-                    val author = new AuthorDto(b.getAuthor().getId(), b.getAuthor().getName());
-                    val genre = new GenreDto(b.getGenre().getId(), b.getGenre().getName());
+                    val author = new AuthorDtoResponse(b.getAuthor().getId(), b.getAuthor().getName());
+                    val genre = new GenreDtoResponse(b.getGenre().getId(), b.getGenre().getName());
                     return new BookDtoResponse(b.getId(), b.getName(), b.getReleaseYear(), author, genre);
                 })
                 .toList();
@@ -46,8 +50,8 @@ public class BookServiceImpl implements BookService {
     @Override
     public BookDtoResponse getById(String id) throws EntityNotFoundException {
         val book = getBook(id);
-        val authorDto = new AuthorDto(book.getAuthor().getId(), book.getAuthor().getName());
-        val genreDto = new GenreDto(book.getGenre().getId(), book.getGenre().getName());
+        val authorDto = new AuthorDtoResponse(book.getAuthor().getId(), book.getAuthor().getName());
+        val genreDto = new GenreDtoResponse(book.getGenre().getId(), book.getGenre().getName());
         return new BookDtoResponse(book.getId(), book.getName(), book.getReleaseYear(), authorDto, genreDto);
     }
 
@@ -87,9 +91,9 @@ public class BookServiceImpl implements BookService {
     @Override
     @Transactional
     public void add(NewBookDtoRequest bookDto) throws EntityNotFoundException {
-        val author = getAuthor(bookDto.authorId());
-        val genre = getGenre(bookDto.genreId());
-        val book = new Book(bookDto.name(), bookDto.releaseYear(), author, genre);
+        val author = getAuthor(bookDto.getAuthorId());
+        val genre = getGenre(bookDto.getGenreId());
+        val book = new Book(bookDto.getName(), bookDto.getReleaseYear(), author, genre);
         bookRepository.save(book);
     }
 

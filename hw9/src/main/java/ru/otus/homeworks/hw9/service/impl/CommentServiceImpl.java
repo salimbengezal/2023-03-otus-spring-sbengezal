@@ -4,8 +4,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.val;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ru.otus.homeworks.hw9.dto.CommentDtoRequest;
 import ru.otus.homeworks.hw9.dto.CommentDtoResponse;
-import ru.otus.homeworks.hw9.dto.NewCommentDtoRequest;
 import ru.otus.homeworks.hw9.entity.Comment;
 import ru.otus.homeworks.hw9.exceptions.EntityNotFoundException;
 import ru.otus.homeworks.hw9.repositories.BookRepository;
@@ -38,10 +38,10 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     @Transactional
-    public void add(NewCommentDtoRequest commentDto) throws EntityNotFoundException {
-        val book = bookRepository.findById(commentDto.bookId())
+    public void add(CommentDtoRequest commentDto) throws EntityNotFoundException {
+        val book = bookRepository.findById(commentDto.getBookId())
                 .orElseThrow(() -> new EntityNotFoundException("Книга не найдена"));
-        val comment = new Comment(commentDto.message(), book);
+        val comment = new Comment(commentDto.getMessage(), book);
         commentRepository.save(comment);
     }
 }

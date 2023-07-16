@@ -5,31 +5,36 @@
     <title>Add book</title>
 </head>
 <body>
-<form id="add-form" action="new.html" th:action="@{/book}" th:method="post">
+<form id="add-form" action="new.html" th:action="@{/book}" th:method="post" th:object="${book}">
     <h3>Add book information</h3>
 
     <div class="row">
         <label for="name-input">Name:</label>
-        <input id="name-input" name="name" type="text"/>
+        <input id="name-input" th:value="*{name}" name="name" type="text"/>
+        <div class="errors" th:if="${#fields.hasErrors('name')}" th:errors="*{name}">Wrong name</div>
     </div>
 
     <div class="row">
         <label for="year-input">Year:</label>
-        <input id="year-input" name="releaseYear" type="text"/>
+        <input id="year-input" th:value="*{releaseYear}" name="releaseYear" type="text"/>
+        <div class="errors" th:if="${#fields.hasErrors('releaseYear')}" th:errors="*{releaseYear}">Wrong release year
+        </div>
     </div>
 
     <div class="row">
         <label for="genre-select">Genre:</label>
-        <select id="genre-select" name="genreId">
+        <select id="genre-select" name="genreId" th:value="*{releaseYear}">
             <option th:each="genre : ${genres}" th:value="${genre.id}" th:text="${genre.name}"/>
         </select>
+        <div class="errors" th:if="${#fields.hasErrors('genreId')}" th:errors="*{genreId}">Wrong genre</div>
     </div>
 
     <div class="row">
         <label for="author-select">Author:</label>
-        <select id="author-select" name="authorId">
+        <select id="author-select" name="authorId" th:value="*{releaseYear}">
             <option th:each="author : ${authors}" th:value="${author.id}" th:text="${author.name}"/>
         </select>
+        <div class="errors" th:if="${#fields.hasErrors('genreId')}" th:errors="*{genreId}">Wrong author</div>
     </div>
 
     <div class="row">

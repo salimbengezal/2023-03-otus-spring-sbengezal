@@ -7,6 +7,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
+import ru.otus.homeworks.hw9.dto.CommentDtoRequest;
+import ru.otus.homeworks.hw9.dto.NewBookDtoRequest;
+import ru.otus.homeworks.hw9.dto.UpdateBookDtoRequest;
 import ru.otus.homeworks.hw9.exceptions.EntityNotFoundException;
 import ru.otus.homeworks.hw9.service.AuthorService;
 import ru.otus.homeworks.hw9.service.BookService;
@@ -36,6 +39,7 @@ public class BookPagesController {
     public String create(Model model) {
         val genres = genreService.getAll();
         val authors = authorService.getAll();
+        model.addAttribute("book", new NewBookDtoRequest());
         model.addAttribute("genres", genres);
         model.addAttribute("authors", authors);
         return "book/new";
@@ -47,15 +51,18 @@ public class BookPagesController {
         val comments = commentService.getCommentsByBookId(book.id());
         model.addAttribute("book", book);
         model.addAttribute("comments", comments);
+        model.addAttribute("comment", new CommentDtoRequest());
         return "book/details";
     }
 
     @GetMapping("/book/edit")
     public String edit(Model model, @RequestParam("id") String id) throws EntityNotFoundException {
         val book = bookService.getById(id);
+        val validatedBook = new UpdateBookDtoRequest(book.id(), book.name(), book.releaseYear(), book.author().id(),
+                book.genre().id());
         val genres = genreService.getAll();
         val authors = authorService.getAll();
-        model.addAttribute("book", book);
+        model.addAttribute("book", validatedBook);
         model.addAttribute("genres", genres);
         model.addAttribute("authors", authors);
         return "book/edit";

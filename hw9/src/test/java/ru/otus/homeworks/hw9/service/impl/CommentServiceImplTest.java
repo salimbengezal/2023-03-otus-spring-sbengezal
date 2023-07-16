@@ -8,8 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
+import ru.otus.homeworks.hw9.dto.CommentDtoRequest;
 import ru.otus.homeworks.hw9.dto.CommentDtoResponse;
-import ru.otus.homeworks.hw9.dto.NewCommentDtoRequest;
 import ru.otus.homeworks.hw9.entity.Book;
 import ru.otus.homeworks.hw9.entity.Comment;
 import ru.otus.homeworks.hw9.exceptions.EntityNotFoundException;
@@ -67,15 +67,15 @@ public class CommentServiceImplTest {
     @Test
     @DisplayName("добавлять комментарий")
     void shouldAddComment() throws EntityNotFoundException {
-        val commentDto = new NewCommentDtoRequest("some-message", "some-book-id");
-        val book = new Book(commentDto.bookId(), "some-book", (short) 123, null, null);
-        when(bookRepository.findById(commentDto.bookId())).thenReturn(Optional.of(book));
+        val commentDto = new CommentDtoRequest("some-message", "some-book-id");
+        val book = new Book(commentDto.getBookId(), "some-book", (short) 123, null, null);
+        when(bookRepository.findById(commentDto.getBookId())).thenReturn(Optional.of(book));
         commentService.add(commentDto);
-        verify(bookRepository, times(1)).findById(commentDto.bookId());
+        verify(bookRepository, times(1)).findById(commentDto.getBookId());
         ArgumentCaptor<Comment> argumentCaptor = ArgumentCaptor.forClass(Comment.class);
         verify(commentRepository).save(argumentCaptor.capture());
         assert (argumentCaptor.getValue().getBook()).equals(book);
-        assert (argumentCaptor.getValue().getMessage()).equals(commentDto.message());
+        assert (argumentCaptor.getValue().getMessage()).equals(commentDto.getMessage());
         assertNull(argumentCaptor.getValue().getId());
     }
 

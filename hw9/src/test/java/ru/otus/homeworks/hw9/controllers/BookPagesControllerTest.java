@@ -7,10 +7,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.MockMvc;
-import ru.otus.homeworks.hw9.dto.AuthorDto;
+import ru.otus.homeworks.hw9.dto.AuthorDtoResponse;
 import ru.otus.homeworks.hw9.dto.BookDtoResponse;
 import ru.otus.homeworks.hw9.dto.CommentDtoResponse;
-import ru.otus.homeworks.hw9.dto.GenreDto;
+import ru.otus.homeworks.hw9.dto.GenreDtoResponse;
 import ru.otus.homeworks.hw9.service.AuthorService;
 import ru.otus.homeworks.hw9.service.BookService;
 import ru.otus.homeworks.hw9.service.CommentService;
@@ -47,8 +47,8 @@ public class BookPagesControllerTest {
     @DisplayName("отдавать страницу списка книг")
     void shouldReturnToBookListPage() throws Exception {
         val books = IntStream.rangeClosed(1, 2).mapToObj(n -> {
-            val author = new AuthorDto("some-id" + n, "some-name" + n);
-            val genre = new GenreDto("some-id" + n, "some-genre" + n);
+            val author = new AuthorDtoResponse("some-id" + n, "some-name" + n);
+            val genre = new GenreDtoResponse("some-id" + n, "some-genre" + n);
             return new BookDtoResponse("some-id" + n, "some-name" + n, (short) 123, author, genre);
         }).toList();
         when(bookService.getAll()).thenReturn(books);
@@ -63,10 +63,10 @@ public class BookPagesControllerTest {
     @DisplayName("отдавать страницу для создания новой книги")
     void shouldReturnToBookCreatePage() throws Exception {
         val genres = IntStream.rangeClosed(1, 4)
-                .mapToObj(n -> new GenreDto(String.valueOf(n), "g" + n))
+                .mapToObj(n -> new GenreDtoResponse(String.valueOf(n), "g" + n))
                 .toList();
         val authors = IntStream.rangeClosed(1, 5)
-                .mapToObj(n -> new AuthorDto(String.valueOf(n), "a" + n))
+                .mapToObj(n -> new AuthorDtoResponse(String.valueOf(n), "a" + n))
                 .toList();
         when(authorService.getAll()).thenReturn(authors);
         when(genreService.getAll()).thenReturn(genres);
@@ -82,8 +82,8 @@ public class BookPagesControllerTest {
     @Test
     @DisplayName("отдавать страницу для просмотра книги")
     void shouldReturnToBookDetailsPage() throws Exception {
-        val author = new AuthorDto("some-id", "some-name");
-        val genre = new GenreDto("some-id", "some-genre");
+        val author = new AuthorDtoResponse("some-id", "some-name");
+        val genre = new GenreDtoResponse("some-id", "some-genre");
         val book = new BookDtoResponse("1", "some-name", (short) 123, author, genre);
         List<CommentDtoResponse> comments = Collections.emptyList();
         when(bookService.getById(book.id())).thenReturn(book);
@@ -100,14 +100,14 @@ public class BookPagesControllerTest {
     @Test
     @DisplayName("отдавать страницу для редактирования книги")
     void shouldReturnToBookEditPage() throws Exception {
-        val author = new AuthorDto("1", "some-name");
-        val genre = new GenreDto("2", "some-genre");
+        val author = new AuthorDtoResponse("1", "some-name");
+        val genre = new GenreDtoResponse("2", "some-genre");
         val book = new BookDtoResponse("2", "some-name", (short) 123, author, genre);
         val genres = IntStream.rangeClosed(1, 4)
-                .mapToObj(n -> new GenreDto(String.valueOf(n), "g" + n))
+                .mapToObj(n -> new GenreDtoResponse(String.valueOf(n), "g" + n))
                 .toList();
         val authors = IntStream.rangeClosed(1, 5)
-                .mapToObj(n -> new AuthorDto(String.valueOf(n), "a" + n))
+                .mapToObj(n -> new AuthorDtoResponse(String.valueOf(n), "a" + n))
                 .toList();
         when(authorService.getAll()).thenReturn(authors);
         when(genreService.getAll()).thenReturn(genres);

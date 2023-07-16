@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
-import ru.otus.homeworks.hw9.dto.AuthorDto;
+import ru.otus.homeworks.hw9.dto.AuthorDtoResponse;
 import ru.otus.homeworks.hw9.entity.Author;
 import ru.otus.homeworks.hw9.repositories.AuthorRepository;
 import ru.otus.homeworks.hw9.service.AuthorService;
@@ -41,7 +41,7 @@ public class AuthorServiceImplTest {
     @DisplayName("получать всех авторов")
     void shouldGetAllAuthors() {
         val authorsDto = IntStream.range(1, 10)
-                .mapToObj(number -> new AuthorDto(String.valueOf(number), "a" + number))
+                .mapToObj(number -> new AuthorDtoResponse(String.valueOf(number), "a" + number))
                 .toList();
         assertEquals(authorService.getAll(), authorsDto);
         verify(authorRepository, times(1)).findAll();

@@ -9,7 +9,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
-import ru.otus.homeworks.hw9.dto.NewCommentDtoRequest;
+import ru.otus.homeworks.hw9.dto.CommentDtoRequest;
 import ru.otus.homeworks.hw9.service.CommentService;
 
 import static org.mockito.Mockito.times;
@@ -33,11 +33,11 @@ public class CommentControllerTest {
     @DisplayName("создавать новый комментарий")
     void shouldCreateComment() throws Exception {
         val bookId = "1";
-        val comment = new NewCommentDtoRequest("useful-message", bookId);
+        val comment = new CommentDtoRequest("useful-message", bookId);
         commentService.add(comment);
         mvc.perform(post("/book/%s/add-comment".formatted(bookId))
-                        .content(comment.message())
-                        .param("bookId", comment.bookId()))
+                        .content(comment.getMessage())
+                        .param("bookId", comment.getBookId()))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(header().string(HttpHeaders.LOCATION, "/book/" + bookId));
         verify(commentService, times(1)).add(comment);
