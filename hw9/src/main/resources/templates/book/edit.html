@@ -5,7 +5,7 @@
     <title>Edit book</title>
 </head>
 <body>
-<form id="edit-form" action="edit.html" th:action="@{/book/update}" th:method="post" th:object="${book}">
+<form action="edit.html" id="edit-form" th:action="@{/book/update}" th:method="post" th:object="${book}">
     <h3>Edit book information</h3>
 
     <input name="id" th:field="*{id}" th:value="*{id}" type="hidden"/>
@@ -16,33 +16,34 @@
 
     <div class="row">
         <label for="name-input">Name:</label>
-        <input id="name-input" name="name" type="text" th:value="*{name}" th:field="*{name}" value="Cool name"/>
-        <div class="errors" th:if="${#fields.hasErrors('name')}" th:errors="*{name}">Wrong name</div>
+        <input id="name-input" name="name" th:field="*{name}" th:value="*{name}" type="text" value="Cool name"/>
+        <div class="errors" th:errors="*{name}" th:if="${#fields.hasErrors('name')}">Wrong name</div>
     </div>
 
     <div class="row">
         <label for="year-input">Year:</label>
-        <input id="year-input" name="releaseYear" type="text" th:value="*{releaseYear}" th:field="*{releaseYear}"
+        <input id="year-input" name="releaseYear" th:field="*{releaseYear}" th:value="*{releaseYear}" type="text"
                value="Last year"/>
-        <div class="errors" th:if="${#fields.hasErrors('releaseYear')}" th:errors="*{releaseYear}">Wrong release year</div>
+        <div class="errors" th:errors="*{releaseYear}" th:if="${#fields.hasErrors('releaseYear')}">Wrong release year
+        </div>
     </div>
 
     <div class="row">
         <label for="genre-select">Genre:</label>
         <select id="genre-select" name="genreId">
-            <option th:each="genre : ${genres}" th:value="${genre.id}" th:text="${genre.name}"
-                    th:selected="${genre.id == book.genreId()}"/>
+            <option th:each="genre : ${genres}" th:selected="${genre.id == book.genreId()}" th:text="${genre.name}"
+                    th:value="${genre.id}"/>
         </select>
-        <div class="errors" th:if="${#fields.hasErrors('genreId')}" th:errors="*{genreId()}">Wrong genre</div>
+        <div class="errors" th:errors="*{genreId()}" th:if="${#fields.hasErrors('genreId')}">Wrong genre</div>
     </div>
 
     <div class="row">
         <label for="author-select">Author:</label>
         <select id="author-select" name="authorId">
-            <option th:each="author : ${authors}" th:value="${author.id}" th:text="${author.name}"
-                    th:selected="${author.id == book.authorId()}"/>
+            <option th:each="author : ${authors}" th:selected="${author.id == book.authorId()}" th:text="${author.name}"
+                    th:value="${author.id}"/>
         </select>
-        <div class="errors" th:if="${#fields.hasErrors('authorId')}" th:errors="*{authorId}">Wrong genre</div>
+        <div class="errors" th:errors="*{authorId}" th:if="${#fields.hasErrors('authorId')}">Wrong genre</div>
     </div>
 
     <div class="row">
