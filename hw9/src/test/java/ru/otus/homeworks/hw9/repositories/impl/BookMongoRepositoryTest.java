@@ -51,7 +51,6 @@ public class BookMongoRepositoryTest {
     @DirtiesContext(methodMode = DirtiesContext.MethodMode.BEFORE_METHOD)
     @DisplayName("вернуть верное количество")
     void shouldReturnExpectedCount() {
-        repository.findAll().forEach(System.out::println);
         assertEquals(1, repository.findAll().size());
     }
 
