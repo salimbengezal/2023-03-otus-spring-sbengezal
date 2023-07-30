@@ -4,15 +4,14 @@ import lombok.RequiredArgsConstructor;
 import lombok.val;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.otus.homeworks.hw10.dto.AuthorDtoResponse;
 import ru.otus.homeworks.hw10.dto.BookDtoResponse;
-import ru.otus.homeworks.hw10.dto.GenreDtoResponse;
 import ru.otus.homeworks.hw10.dto.NewBookDtoRequest;
 import ru.otus.homeworks.hw10.dto.UpdateBookDtoRequest;
 import ru.otus.homeworks.hw10.entity.Author;
 import ru.otus.homeworks.hw10.entity.Book;
 import ru.otus.homeworks.hw10.entity.Genre;
 import ru.otus.homeworks.hw10.exception.EntityNotFoundException;
+import ru.otus.homeworks.hw10.mapper.BookMapper;
 import ru.otus.homeworks.hw10.repository.AuthorRepository;
 import ru.otus.homeworks.hw10.repository.BookRepository;
 import ru.otus.homeworks.hw10.repository.GenreRepository;
@@ -30,14 +29,12 @@ public class BookServiceImpl implements BookService {
 
     private final GenreRepository genreRepository;
 
+    private final BookMapper mapper;
+
     @Override
     public List<BookDtoResponse> getAll() {
         return bookRepository.findAll().stream()
-                .map(b -> {
-                    val author = new AuthorDtoResponse(b.getAuthor().getId(), b.getAuthor().getName());
-                    val genre = new GenreDtoResponse(b.getGenre().getId(), b.getGenre().getName());
-                    return new BookDtoResponse(b.getId(), b.getName(), b.getReleaseYear(), author, genre);
-                })
+                .map(mapper::toDto)
                 .toList();
     }
 
@@ -45,14 +42,6 @@ public class BookServiceImpl implements BookService {
     @Transactional
     public void deleteById(String id) throws EntityNotFoundException {
         bookRepository.deleteById(id);
-    }
-
-    @Override
-    public BookDtoResponse getById(String id) throws EntityNotFoundException {
-        val book = getBook(id);
-        val authorDto = new AuthorDtoResponse(book.getAuthor().getId(), book.getAuthor().getName());
-        val genreDto = new GenreDtoResponse(book.getGenre().getId(), book.getGenre().getName());
-        return new BookDtoResponse(book.getId(), book.getName(), book.getReleaseYear(), authorDto, genreDto);
     }
 
     private Author getAuthor(String id) throws EntityNotFoundException {
@@ -93,7 +82,7 @@ public class BookServiceImpl implements BookService {
     public void add(NewBookDtoRequest bookDto) throws EntityNotFoundException {
         val author = getAuthor(bookDto.getAuthorId());
         val genre = getGenre(bookDto.getGenreId());
-        val book = new Book(bookDto.getName(), bookDto.getReleaseYear(), author, genre);
+        val book = mapper.toEntity(bookDto, author, genre);
         bookRepository.save(book);
     }
 

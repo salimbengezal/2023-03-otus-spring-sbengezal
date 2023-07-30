@@ -9,10 +9,10 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
 import ru.otus.homeworks.hw10.dto.CommentDtoRequest;
-import ru.otus.homeworks.hw10.dto.CommentDtoResponse;
 import ru.otus.homeworks.hw10.entity.Book;
 import ru.otus.homeworks.hw10.entity.Comment;
 import ru.otus.homeworks.hw10.exception.EntityNotFoundException;
+import ru.otus.homeworks.hw10.mapper.CommentMapper;
 import ru.otus.homeworks.hw10.repository.BookRepository;
 import ru.otus.homeworks.hw10.repository.CommentRepository;
 import ru.otus.homeworks.hw10.service.CommentService;
@@ -39,6 +39,9 @@ public class CommentServiceImplTest {
     @Autowired
     private CommentService commentService;
 
+    @Autowired
+    private CommentMapper mapper;
+
     @Test
     @DisplayName("получать все комментарии")
     void shouldGetAllComments() {
@@ -46,9 +49,7 @@ public class CommentServiceImplTest {
         val comments = IntStream.rangeClosed(1, 3)
                 .mapToObj(n -> new Comment("some-message" + n, book))
                 .toList();
-        val expectedComments = comments.stream()
-                .map(comment -> new CommentDtoResponse(comment.getId(), comment.getMessage(), comment.getUpdateOn()))
-                .toList();
+        val expectedComments = mapper.toDto(comments);
         when(commentRepository.findAllByBookId(book.getId())).thenReturn(comments);
         assertEquals(commentService.getCommentsByBookId(book.getId()), expectedComments);
         verify(commentRepository, times(1)).findAllByBookId(book.getId());
@@ -69,14 +70,14 @@ public class CommentServiceImplTest {
     void shouldAddComment() throws EntityNotFoundException {
         val commentDto = new CommentDtoRequest("some-message", "some-book-id");
         val book = new Book(commentDto.getBookId(), "some-book", (short) 123, null, null);
-        when(bookRepository.findById(commentDto.getBookId())).thenReturn(Optional.of(book));
+        when(bookRepository.findById(book.getId())).thenReturn(Optional.of(book));
         commentService.add(commentDto);
-        verify(bookRepository, times(1)).findById(commentDto.getBookId());
         ArgumentCaptor<Comment> argumentCaptor = ArgumentCaptor.forClass(Comment.class);
         verify(commentRepository).save(argumentCaptor.capture());
         assert (argumentCaptor.getValue().getBook()).equals(book);
         assert (argumentCaptor.getValue().getMessage()).equals(commentDto.getMessage());
         assertNull(argumentCaptor.getValue().getId());
+        verify(bookRepository, times(1)).findById(book.getId());
     }
 
 }

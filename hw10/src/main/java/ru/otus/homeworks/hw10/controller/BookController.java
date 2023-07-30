@@ -2,64 +2,39 @@ package ru.otus.homeworks.hw10.controller;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import lombok.val;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
+import ru.otus.homeworks.hw10.dto.BookDtoResponse;
 import ru.otus.homeworks.hw10.dto.NewBookDtoRequest;
 import ru.otus.homeworks.hw10.dto.UpdateBookDtoRequest;
 import ru.otus.homeworks.hw10.exception.EntityNotFoundException;
-import ru.otus.homeworks.hw10.service.AuthorService;
 import ru.otus.homeworks.hw10.service.BookService;
-import ru.otus.homeworks.hw10.service.GenreService;
 
-@Controller
+import java.util.List;
+
+@RestController
 @RequiredArgsConstructor
 public class BookController {
 
     private final BookService bookService;
 
-    private final AuthorService authorService;
+    @GetMapping("/api/book")
+    public List<BookDtoResponse> doGet() {
+        return bookService.getAll();
+    }
 
-    private final GenreService genreService;
-
-    @PostMapping(value = "/book", params = "create")
-    public String create(@Valid @ModelAttribute("book") NewBookDtoRequest book,
-                         BindingResult bindingResult, Model model) throws EntityNotFoundException {
-        if (bindingResult.hasErrors()) {
-            val genres = genreService.getAll();
-            val authors = authorService.getAll();
-            model.addAttribute("genres", genres);
-            model.addAttribute("authors", authors);
-            model.addAttribute("book", book);
-            return "book/new";
-        }
+    @PostMapping("/api/book")
+    public void doPost(@RequestBody @Valid NewBookDtoRequest book) throws EntityNotFoundException {
         bookService.add(book);
-        return "redirect:/book";
     }
 
-    @PostMapping(value = "/book", params = "delete")
-    public String delete(@RequestParam("id") String id) throws EntityNotFoundException {
+    @DeleteMapping("/api/book/{id}")
+    public void doDelete(@PathVariable("id") String id) throws EntityNotFoundException {
         bookService.deleteById(id);
-        return "redirect:/book";
     }
 
-    @PostMapping(value = "/book", params = "update")
-    public String update(@ModelAttribute("book") @Valid UpdateBookDtoRequest book,
-                         BindingResult bindingResult, Model model) throws EntityNotFoundException {
-        if (bindingResult.hasErrors()) {
-            val genres = genreService.getAll();
-            val authors = authorService.getAll();
-            model.addAttribute("genres", genres);
-            model.addAttribute("authors", authors);
-            model.addAttribute("book", book);
-            return "book/edit";
-        }
+    @PatchMapping("/api/book/{id}")
+    public void doPut(@RequestBody @Valid UpdateBookDtoRequest book) throws EntityNotFoundException {
         bookService.update(book);
-        return "redirect:/book";
     }
 
 }

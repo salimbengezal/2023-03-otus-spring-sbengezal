@@ -13,8 +13,6 @@ public interface BookService {
 
     void deleteById(String id) throws EntityNotFoundException;
 
-    BookDtoResponse getById(String id) throws EntityNotFoundException;
-
     void update(UpdateBookDtoRequest bookDto) throws EntityNotFoundException;
 
     void add(NewBookDtoRequest bookDto) throws EntityNotFoundException;
