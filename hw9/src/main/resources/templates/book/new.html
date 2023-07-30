@@ -5,7 +5,7 @@
     <title>Add book</title>
 </head>
 <body>
-<div th:insert="header"></div>
+<div th:insert="~{fragments/header::header}"></div>
 
 <form action="new.html" id="add-form" th:action="@{/book(create)}" th:method="post" th:object="${book}">
     <h3>Add book information</h3>
