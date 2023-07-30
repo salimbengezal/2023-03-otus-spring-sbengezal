@@ -9,15 +9,16 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+import ru.otus.homeworks.hw9.dto.AuthorDtoResponse;
+import ru.otus.homeworks.hw9.dto.BookDtoResponse;
 import ru.otus.homeworks.hw9.dto.CommentDtoRequest;
+import ru.otus.homeworks.hw9.dto.GenreDtoResponse;
+import ru.otus.homeworks.hw9.service.BookService;
 import ru.otus.homeworks.hw9.service.CommentService;
 
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @WebMvcTest(CommentController.class)
 @DisplayName("Контроллер с действиями по комментариям должен ")
@@ -27,33 +28,57 @@ public class CommentControllerTest {
     private MockMvc mvc;
 
     @MockBean
+    private BookService bookService;
+
+    @MockBean
     private CommentService commentService;
 
     @Test
     @DisplayName("создавать новый комментарий")
     void shouldCreateComment() throws Exception {
-        val bookId = "1";
-        val comment = new CommentDtoRequest("useful-message", bookId);
-        commentService.add(comment);
-        mvc.perform(post("/book/%s/add-comment".formatted(bookId))
-                        .content(comment.getMessage())
-                        .param("bookId", comment.getBookId()))
+        val comment = new CommentDtoRequest("useful-message", "1");
+        mvc.perform(post("/comment")
+                        .param("create", "")
+                        .param("message", comment.getMessage())
+                        .param("bookId", comment.getBookId())
+                )
                 .andExpect(status().is3xxRedirection())
-                .andExpect(header().string(HttpHeaders.LOCATION, "/book/" + bookId));
+                .andExpect(header().string(HttpHeaders.LOCATION, "/book/" + comment.getBookId()));
         verify(commentService, times(1)).add(comment);
     }
 
     @Test
     @DisplayName("удалять новый комментарий")
-    void shouldRemoveComment() throws Exception {
+    void shouldDeleteComment() throws Exception {
         val bookId = "some-book-id";
         val commentId = "some-comment-id";
-        mvc.perform(get("/book/%s/delete-comment".formatted(bookId))
-                        .param("id", commentId)
+        mvc.perform(post("/comment")
+                        .param("delete", "")
+                        .param("bookId", bookId)
+                        .param("commentId", commentId)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(header().string(HttpHeaders.LOCATION, "/book/%s".formatted(bookId)));
         verify(commentService, times(1)).deleteById(commentId);
+    }
+
+    @Test
+    @DisplayName("проверять на валидность новый комментарий")
+    void shouldValidateCreatingOfComment() throws Exception {
+        val comment = new CommentDtoRequest("", "1");
+        val genre = new GenreDtoResponse("1", "genre");
+        val author = new AuthorDtoResponse("1", "author");
+        val book = new BookDtoResponse(comment.getBookId(), "some_book", (short) 2020, author, genre);
+        when(bookService.getById(comment.getBookId())).thenReturn(book);
+        mvc.perform(post("/comment")
+                        .param("create", "")
+                        .param("message", comment.getMessage())
+                        .param("bookId", comment.getBookId())
+                )
+                .andExpect(status().isOk())
+                .andExpect(model().hasErrors())
+                .andExpect(model().errorCount(2))
+                .andExpect(view().name("book/details"));
     }
 
 }

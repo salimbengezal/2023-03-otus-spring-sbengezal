@@ -5,7 +5,9 @@
     <title>Add book</title>
 </head>
 <body>
-<form action="new.html" id="add-form" th:action="@{/book}" th:method="post" th:object="${book}">
+<div th:insert="header"></div>
+
+<form action="new.html" id="add-form" th:action="@{/book(create)}" th:method="post" th:object="${book}">
     <h3>Add book information</h3>
 
     <div class="row">
@@ -34,7 +36,7 @@
         <select id="author-select" name="authorId" th:value="*{releaseYear}">
             <option th:each="author : ${authors}" th:text="${author.name}" th:value="${author.id}"/>
         </select>
-        <div class="errors" th:errors="*{genreId}" th:if="${#fields.hasErrors('genreId')}">Wrong author</div>
+        <div class="errors" th:errors="*{authorId}" th:if="${#fields.hasErrors('authorId')}">Wrong author</div>
     </div>
 
     <div class="row">

@@ -3,10 +3,24 @@
 <head>
     <meta charset="UTF-8"/>
     <title>List of all books</title>
+    <style>
+        .btn-link {
+            border: none;
+            outline: none;
+            background: none;
+            cursor: pointer;
+            color: #0000EE;
+            padding: 0;
+            text-decoration: underline;
+            font-family: inherit;
+            font-size: inherit;
+        }
+    </style>
 </head>
 <body>
+<div th:insert="header"></div>
+
 <h3>Books</h3>
-<a th:href="@{/book/new}">New</a>
 <table class="books">
     <thead>
     <tr>
@@ -27,7 +41,9 @@
         <td th:text="${book.genre.name}">Book Genre name</td>
         <td>
             <a href="edit.html" th:href="@{/book/edit(id=${book.id})}">Edit</a>
-            <a th:href="@{/book/delete(id=${book.id})}">Remove</a>
+            <form th:action="@{/book(id=${book.id}, delete='')}" th:method="post">
+                <input type="submit" value="Remove" class="btn-link"/>
+            </form>
         </td>
     </tr>
     </tbody>

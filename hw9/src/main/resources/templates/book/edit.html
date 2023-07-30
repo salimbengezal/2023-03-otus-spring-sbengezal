@@ -5,7 +5,9 @@
     <title>Edit book</title>
 </head>
 <body>
-<form action="edit.html" id="edit-form" th:action="@{/book/update}" th:method="post" th:object="${book}">
+<div th:insert="header"></div>
+
+<form action="edit.html" id="edit-form" th:action="@{/book(update)}" th:method="post" th:object="${book}">
     <h3>Edit book information</h3>
 
     <input name="id" th:field="*{id}" th:value="*{id}" type="hidden"/>

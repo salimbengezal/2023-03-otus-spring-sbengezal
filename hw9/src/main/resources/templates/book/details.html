@@ -3,8 +3,23 @@
 <head>
     <meta charset="UTF-8"/>
     <title>Book details</title>
+    <style>
+        .btn-link {
+            border: none;
+            outline: none;
+            background: none;
+            cursor: pointer;
+            color: #0000EE;
+            padding: 0;
+            text-decoration: underline;
+            font-family: inherit;
+            font-size: inherit;
+        }
+    </style>
 </head>
 <body>
+<div th:insert="header"></div>
+
 <h3>Book details</h3>
 
 <div th:object="${book}">
@@ -33,15 +48,19 @@
             <td th:text="${comment.updatedOn}">Book Author Name</td>
             <td th:text="${comment.message}">Message text</td>
             <td>
-                <a th:href="@{/book/{bid}/delete-comment(bid=${book.id}, id=${comment.id})}">Remove</a>
+                <form th:action="@{/comment(delete)}" th:method="post">
+                    <input type="hidden" th:name="bookId" th:value="${book.id}">
+                    <input type="hidden" th:name="commentId" th:value="${comment.id}">
+                    <input type="submit" value="Remove" class="btn-link"/>
+                </form>
             </td>
         </tr>
         </tbody>
     </table>
 </div>
 
-<form action="new.html" id="add-comment" th:action="@{/book/{id}/add-comment(id=${book.id})}" th:method="post"
-      th:object="${comment}">
+<form action="new.html" id="add-comment" th:action="@{/comment(create)}" th:method="post" th:object="${comment}">
+    <input type="hidden" th:name="bookId" th:value="${book.id}"/>
     <h3>Add comment</h3>
     <label for="form-message"></label>
     <textarea cols="45" id="form-message" name="message" rows="10" th:field="*{message}"

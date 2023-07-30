@@ -11,6 +11,7 @@ import ru.otus.homeworks.hw9.dto.AuthorDtoResponse;
 import ru.otus.homeworks.hw9.dto.BookDtoResponse;
 import ru.otus.homeworks.hw9.dto.CommentDtoResponse;
 import ru.otus.homeworks.hw9.dto.GenreDtoResponse;
+import ru.otus.homeworks.hw9.dto.UpdateBookDtoRequest;
 import ru.otus.homeworks.hw9.service.AuthorService;
 import ru.otus.homeworks.hw9.service.BookService;
 import ru.otus.homeworks.hw9.service.CommentService;
@@ -102,7 +103,8 @@ public class BookPagesControllerTest {
     void shouldReturnToBookEditPage() throws Exception {
         val author = new AuthorDtoResponse("1", "some-name");
         val genre = new GenreDtoResponse("2", "some-genre");
-        val book = new BookDtoResponse("2", "some-name", (short) 123, author, genre);
+        val bookDtoRequest = new UpdateBookDtoRequest("2", "some-name", (short) 123, author.id(), genre.id());
+        val bookDtoResponse = new BookDtoResponse("2", "some-name", (short) 123, author, genre);
         val genres = IntStream.rangeClosed(1, 4)
                 .mapToObj(n -> new GenreDtoResponse(String.valueOf(n), "g" + n))
                 .toList();
@@ -111,14 +113,14 @@ public class BookPagesControllerTest {
                 .toList();
         when(authorService.getAll()).thenReturn(authors);
         when(genreService.getAll()).thenReturn(genres);
-        when(bookService.getById(book.id())).thenReturn(book);
-        mvc.perform(get("/book/edit").param("id", book.id()))
+        when(bookService.getById(bookDtoRequest.id())).thenReturn(bookDtoResponse);
+        mvc.perform(get("/book/edit").param("id", bookDtoRequest.id()))
                 .andExpect(status().isOk())
-                .andExpect(model().attribute("book", book))
+                .andExpect(model().attribute("book", bookDtoRequest))
                 .andExpect(model().attribute("genres", genres))
                 .andExpect(model().attribute("authors", authors))
                 .andExpect(view().name("book/edit"));
-        verify(bookService, times(1)).getById(book.id());
+        verify(bookService, times(1)).getById(bookDtoRequest.id());
         verify(authorService, times(1)).getAll();
         verify(genreService, times(1)).getAll();
     }

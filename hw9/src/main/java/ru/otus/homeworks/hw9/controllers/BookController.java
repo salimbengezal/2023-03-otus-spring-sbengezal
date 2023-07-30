@@ -6,7 +6,6 @@ import lombok.val;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -27,7 +26,7 @@ public class BookController {
 
     private final GenreService genreService;
 
-    @PostMapping(value = "/book")
+    @PostMapping(value = "/book", params = "create")
     public String create(@Valid @ModelAttribute("book") NewBookDtoRequest book,
                          BindingResult bindingResult, Model model) throws EntityNotFoundException {
         if (bindingResult.hasErrors()) {
@@ -42,13 +41,13 @@ public class BookController {
         return "redirect:/book";
     }
 
-    @GetMapping("/book/delete")
+    @PostMapping(value = "/book", params = "delete")
     public String delete(@RequestParam("id") String id) throws EntityNotFoundException {
         bookService.deleteById(id);
         return "redirect:/book";
     }
 
-    @PostMapping(value = "/book/update")
+    @PostMapping(value = "/book", params = "update")
     public String update(@ModelAttribute("book") @Valid UpdateBookDtoRequest book,
                          BindingResult bindingResult, Model model) throws EntityNotFoundException {
         if (bindingResult.hasErrors()) {
