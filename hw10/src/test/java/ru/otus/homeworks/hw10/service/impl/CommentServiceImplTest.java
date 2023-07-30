@@ -12,9 +12,9 @@ import ru.otus.homeworks.hw10.dto.CommentDtoRequest;
 import ru.otus.homeworks.hw10.dto.CommentDtoResponse;
 import ru.otus.homeworks.hw10.entity.Book;
 import ru.otus.homeworks.hw10.entity.Comment;
-import ru.otus.homeworks.hw10.exceptions.EntityNotFoundException;
-import ru.otus.homeworks.hw10.repositories.BookRepository;
-import ru.otus.homeworks.hw10.repositories.CommentRepository;
+import ru.otus.homeworks.hw10.exception.EntityNotFoundException;
+import ru.otus.homeworks.hw10.repository.BookRepository;
+import ru.otus.homeworks.hw10.repository.CommentRepository;
 import ru.otus.homeworks.hw10.service.CommentService;
 
 import java.time.LocalDateTime;

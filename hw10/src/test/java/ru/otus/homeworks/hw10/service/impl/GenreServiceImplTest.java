@@ -10,7 +10,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
 import ru.otus.homeworks.hw10.dto.GenreDtoResponse;
 import ru.otus.homeworks.hw10.entity.Genre;
-import ru.otus.homeworks.hw10.repositories.GenreRepository;
+import ru.otus.homeworks.hw10.repository.GenreRepository;
 import ru.otus.homeworks.hw10.service.GenreService;
 
 import java.util.stream.IntStream;

@@ -1,4 +1,4 @@
-package ru.otus.homeworks.hw10.repositories.impl;
+package ru.otus.homeworks.hw10.repository.impl;
 
 import lombok.val;
 import org.junit.jupiter.api.BeforeEach;
@@ -11,7 +11,7 @@ import ru.otus.homeworks.hw10.entity.Author;
 import ru.otus.homeworks.hw10.entity.Book;
 import ru.otus.homeworks.hw10.entity.Comment;
 import ru.otus.homeworks.hw10.entity.Genre;
-import ru.otus.homeworks.hw10.repositories.CommentRepository;
+import ru.otus.homeworks.hw10.repository.CommentRepository;
 
 import java.time.LocalDateTime;
 

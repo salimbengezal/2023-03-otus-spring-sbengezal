@@ -1,4 +1,4 @@
-package ru.otus.homeworks.hw10.controllers;
+package ru.otus.homeworks.hw10.controller;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import ru.otus.homeworks.hw10.dto.CommentDtoRequest;
 import ru.otus.homeworks.hw10.dto.DeleteCommentDtoRequest;
-import ru.otus.homeworks.hw10.exceptions.EntityNotFoundException;
+import ru.otus.homeworks.hw10.exception.EntityNotFoundException;
 import ru.otus.homeworks.hw10.service.BookService;
 import ru.otus.homeworks.hw10.service.CommentService;
 

@@ -3,7 +3,7 @@ package ru.otus.homeworks.hw10.service.impl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.otus.homeworks.hw10.dto.AuthorDtoResponse;
-import ru.otus.homeworks.hw10.repositories.AuthorRepository;
+import ru.otus.homeworks.hw10.repository.AuthorRepository;
 import ru.otus.homeworks.hw10.service.AuthorService;
 
 import java.util.List;

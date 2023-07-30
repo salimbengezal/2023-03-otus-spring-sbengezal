@@ -1,4 +1,4 @@
-package ru.otus.homeworks.hw10.controllers;
+package ru.otus.homeworks.hw10.controller;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

@@ -5,7 +5,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 
 @EnableMongock
-@EnableMongoRepositories(basePackages = "ru.otus.homeworks.hw10.repositories")
+@EnableMongoRepositories(basePackages = "ru.otus.homeworks.hw10.repository")
 @Configuration
 public class MongockConfig {
 }

@@ -6,7 +6,7 @@ import org.springframework.data.mongodb.core.mapping.event.AbstractMongoEventLis
 import org.springframework.data.mongodb.core.mapping.event.AfterDeleteEvent;
 import org.springframework.stereotype.Component;
 import ru.otus.homeworks.hw10.entity.Book;
-import ru.otus.homeworks.hw10.repositories.CommentRepository;
+import ru.otus.homeworks.hw10.repository.CommentRepository;
 
 @Component
 @RequiredArgsConstructor

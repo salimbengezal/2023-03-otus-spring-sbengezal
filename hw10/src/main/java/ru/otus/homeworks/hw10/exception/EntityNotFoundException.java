@@ -1,4 +1,4 @@
-package ru.otus.homeworks.hw10.exceptions;
+package ru.otus.homeworks.hw10.exception;
 
 public class EntityNotFoundException extends Exception {
 

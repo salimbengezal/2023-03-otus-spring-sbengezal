@@ -2,7 +2,7 @@ package ru.otus.homeworks.hw10.service;
 
 import ru.otus.homeworks.hw10.dto.CommentDtoRequest;
 import ru.otus.homeworks.hw10.dto.CommentDtoResponse;
-import ru.otus.homeworks.hw10.exceptions.EntityNotFoundException;
+import ru.otus.homeworks.hw10.exception.EntityNotFoundException;
 
 import java.util.List;
 

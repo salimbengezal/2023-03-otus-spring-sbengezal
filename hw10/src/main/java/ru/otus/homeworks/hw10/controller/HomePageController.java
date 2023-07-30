@@ -1,4 +1,4 @@
-package ru.otus.homeworks.hw10.controllers;
+package ru.otus.homeworks.hw10.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;

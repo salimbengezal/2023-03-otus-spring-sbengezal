@@ -1,4 +1,4 @@
-package ru.otus.homeworks.hw10.controllers;
+package ru.otus.homeworks.hw10.controller;
 
 import lombok.RequiredArgsConstructor;
 import lombok.val;
@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import ru.otus.homeworks.hw10.dto.CommentDtoRequest;
 import ru.otus.homeworks.hw10.dto.NewBookDtoRequest;
 import ru.otus.homeworks.hw10.dto.UpdateBookDtoRequest;
-import ru.otus.homeworks.hw10.exceptions.EntityNotFoundException;
+import ru.otus.homeworks.hw10.exception.EntityNotFoundException;
 import ru.otus.homeworks.hw10.service.AuthorService;
 import ru.otus.homeworks.hw10.service.BookService;
 import ru.otus.homeworks.hw10.service.CommentService;

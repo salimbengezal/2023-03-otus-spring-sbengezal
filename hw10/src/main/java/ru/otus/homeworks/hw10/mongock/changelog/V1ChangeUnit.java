@@ -9,10 +9,10 @@ import ru.otus.homeworks.hw10.entity.Author;
 import ru.otus.homeworks.hw10.entity.Book;
 import ru.otus.homeworks.hw10.entity.Comment;
 import ru.otus.homeworks.hw10.entity.Genre;
-import ru.otus.homeworks.hw10.repositories.AuthorRepository;
-import ru.otus.homeworks.hw10.repositories.BookRepository;
-import ru.otus.homeworks.hw10.repositories.CommentRepository;
-import ru.otus.homeworks.hw10.repositories.GenreRepository;
+import ru.otus.homeworks.hw10.repository.AuthorRepository;
+import ru.otus.homeworks.hw10.repository.BookRepository;
+import ru.otus.homeworks.hw10.repository.CommentRepository;
+import ru.otus.homeworks.hw10.repository.GenreRepository;
 
 import java.util.List;
 import java.util.stream.Stream;

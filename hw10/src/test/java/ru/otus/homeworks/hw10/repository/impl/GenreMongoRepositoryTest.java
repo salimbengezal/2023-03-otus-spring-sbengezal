@@ -1,4 +1,4 @@
-package ru.otus.homeworks.hw10.repositories.impl;
+package ru.otus.homeworks.hw10.repository.impl;
 
 import lombok.val;
 import org.junit.jupiter.api.BeforeAll;
@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import ru.otus.homeworks.hw10.entity.Genre;
-import ru.otus.homeworks.hw10.repositories.GenreRepository;
+import ru.otus.homeworks.hw10.repository.GenreRepository;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 

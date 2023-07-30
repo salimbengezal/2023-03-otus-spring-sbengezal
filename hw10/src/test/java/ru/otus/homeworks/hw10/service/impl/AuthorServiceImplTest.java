@@ -10,7 +10,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
 import ru.otus.homeworks.hw10.dto.AuthorDtoResponse;
 import ru.otus.homeworks.hw10.entity.Author;
-import ru.otus.homeworks.hw10.repositories.AuthorRepository;
+import ru.otus.homeworks.hw10.repository.AuthorRepository;
 import ru.otus.homeworks.hw10.service.AuthorService;
 
 import java.util.stream.IntStream;

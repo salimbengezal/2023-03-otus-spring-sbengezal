@@ -1,4 +1,4 @@
-package ru.otus.homeworks.hw10.repositories.impl;
+package ru.otus.homeworks.hw10.repository.impl;
 
 import lombok.val;
 import org.junit.jupiter.api.BeforeEach;
@@ -11,7 +11,7 @@ import org.springframework.test.annotation.DirtiesContext;
 import ru.otus.homeworks.hw10.entity.Author;
 import ru.otus.homeworks.hw10.entity.Book;
 import ru.otus.homeworks.hw10.entity.Genre;
-import ru.otus.homeworks.hw10.repositories.BookRepository;
+import ru.otus.homeworks.hw10.repository.BookRepository;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;

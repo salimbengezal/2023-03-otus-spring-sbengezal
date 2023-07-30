@@ -12,10 +12,10 @@ import ru.otus.homeworks.hw10.dto.*;
 import ru.otus.homeworks.hw10.entity.Author;
 import ru.otus.homeworks.hw10.entity.Book;
 import ru.otus.homeworks.hw10.entity.Genre;
-import ru.otus.homeworks.hw10.exceptions.EntityNotFoundException;
-import ru.otus.homeworks.hw10.repositories.AuthorRepository;
-import ru.otus.homeworks.hw10.repositories.BookRepository;
-import ru.otus.homeworks.hw10.repositories.GenreRepository;
+import ru.otus.homeworks.hw10.exception.EntityNotFoundException;
+import ru.otus.homeworks.hw10.repository.AuthorRepository;
+import ru.otus.homeworks.hw10.repository.BookRepository;
+import ru.otus.homeworks.hw10.repository.GenreRepository;
 import ru.otus.homeworks.hw10.service.BookService;
 
 import java.util.List;

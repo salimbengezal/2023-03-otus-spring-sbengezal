@@ -3,7 +3,7 @@ package ru.otus.homeworks.hw10.service;
 import ru.otus.homeworks.hw10.dto.BookDtoResponse;
 import ru.otus.homeworks.hw10.dto.NewBookDtoRequest;
 import ru.otus.homeworks.hw10.dto.UpdateBookDtoRequest;
-import ru.otus.homeworks.hw10.exceptions.EntityNotFoundException;
+import ru.otus.homeworks.hw10.exception.EntityNotFoundException;
 
 import java.util.List;
 
