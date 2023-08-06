@@ -45,8 +45,7 @@ public class BookControllerTest {
     void shouldCreateBook() throws Exception {
         val newBook = new NewBookDtoRequest("new-book", (short) 123, "some-author-id",
                 "some-genre-author-id");
-        mvc.perform(post("/book")
-                        .param("create", "")
+        mvc.perform(post("/book/create")
                         .param("name", newBook.getName())
                         .param("releaseYear", newBook.getReleaseYear().toString())
                         .param("authorId", newBook.getAuthorId())
@@ -63,8 +62,7 @@ public class BookControllerTest {
     @DisplayName("вызывать сервис для удаления книги")
     void shouldDeleteBook() throws Exception {
         val id = "some-id";
-        mvc.perform(post("/book")
-                        .param("delete", "")
+        mvc.perform(post("/book/delete")
                         .param("id", id))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(header().string(HttpHeaders.LOCATION, "/book"));
@@ -77,9 +75,8 @@ public class BookControllerTest {
         val updatedBook = new UpdateBookDtoRequest("some-id", "new-book", (short) 123,
                 "some-author-id", "some-genre-author-id");
         val requestBody = mapper.writeValueAsString(updatedBook);
-        mvc.perform(post("/book")
+        mvc.perform(post("/book/update")
                         .param("id", updatedBook.id())
-                        .param("update", "")
                         .param("name", updatedBook.name())
                         .param("releaseYear", updatedBook.releaseYear().toString())
                         .param("authorId", updatedBook.authorId())
@@ -96,8 +93,7 @@ public class BookControllerTest {
     @DisplayName("проверять на валидность новый комментарий")
     void shouldValidateCreatingOfBook() throws Exception {
         val book = new NewBookDtoRequest("", (short) -1, "some-author-id", "some-genre-author-id");
-        mvc.perform(post("/book")
-                        .param("create", "")
+        mvc.perform(post("/book/create")
                         .param("name", book.getName())
                         .param("releaseYear", book.getReleaseYear().toString())
                         .param("authorId", book.getAuthorId())
@@ -113,8 +109,7 @@ public class BookControllerTest {
     @DisplayName("проверять на валидность новый комментарий")
     void shouldValidateUpdatingOfBook() throws Exception {
         val book = new UpdateBookDtoRequest("", "", (short) -1, "some-author-id", "some-genre-author-id");
-        mvc.perform(post("/book")
-                        .param("update", "")
+        mvc.perform(post("/book/update")
                         .param("name", book.name())
                         .param("releaseYear", book.releaseYear().toString())
                         .param("authorId", book.authorId())

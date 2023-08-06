@@ -48,7 +48,7 @@
             <td th:text="${comment.updatedOn}">Book Author Name</td>
             <td th:text="${comment.message}">Message text</td>
             <td>
-                <form th:action="@{/comment(delete)}" th:method="post">
+                <form th:action="@{/comment/delete}" th:method="post">
                     <input type="hidden" th:name="bookId" th:value="${book.id}">
                     <input type="hidden" th:name="commentId" th:value="${comment.id}">
                     <input type="submit" value="Remove" class="btn-link"/>
@@ -59,7 +59,7 @@
     </table>
 </div>
 
-<form action="new.html" id="add-comment" th:action="@{/comment(create)}" th:method="post" th:object="${comment}">
+<form action="new.html" id="add-comment" th:action="@{/comment/create}" th:method="post" th:object="${comment}">
     <input type="hidden" th:name="bookId" th:value="${book.id}"/>
     <h3>Add comment</h3>
     <label for="form-message"></label>

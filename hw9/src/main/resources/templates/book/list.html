@@ -41,7 +41,7 @@
         <td th:text="${book.genre.name}">Book Genre name</td>
         <td>
             <a href="edit.html" th:href="@{/book/edit(id=${book.id})}">Edit</a>
-            <form th:action="@{/book(id=${book.id}, delete='')}" th:method="post">
+            <form th:action="@{/book/delete(id=${book.id})}" th:method="post">
                 <input type="submit" value="Remove" class="btn-link"/>
             </form>
         </td>

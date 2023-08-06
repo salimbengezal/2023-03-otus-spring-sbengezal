@@ -22,7 +22,7 @@ public class CommentController {
 
     private final CommentService commentService;
 
-    @PostMapping(value = "/comment", params = "create")
+    @PostMapping(value = "/comment/create")
     public String create(@Valid @ModelAttribute("comment") CommentDtoRequest comment,
                          BindingResult bindingResult, Model model) throws EntityNotFoundException {
         if (bindingResult.hasErrors()) {
@@ -37,7 +37,7 @@ public class CommentController {
         return "redirect:/book/" + comment.getBookId();
     }
 
-    @PostMapping(value = "/comment", params = "delete")
+    @PostMapping(value = "/comment/delete")
     public String delete(@ModelAttribute("comment") DeleteCommentDtoRequest commentDto)
             throws EntityNotFoundException {
         commentService.deleteById(commentDto.commentId());

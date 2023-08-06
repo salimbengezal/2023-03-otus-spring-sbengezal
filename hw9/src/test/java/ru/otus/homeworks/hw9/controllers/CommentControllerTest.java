@@ -37,8 +37,7 @@ public class CommentControllerTest {
     @DisplayName("создавать новый комментарий")
     void shouldCreateComment() throws Exception {
         val comment = new CommentDtoRequest("useful-message", "1");
-        mvc.perform(post("/comment")
-                        .param("create", "")
+        mvc.perform(post("/comment/create")
                         .param("message", comment.getMessage())
                         .param("bookId", comment.getBookId())
                 )
@@ -52,8 +51,7 @@ public class CommentControllerTest {
     void shouldDeleteComment() throws Exception {
         val bookId = "some-book-id";
         val commentId = "some-comment-id";
-        mvc.perform(post("/comment")
-                        .param("delete", "")
+        mvc.perform(post("/comment/delete")
                         .param("bookId", bookId)
                         .param("commentId", commentId)
                         .contentType(MediaType.APPLICATION_JSON))
@@ -70,8 +68,7 @@ public class CommentControllerTest {
         val author = new AuthorDtoResponse("1", "author");
         val book = new BookDtoResponse(comment.getBookId(), "some_book", (short) 2020, author, genre);
         when(bookService.getById(comment.getBookId())).thenReturn(book);
-        mvc.perform(post("/comment")
-                        .param("create", "")
+        mvc.perform(post("/comment/create")
                         .param("message", comment.getMessage())
                         .param("bookId", comment.getBookId())
                 )
