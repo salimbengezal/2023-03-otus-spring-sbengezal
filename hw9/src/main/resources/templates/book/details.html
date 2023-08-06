@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Book details</title>
+    <style>
+        .btn-link {
+            border: none;
+            outline: none;
+            background: none;
+            cursor: pointer;
+            color: #0000EE;
+            padding: 0;
+            text-decoration: underline;
+            font-family: inherit;
+            font-size: inherit;
+        }
+    </style>
+</head>
+<body>
+<div th:insert="~{fragments/header::header}"></div>
+
+<h3>Book details</h3>
+
+<div th:object="${book}">
+    <p>ID: <span th:text="*{id}"/></p>
+    <p>Name: <span th:text="*{name}"/></p>
+    <p>Year: <span th:text="*{releaseYear}"/></p>
+    <p>Genre: <span th:text="*{genre.name}"/></p>
+    <p>Author: <span th:text="*{author.name}"/></p>
+</div>
+
+<h3><b>Comments</b></h3>
+<div th:if="${comments.isEmpty()}">
+    <p>No comments</p>
+</div>
+<div th:if="${!comments.isEmpty()}">
+    <table class="books">
+        <thead>
+        <tr>
+            <th>Time</th>
+            <th>Message</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="comment: ${comments}">
+            <td th:text="${comment.updatedOn}">Book Author Name</td>
+            <td th:text="${comment.message}">Message text</td>
+            <td>
+                <form th:action="@{/comment/delete}" th:method="post">
+                    <input type="hidden" th:name="bookId" th:value="${book.id}">
+                    <input type="hidden" th:name="commentId" th:value="${comment.id}">
+                    <input type="submit" value="Remove" class="btn-link"/>
+                </form>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+<form action="new.html" id="add-comment" th:action="@{/comment/create}" th:method="post" th:object="${comment}">
+    <input type="hidden" th:name="bookId" th:value="${book.id}"/>
+    <h3>Add comment</h3>
+    <label for="form-message"></label>
+    <textarea cols="45" id="form-message" name="message" rows="10" th:field="*{message}"
+              th:value="*{message}"></textarea>
+    <div class="errors" th:errors="*{message}" th:if="${#fields.hasErrors('message')}">Wrong message</div>
+    <div class="row">
+        <button type="submit">Save</button>
+    </div>
+</form>
+</body>
+</html>

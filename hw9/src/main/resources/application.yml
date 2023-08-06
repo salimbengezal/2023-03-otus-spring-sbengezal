@@ -1,0 +1,24 @@
+mongock:
+  runner-type: InitializingBean
+  migration-scan-package:
+    - ru.otus.homeworks.hw9.mongock.changelog
+
+# logging:
+#   level:
+#     ROOT: ERROR
+
+logging:
+  level:
+    org:
+      springframework:
+        data:
+          mongodb:
+            core:
+              MongoTemplate: DEBUG
+
+spring:
+  jpa:
+    show-sql: false
+    open-in-view: false
+  thymeleaf:
+    cache: false
