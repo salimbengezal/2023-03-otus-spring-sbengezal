@@ -76,7 +76,7 @@ public class BookMongoRepositoryTest {
     void shouldUpdateBook() {
         val book = mongoTemplate.findById("1L", Book.class);
         assertNotNull(book);
-        book.setName("обновленное навание");
+        book.setName("обновленное название");
         book.setReleaseYear((short) 2009);
         repository.save(book);
         val saved = mongoTemplate.findById("1L", Book.class);

@@ -23,7 +23,7 @@ public class CommentController {
     }
 
     @DeleteMapping("/api/comment/{id}")
-    public void doDelete(@PathVariable("id") String id) throws EntityNotFoundException {
+    public void doDelete(@PathVariable("id") String id) {
         commentService.deleteById(id);
     }
 

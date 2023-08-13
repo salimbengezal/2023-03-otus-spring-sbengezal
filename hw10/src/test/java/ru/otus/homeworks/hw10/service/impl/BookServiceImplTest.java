@@ -6,7 +6,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.context.annotation.Import;
 import ru.otus.homeworks.hw10.dto.NewBookDtoRequest;
 import ru.otus.homeworks.hw10.dto.UpdateBookDtoRequest;
 import ru.otus.homeworks.hw10.entity.Author;
@@ -27,7 +26,6 @@ import static org.mockito.Mockito.*;
 
 @SpringBootTest
 @DisplayName("Сервис с книгами должен ")
-@Import({BookServiceImpl.class, AuthorServiceImpl.class, GenreServiceImpl.class, CommentServiceImpl.class})
 public class BookServiceImplTest {
 
     @MockBean
@@ -94,7 +92,7 @@ public class BookServiceImplTest {
 
     @Test
     @DisplayName("удалять книгу")
-    void shouldDeleteBook() throws EntityNotFoundException {
+    void shouldDeleteBook() {
         bookService.deleteById("1L");
         verify(bookRepository).deleteById("1L");
     }

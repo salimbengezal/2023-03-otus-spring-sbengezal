@@ -6,7 +6,6 @@ import org.springframework.stereotype.Component;
 import ru.otus.homeworks.hw10.dto.AuthorDtoResponse;
 import ru.otus.homeworks.hw10.dto.BookDetailsDtoResponse;
 import ru.otus.homeworks.hw10.dto.BookDtoResponse;
-import ru.otus.homeworks.hw10.dto.CommentDtoResponse;
 import ru.otus.homeworks.hw10.dto.GenreDtoResponse;
 import ru.otus.homeworks.hw10.dto.NewBookDtoRequest;
 import ru.otus.homeworks.hw10.entity.Author;
@@ -24,15 +23,15 @@ public class BookMapper {
 
     private final GenreMapper genreMapper;
 
+    private final CommentMapper commentMapper;
+
     public BookDetailsDtoResponse toDto(Book book, List<Comment> comments) {
         val genre = book.getGenre();
         val author = book.getAuthor();
         val authorDto = new AuthorDtoResponse(author.getId(), author.getName());
         val genreDto = new GenreDtoResponse(genre.getId(), genre.getName());
         val bookDto = new BookDtoResponse(book.getId(), book.getName(), book.getReleaseYear(), authorDto, genreDto);
-        val commentsDto = comments.stream()
-                .map(comment -> new CommentDtoResponse(comment.getId(), comment.getMessage(), comment.getUpdateOn()))
-                .toList();
+        val commentsDto = commentMapper.toDto(comments);
         return new BookDetailsDtoResponse(bookDto, commentsDto);
     }
 

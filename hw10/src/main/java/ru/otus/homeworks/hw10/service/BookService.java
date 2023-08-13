@@ -11,7 +11,7 @@ public interface BookService {
 
     List<BookDtoResponse> getAll();
 
-    void deleteById(String id) throws EntityNotFoundException;
+    void deleteById(String id);
 
     void update(String id, UpdateBookDtoRequest bookDto) throws EntityNotFoundException;
 

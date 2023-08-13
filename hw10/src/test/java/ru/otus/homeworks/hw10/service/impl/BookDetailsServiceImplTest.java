@@ -6,7 +6,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.context.annotation.Import;
 import ru.otus.homeworks.hw10.entity.Author;
 import ru.otus.homeworks.hw10.entity.Book;
 import ru.otus.homeworks.hw10.entity.Comment;
@@ -27,7 +26,6 @@ import static org.mockito.Mockito.*;
 
 @SpringBootTest
 @DisplayName("Сервис с книгами должен ")
-@Import({BookServiceImpl.class, CommentServiceImpl.class})
 public class BookDetailsServiceImplTest {
 
     @MockBean

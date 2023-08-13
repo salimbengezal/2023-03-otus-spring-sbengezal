@@ -40,7 +40,7 @@ public class BookServiceImpl implements BookService {
 
     @Override
     @Transactional
-    public void deleteById(String id) throws EntityNotFoundException {
+    public void deleteById(String id) {
         bookRepository.deleteById(id);
     }
 

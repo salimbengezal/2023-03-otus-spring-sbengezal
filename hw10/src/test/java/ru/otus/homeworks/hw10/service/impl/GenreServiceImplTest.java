@@ -6,7 +6,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.context.annotation.Import;
 import ru.otus.homeworks.hw10.entity.Genre;
 import ru.otus.homeworks.hw10.mapper.GenreMapper;
 import ru.otus.homeworks.hw10.repository.GenreRepository;
@@ -19,7 +18,6 @@ import static org.mockito.Mockito.*;
 
 @SpringBootTest
 @DisplayName("Сервис с жанрами должен ")
-@Import(AuthorServiceImpl.class)
 public class GenreServiceImplTest {
 
     @MockBean

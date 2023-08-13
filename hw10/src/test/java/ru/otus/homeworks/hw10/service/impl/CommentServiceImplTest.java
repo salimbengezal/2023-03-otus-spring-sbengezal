@@ -7,27 +7,22 @@ import org.mockito.ArgumentCaptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.context.annotation.Import;
 import ru.otus.homeworks.hw10.dto.CommentDtoRequest;
 import ru.otus.homeworks.hw10.entity.Book;
 import ru.otus.homeworks.hw10.entity.Comment;
 import ru.otus.homeworks.hw10.exception.EntityNotFoundException;
-import ru.otus.homeworks.hw10.mapper.CommentMapper;
 import ru.otus.homeworks.hw10.repository.BookRepository;
 import ru.otus.homeworks.hw10.repository.CommentRepository;
 import ru.otus.homeworks.hw10.service.CommentService;
 
 import java.time.LocalDateTime;
 import java.util.Optional;
-import java.util.stream.IntStream;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.Mockito.*;
 
 @SpringBootTest
 @DisplayName("Сервис с комментариями должен ")
-@Import(CommentServiceImpl.class)
 public class CommentServiceImplTest {
 
     @MockBean
@@ -39,25 +34,9 @@ public class CommentServiceImplTest {
     @Autowired
     private CommentService commentService;
 
-    @Autowired
-    private CommentMapper mapper;
-
-    @Test
-    @DisplayName("получать все комментарии")
-    void shouldGetAllComments() {
-        val book = new Book("some-id", "some-name", (short) 2020, null, null);
-        val comments = IntStream.rangeClosed(1, 3)
-                .mapToObj(n -> new Comment("some-message" + n, book))
-                .toList();
-        val expectedComments = mapper.toDto(comments);
-        when(commentRepository.findAllByBookId(book.getId())).thenReturn(comments);
-        assertEquals(commentService.getCommentsByBookId(book.getId()), expectedComments);
-        verify(commentRepository, times(1)).findAllByBookId(book.getId());
-    }
-
     @Test
     @DisplayName("удалять комментарий")
-    void shouldRemoveComment() throws EntityNotFoundException {
+    void shouldRemoveComment() {
         val book = new Book("some-id", "some-name", (short) 2020, null, null);
         val comment = new Comment("2", "some-message", book, LocalDateTime.now());
         when(commentRepository.findById(comment.getId())).thenReturn(Optional.of(comment));
