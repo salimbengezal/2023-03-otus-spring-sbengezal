@@ -75,7 +75,7 @@ public class BookControllerTest {
         val bookId = "123";
         val book = new UpdateBookDtoRequest("new-name", (short) 123, "a_id", "g_id");
         val bookJson = mapper.writeValueAsString(book);
-        mvc.perform(patch("/api/book/%s".formatted(bookId))
+        mvc.perform(put("/api/book/%s".formatted(bookId))
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(bookJson))
                 .andExpect(status().isOk());
@@ -100,7 +100,7 @@ public class BookControllerTest {
         val bookId = "123";
         val book = new UpdateBookDtoRequest("", (short) -1, "a_id", "g_id");
         val bookJson = mapper.writeValueAsString(book);
-        mvc.perform(patch("/api/book/%s".formatted(bookId))
+        mvc.perform(put("/api/book/%s".formatted(bookId))
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(bookJson))
                 .andExpect(status().isBadRequest());

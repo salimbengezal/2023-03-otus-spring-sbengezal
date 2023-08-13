@@ -3,7 +3,12 @@ package ru.otus.homeworks.hw10.mapper;
 import lombok.RequiredArgsConstructor;
 import lombok.val;
 import org.springframework.stereotype.Component;
-import ru.otus.homeworks.hw10.dto.*;
+import ru.otus.homeworks.hw10.dto.AuthorDtoResponse;
+import ru.otus.homeworks.hw10.dto.BookDetailsDtoResponse;
+import ru.otus.homeworks.hw10.dto.BookDtoResponse;
+import ru.otus.homeworks.hw10.dto.CommentDtoResponse;
+import ru.otus.homeworks.hw10.dto.GenreDtoResponse;
+import ru.otus.homeworks.hw10.dto.NewBookDtoRequest;
 import ru.otus.homeworks.hw10.entity.Author;
 import ru.otus.homeworks.hw10.entity.Book;
 import ru.otus.homeworks.hw10.entity.Comment;
@@ -16,6 +21,7 @@ import java.util.List;
 public class BookMapper {
 
     private final AuthorMapper authorMapper;
+
     private final GenreMapper genreMapper;
 
     public BookDetailsDtoResponse toDto(Book book, List<Comment> comments) {
