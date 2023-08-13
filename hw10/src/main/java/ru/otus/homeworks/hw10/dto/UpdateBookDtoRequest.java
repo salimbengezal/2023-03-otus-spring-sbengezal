@@ -6,8 +6,7 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
 public record UpdateBookDtoRequest(
-        @NotBlank(message = "Id field should not be blank")
-        String id,
+
         @NotBlank(message = "Name field should not be blank")
         @Size(min = 1, max = 64, message = "Name should be expected size")
         String name,

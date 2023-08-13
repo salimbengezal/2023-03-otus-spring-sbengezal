@@ -86,9 +86,9 @@ public class BookServiceImplTest {
         val book = new Book("1L", "newName", Double.valueOf(Math.random()).shortValue(), author, genre);
         when(bookRepository.findById(book.getId())).thenReturn(Optional.of(book));
         when(bookRepository.save(book)).thenReturn(book);
-        val bookDto = new UpdateBookDtoRequest(book.getId(), book.getName(), book.getReleaseYear(), author.getId(),
+        val bookDto = new UpdateBookDtoRequest(book.getName(), book.getReleaseYear(), author.getId(),
                 genre.getId());
-        bookService.update(bookDto);
+        bookService.update(book.getId(), bookDto);
         verify(bookRepository).save(book);
     }
 

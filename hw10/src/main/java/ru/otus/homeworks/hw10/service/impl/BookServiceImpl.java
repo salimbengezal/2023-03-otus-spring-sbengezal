@@ -58,8 +58,8 @@ public class BookServiceImpl implements BookService {
 
     @Override
     @Transactional
-    public void update(UpdateBookDtoRequest bookDto) throws EntityNotFoundException {
-        Book book = getBook(bookDto.id());
+    public void update(String id, UpdateBookDtoRequest bookDto) throws EntityNotFoundException {
+        Book book = getBook(id);
         if (bookDto.authorId() != null) {
             val newAuthor = getAuthor(bookDto.authorId());
             book.setAuthor(newAuthor);

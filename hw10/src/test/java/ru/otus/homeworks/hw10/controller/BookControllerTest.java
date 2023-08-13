@@ -72,13 +72,14 @@ public class BookControllerTest {
     @Test
     @DisplayName("изменять книгу")
     void shouldUpdateBook() throws Exception {
-        val book = new UpdateBookDtoRequest("b_id", "new-name", (short) 123, "a_id", "g_id");
+        val bookId = "123";
+        val book = new UpdateBookDtoRequest("new-name", (short) 123, "a_id", "g_id");
         val bookJson = mapper.writeValueAsString(book);
-        mvc.perform(patch("/api/book/%s".formatted(book.id()))
+        mvc.perform(patch("/api/book/%s".formatted(bookId))
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(bookJson))
                 .andExpect(status().isOk());
-        verify(bookService, times(1)).update(book);
+        verify(bookService, times(1)).update(bookId, book);
     }
 
     @Test
@@ -96,13 +97,14 @@ public class BookControllerTest {
     @Test
     @DisplayName("проверять на валидность обновляемый комментарий")
     void shouldValidateUpdatingOfBook() throws Exception {
-        val book = new UpdateBookDtoRequest("2", "", (short) -1, "a_id", "g_id");
+        val bookId = "123";
+        val book = new UpdateBookDtoRequest("", (short) -1, "a_id", "g_id");
         val bookJson = mapper.writeValueAsString(book);
-        mvc.perform(patch("/api/book/%s".formatted(book.id()))
+        mvc.perform(patch("/api/book/%s".formatted(bookId))
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(bookJson))
                 .andExpect(status().isBadRequest());
-        verify(bookService, never()).update(book);
+        verify(bookService, never()).update(bookId, book);
     }
 
 }

@@ -32,9 +32,10 @@ public class BookController {
         bookService.deleteById(id);
     }
 
-    @PatchMapping("/api/book/{id}")
-    public void doPut(@RequestBody @Valid UpdateBookDtoRequest book) throws EntityNotFoundException {
-        bookService.update(book);
+    @PutMapping("/api/book/{id}")
+    public void doPut(@RequestBody @Valid UpdateBookDtoRequest book, @PathVariable("id") String id)
+            throws EntityNotFoundException {
+        bookService.update(id, book);
     }
 
 }
