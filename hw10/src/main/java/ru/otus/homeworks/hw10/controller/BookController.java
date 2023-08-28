@@ -24,22 +24,22 @@ public class BookController {
     private final BookService bookService;
 
     @GetMapping("/api/book")
-    public List<BookDtoResponse> doGet() {
+    public List<BookDtoResponse> get() {
         return bookService.getAll();
     }
 
     @PostMapping("/api/book")
-    public void doPost(@RequestBody @Valid NewBookDtoRequest book) throws EntityNotFoundException {
+    public void create(@RequestBody @Valid NewBookDtoRequest book) throws EntityNotFoundException {
         bookService.add(book);
     }
 
     @DeleteMapping("/api/book/{id}")
-    public void doDelete(@PathVariable("id") String id) {
+    public void delete(@PathVariable("id") String id) {
         bookService.deleteById(id);
     }
 
     @PutMapping("/api/book/{id}")
-    public void doPut(@RequestBody @Valid UpdateBookDtoRequest book, @PathVariable("id") String id)
+    public void update(@RequestBody @Valid UpdateBookDtoRequest book, @PathVariable("id") String id)
             throws EntityNotFoundException {
         bookService.update(id, book);
     }

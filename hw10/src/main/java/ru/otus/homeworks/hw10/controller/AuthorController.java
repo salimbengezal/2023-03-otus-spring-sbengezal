@@ -15,7 +15,7 @@ public class AuthorController {
     private final AuthorService authorService;
 
     @GetMapping("/api/author")
-    public List<AuthorDtoResponse> doGet() {
+    public List<AuthorDtoResponse> get() {
         return authorService.getAll();
     }
 

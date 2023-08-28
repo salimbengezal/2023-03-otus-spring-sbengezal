@@ -15,7 +15,7 @@ public class BookDetailsController {
     private final BookDetailsService bookService;
 
     @GetMapping("/api/book/{id}")
-    public BookDetailsDtoResponse doGet(@PathVariable("id") String id) throws EntityNotFoundException {
+    public BookDetailsDtoResponse getDetails(@PathVariable("id") String id) throws EntityNotFoundException {
         return bookService.getById(id);
     }
 
