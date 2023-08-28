@@ -1,86 +1,13 @@
-<script>
+<script setup>
 
-export default {
-    name: 'detail',
-    data() {
-        return {
-            errors: [],
-            bookId: '',
-            book: {
-                name: '',
-                releaseYear: '',
-                genre: '',
-                author: ''
-            },
-            comments: [],
-            model: {
-                comment: {
-                    message: '',
-                    bookId: ''
-                }
-            }
-        }
-    },
-    methods: {
-        getBook() {
-            fetch(`/api/book/${this.bookId}`)
-                .then(res => res.json())
-                .then(data => {
-                    this.book = data.book
-                    this.comments = data.comments
-                })
-        },
-        addComment() {
-            this.model.comment.bookId = this.bookId;
-            const requestOptions = {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(this.model.comment)
-            }
-            fetch('/api/comment', requestOptions)
-                .then(async response => {
-                    if (!response.ok) {
-                        const data = await response.json();
-                        if (data.errors.length == 0) {
-                            this.errors.clear();
-                        } else {
-                            this.errors = data.errors
-                        }
-                    } else {
-                        this.errors = [];
-                        this.model.comment.message = ''
-                    }
-                    this.getBook()
-                })
-        },
-        deleteComment(id) {
-            console.log(id)
-            const requestOptions = {
-                method: 'DELETE',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(this.model.comment)
-            }
-            fetch(`/api/comment/${id}`, requestOptions)
-                .then(async response => {
-                    if (!response.ok) {
-                        const data = await response.json();
-                        if (data.errors.length == 0) {
-                            this.errors.clear();
-                        } else {
-                            this.errors = data.errors
-                        }
-                    } else {
-                        this.errors = [];
-                    }
-                    this.getBook()
-                })
-        }
-    },
-    mounted() {
-        this.bookId = this.$route.params.id;
-        this.getBook();
-    }
-}
+import { storeToRefs } from 'pinia'
+import { useCommentStore } from '../../stores/comment'
+
+const { book, comments, model } = storeToRefs(useCommentStore())
+
+const { fetchBookWithComments, deleteComment, addComment } = useCommentStore()
+
+fetchBookWithComments()
 
 </script>
 
@@ -92,18 +19,18 @@ export default {
             </div>
             <div class="card-body">
                 <div>
-                    <h6><b>Name:</b> <span>{{ this.book.name }}</span></h6>
-                    <h6><b>Year:</b> <span>{{ this.book.releaseYear }}</span></h6>
-                    <h6><b>Genre:</b> <span>{{ this.book.genre.name }}</span></h6>
-                    <h6><b>Author:</b> <span>{{ this.book.author.name }}</span></h6>
+                    <h6><b>Name:</b> <span>{{ book.name }}</span></h6>
+                    <h6><b>Year:</b> <span>{{ book.releaseYear }}</span></h6>
+                    <h6><b>Genre:</b> <span>{{ book.genre.name }}</span></h6>
+                    <h6><b>Author:</b> <span>{{ book.author.name }}</span></h6>
                 </div>
             </div>
             <div class="card-body">
                 <h5>Comments</h5>
-                <div v-if="this.comments.length == 0">
+                <div v-if="comments.length == 0">
                     <p>No comments</p>
                 </div>
-                <div class="container" v-if="this.comments.length > 0">
+                <div class="container" v-if="comments">
                     <div class="row" v-for="comment in comments">
                         <div class="col-sm-6 p-3 m-2 rounded" style="background-color: beige;">
                             <h6 style="font-size:small">{{ comment.updatedOn }}</h6>
@@ -119,9 +46,9 @@ export default {
             </div>
             <div class="card-body">
                 <h5>Write your comment</h5>
-                <textarea cols="75" v-model="this.model.comment.message" rows="10"></textarea>
+                <textarea cols="75" v-model="model.comment.message" rows="10"></textarea>
                 <div>
-                    <button type="submit" @click="this.addComment" class="btn btn-success">Add</button>
+                    <button type="submit" @click="addComment" class="btn btn-success">Add</button>
                 </div>
             </div>
         </div>

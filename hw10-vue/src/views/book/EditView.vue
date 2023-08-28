@@ -1,72 +1,24 @@
-<script>
+<script setup>
 
-export default {
-    name: 'edit',
-    data() {
-        return {
-            bookId: null,
-            errors: '',
-            genres: [],
-            authors: [],
-            model: {
-                book: {
-                    name: '',
-                    releaseYear: '',
-                    genreId: '',
-                    authorId: ''
-                }
-            }
-        }
-    },
-    methods: {
-        getBook() {
-            fetch(`/api/book/${this.bookId}`)
-                .then(res => res.json())
-                .then(data => {
-                    this.model.book.name = data.book.name;
-                    this.model.book.releaseYear = data.book.releaseYear;
-                    this.model.book.genreId = data.book.genre.id;
-                    this.model.book.authorId = data.book.author.id;
-                })
-        },
-        updateBook() {
-            const requestOptions = {
-                method: 'PUT',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(this.model.book)
-            }
-            fetch(`/api/book/${this.bookId}`, requestOptions)
-                .then(async response => {
-                    if (!response.ok) {
-                        const data = await response.json();
-                        this.errors = data.errors
-                    } else {
-                        this.errors = [];
-                        this.$router.push('/')
-                    }
-                })
+import { storeToRefs } from 'pinia'
+import { useBooksStore } from '../../stores/book'
+import { useAuthorStore } from '../../stores/author'
+import { useGenreStore } from '../../stores/genre'
 
-        },
-        getGenres() {
-            fetch('/api/genre')
-                .then(response => response.json())
-                .then(data => this.genres = data)
-        },
-        getAuthors() {
-            fetch('/api/author')
-                .then(response => response.json())
-                .then(data => this.authors = data)
-        }
-    },
-    mounted() {
-        this.bookId = this.$route.params.id;
-        this.getBook();
-        this.getGenres();
-        this.getAuthors();
-    }
-}
+const { model, errors } = storeToRefs(useBooksStore())
+const { genres } = storeToRefs(useGenreStore())
+const { authors } = storeToRefs(useAuthorStore())
+
+const { fetchAuthors } = useAuthorStore()
+const { fetchGenres } = useGenreStore()
+const { updateBook, fetchBook } = useBooksStore()
+
+fetchGenres()
+fetchAuthors()
+fetchBook()
 
 </script>
+
 <template>
     <div class="container mt-5">
         <div class="card">
@@ -75,8 +27,8 @@ export default {
             </div>
             <div class="card-body">
 
-                <ul class="alert alert-warning" v-if="Object.keys(this.errors).length > 0">
-                    <li class="mb-0 ms-3" v-for="(error, index) in this.errors" :key="index">
+                <ul class="alert alert-warning" v-if="Object.keys(errors).length > 0">
+                    <li class="mb-0 ms-3" v-for="(error, index) in errors" :key="index">
                         {{ error.defaultMessage }}
                     </li>
                 </ul>

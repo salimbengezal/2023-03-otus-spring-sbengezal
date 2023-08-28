@@ -1,33 +1,14 @@
 <script setup>
-import { computed, ref, watchEffect } from 'vue';
+import { storeToRefs } from 'pinia'
+import { useBooksStore } from '../stores/book'
+
+const { books, loading } = storeToRefs(useBooksStore())
+const { fetchBooks, removeBook } = useBooksStore()
 
 const columns = ['#', 'Name', 'Release Year', 'Author', 'Genre', 'Actions']
 
-</script>
-<script>
-export default {
-    data() {
-        return {
-            books: {}
-        }
-    },
-    methods: {
-        getBooks() {
-            fetch('/api/book')
-                .then(response => response.json())
-                .then(data => this.books = data)
-        },
-        remove(index) {
-            const id = this.books[index].id
+fetchBooks()
 
-            fetch('/api/book/' + id, { method: 'DELETE' })
-                .then(() => this.books.splice(index, 1))
-        }
-    },
-    mounted() {
-        this.getBooks();
-    }
-}
 </script>
 
 <template>
@@ -38,7 +19,8 @@ export default {
             </div>
 
             <div class="card-body">
-                <table v-if="this.books.length > 0" class="table table-bordered">
+                <p v-if="loading">Loading...</p>
+                <table v-if="books" class="table table-bordered">
                     <thead>
                         <tr>
                             <th class="table-success text-center" v-for="column in columns"><strong>{{ column }}</strong>
@@ -58,14 +40,14 @@ export default {
                                 <RouterLink :to="{ path: '/book/' + book.id + '/edit' }" class="btn btn-primary float-left">
                                     Edit
                                 </RouterLink>
-                                <button type="button" class="btn btn-danger float-end" @click=remove(index)>
+                                <button type="button" class="btn btn-danger float-end" @click=removeBook(index)>
                                     Remove
                                 </button>
                             </td>
                         </tr>
                     </tbody>
                 </table>
-                <div v-if="this.books.length == 0">No books found</div>
+                <div v-if="books.length == 0">No books found</div>
             </div>
         </div>
     </div>

@@ -1,73 +1,23 @@
-<script>
+<script setup>
 
-export default {
-    name: 'create',
-    data() {
-        return {
-            isProceeded: false,
-            errors: [],
-            genres: [],
-            authors: [],
-            model: {
-                book: {
-                    name: '',
-                    releaseYear: '',
-                    genreId: '',
-                    authorId: ''
-                }
-            }
-        }
-    },
-    methods: {
-        clearModel() {
-            this.model.book = {
-                name: '',
-                releaseYear: '',
-                genreId: '',
-                authorId: ''
-            }
-        },
-        saveBook() {
-            const requestOptions = {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(this.model.book)
-            }
-            fetch('/api/book', requestOptions)
-                .then(async response => {
-                    if (!response.ok) {
-                        this.isProceeded = false;
-                        const data = await response.json();
-                        if (data.errors.length == 0) {
-                            this.errors.clear();
-                        } else {
-                            this.errors = data.errors
-                        }
-                    } else {
-                        this.isProceeded = true;
-                        this.errors = [];
-                        this.clearModel();
-                    }
-                })
-        },
-        getGenres() {
-            fetch('/api/genre')
-                .then(response => response.json())
-                .then(data => this.genres = data)
-        },
-        getAuthors() {
-            fetch('/api/author')
-                .then(response => response.json())
-                .then(data => this.authors = data)
-        }
-    },
-    mounted() {
-        this.getGenres();
-        this.getAuthors();
-    }
-}
+import { storeToRefs } from 'pinia'
+import { useBooksStore } from '../../stores/book'
+import { useAuthorStore } from '../../stores/author'
+import { useGenreStore } from '../../stores/genre'
+
+const { model, errors, isProceeded } = storeToRefs(useBooksStore())
+const { genres } = storeToRefs(useGenreStore())
+const { authors } = storeToRefs(useAuthorStore())
+
+const { fetchAuthors } = useAuthorStore()
+const { fetchGenres } = useGenreStore()
+const { saveBook } = useBooksStore()
+
+fetchGenres()
+fetchAuthors()
 
 </script>
+
 <template>
     <div class="container mt-5">
         <div class="card">
@@ -76,9 +26,9 @@ export default {
             </div>
             <div class="card-body">
 
-                <div class="alert alert-success" v-if="this.isProceeded">Book added!</div>
-                <ul class="alert alert-warning" v-if="Object.keys(this.errors).length > 0">
-                    <li class="mb-0 ms-3" v-for="(error, index) in this.errors" :key="index">
+                <div class="alert alert-success" v-if="isProceeded">Book added!</div>
+                <ul class="alert alert-warning" v-if="Object.keys(errors).length > 0">
+                    <li class="mb-0 ms-3" v-for="(error, index) in errors" :key="index">
                         {{ error.defaultMessage }}
                     </li>
                 </ul>
